@@ -1,0 +1,8 @@
+.dark-theme {
+  background-color: rgba(23, 23, 26);
+  color: #fff; /* 텍스트 색상 변경 */
+}
+
+.dark-theme img {
+  filter: brightness(0.8); /* 이미지를 어둡게 만듦 */
+}
