@@ -7,9 +7,9 @@ function MainPage() {
   return (
     <>
       <NavBar />
-      <div className="flex w-full flex-col px-6">
+      <div className="flex w-full flex-col px-5">
         {/* 필터 및 정렬 */}
-        <div className="flex w-full items-center justify-between py-6">
+        <div className="mx-auto my-0 flex w-full items-center justify-between py-6 md:w-[730px]">
           {/* 필터 버튼 */}
           <button
             className="flex items-center rounded-md border-[1px] border-black px-4 py-2"
@@ -30,7 +30,7 @@ function MainPage() {
           </button>
         </div>
         {/* 포스트 카드 */}
-        <div className="mx-auto my-0 mt-8 flex w-full flex-wrap justify-between text-left">
+        <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
           <PostCard />
           <PostCard />
           <PostCard />
