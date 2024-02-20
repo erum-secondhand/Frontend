@@ -1,12 +1,55 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import cameraIcon from '../assets/camera.svg';
+import deleteIcon from '../assets/delete.svg';
 
 function SellPage() {
   const [selectedGrade, setSelectedGrade] = useState<string>('');
   const [selectedBookState, setSelectedBookState] = useState<string>('중고');
   const [openChatLink, setOpenChatLink] = useState<string>('');
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
+  const fileInputRef = useRef(null);
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const filesArray = Array.from(event.target.files);
+      setSelectedFiles(filesArray); // 선택된 파일들을 상태에 저장
+    }
+  };
+
+  const handleRemoveFile = (indexToRemove: number) => {
+    setSelectedFiles((currentFiles) =>
+      currentFiles.filter((_, index) => index !== indexToRemove),
+    );
+  };
+
+  // 선택된 파일 미리보기
+  const renderFilePreviews = () => {
+    return selectedFiles.map((file, index) => (
+      <div key={index} className="relative m-1">
+        <img
+          src={URL.createObjectURL(file)}
+          alt="preview"
+          className="h-20 w-20 rounded object-cover"
+          style={{ objectFit: 'contain' }}
+        />
+        <img
+          src={deleteIcon}
+          alt="delete"
+          onClick={() => handleRemoveFile(index)} // 삭제 핸들러 호출
+          className="absolute right-0 top-0 text-white hover:cursor-pointer"
+        />
+      </div>
+    ));
+  };
 
   const handleGradeClick = (grade: string) => {
     // 이미 선택된 학년을 클릭하면 선택 취소
@@ -32,18 +75,21 @@ function SellPage() {
   return (
     <section className="mx-auto my-0 flex w-full flex-col items-start px-5 sm:w-[599px]">
       {/* 사진 등록 */}
-      <div className="mt-4 flex px-5 pb-1.5">
+      <div className="mt-4 flex items-center px-5 pb-1.5">
         <div>
           <input
+            ref={fileInputRef}
             name="media"
             type="file"
             multiple
             accept="image/png, image/jpeg, image/jpg"
             className="hidden"
+            onChange={handleFileChange}
           />
           <button
-            className="mr-1.5 flex h-20 w-20 w-24 items-center justify-center rounded bg-[#f1f4f6] md:h-24"
+            className="mr-1.5 flex h-20 w-20 items-center justify-center rounded bg-[#f1f4f6] md:h-24 md:w-24"
             type="button"
+            onClick={triggerFileInput}
           >
             <div className="flex flex-col items-center">
               <img
@@ -55,6 +101,11 @@ function SellPage() {
             </div>
           </button>
         </div>
+        {selectedFiles.length > 0 && (
+          <div className="mr-2 flex flex-wrap rounded">
+            {renderFilePreviews()}
+          </div>
+        )}
       </div>
       {/* 판매 정보 */}
       <form className="mt-6 flex w-full flex-col items-center lg:mt-8">
