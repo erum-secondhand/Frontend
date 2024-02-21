@@ -32,7 +32,7 @@ function NavBar() {
     <>
       {/* 검색 바 */}
       {searchClicked ? (
-        <div className="sticky top-0 z-50 border-b-[1px] border-gray-200">
+        <div className="sticky top-0 z-[60] border-b-[1px] border-gray-200">
           <div className="flex h-14 w-screen items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
             <div className="mr-4 flex h-11 w-full items-center rounded-md bg-gray-100">
               <form className="relative w-full overflow-hidden rounded-md bg-gray-100">
@@ -109,7 +109,7 @@ function NavBar() {
           {menuOpen && (
             <div className="absolute flex h-24 w-screen flex-col bg-white">
               <button
-                className={`${currentPath === '/' ? 'text-orange-500' : 'text-gray-950'} w-full py-3`}
+                className={`${currentPath === '/' ? 'text-orange-500' : 'text-gray-950'} w-full py-3 active:bg-gray-200`}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);
@@ -119,7 +119,7 @@ function NavBar() {
                 중고서적 거래
               </button>
               <button
-                className={`${currentPath === '/sell' ? 'text-orange-500' : 'text-gray-950'} w-full py-3`}
+                className={`${currentPath === '/sell' ? 'text-orange-500' : 'text-gray-950'} w-full py-3 active:bg-gray-200`}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);
