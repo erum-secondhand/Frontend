@@ -13,7 +13,7 @@ function MainPage() {
           type="button"
         >
           <img src={filterIcon} alt="filter" />
-          <span className="font-Pretendard ps-[0.625rem] text-sm font-semibold">
+          <span className="ps-[0.625rem] font-Pretendard text-sm font-semibold">
             필터
           </span>
         </button>

@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
 
 function SellPage() {
   const [selectedGrade, setSelectedGrade] = useState<string>('');
+  const [selectedSort, setSelectedSort] = useState<string>('');
   const [selectedBookState, setSelectedBookState] = useState<string>('중고');
   const [openChatLink, setOpenChatLink] = useState<string>('');
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
@@ -57,6 +58,15 @@ function SellPage() {
       setSelectedGrade('');
     } else {
       setSelectedGrade(grade);
+    }
+  };
+
+  const handleSortClick = (sort: string) => {
+    // 이미 선택된 서적 분류를 클릭하면 선택 취소
+    if (selectedSort === sort) {
+      setSelectedSort('');
+    } else {
+      setSelectedSort(sort);
     }
   };
 
@@ -116,8 +126,8 @@ function SellPage() {
               id="bookTitle"
               name="bookTitle"
               type="text"
-              placeholder="책 제목"
-              className="font-Pretendard h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+              placeholder="서적 제목"
+              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
               autoComplete="off"
               spellCheck="false"
               aria-invalid="false"
@@ -130,7 +140,20 @@ function SellPage() {
               name="bookTitle"
               type="text"
               placeholder="출판사"
-              className="font-Pretendard h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+              autoComplete="off"
+              spellCheck="false"
+              aria-invalid="false"
+            />
+          </div>
+          {/* 저자 */}
+          <div className="block">
+            <input
+              id="bookTitle"
+              name="bookTitle"
+              type="text"
+              placeholder="저자"
+              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
               autoComplete="off"
               spellCheck="false"
               aria-invalid="false"
@@ -138,7 +161,10 @@ function SellPage() {
           </div>
           {/* 학년 선택 */}
           <section>
-            <div className="flex h-14 w-full overflow-hidden rounded-md border border-solid border-gray-300 text-[13px] font-medium">
+            <p className="mt-2 font-Pretendard font-semibold md:text-lg">
+              서적 학년 정보
+            </p>
+            <div className="mt-3 flex h-14 w-full overflow-hidden rounded-md border border-solid border-gray-300 text-[13px] font-medium">
               {['1학년', '2학년', '3학년', '4학년', '기타'].map(
                 (grade, index, array) => (
                   <button
@@ -151,6 +177,21 @@ function SellPage() {
                   </button>
                 ),
               )}
+            </div>
+            <p className="mt-6 font-Pretendard font-semibold md:text-lg">
+              서적 분류
+            </p>
+            <div className="mt-3 flex h-14 w-full overflow-hidden rounded-md border border-solid border-gray-300 text-[13px] font-medium">
+              {['전공', '교양'].map((sort, index, array) => (
+                <button
+                  key={index}
+                  className={`w-1/2 py-3 md:text-sm ${selectedSort === sort ? 'bg-gray-200' : ''} ${index !== array.length - 1 ? 'border-r border-gray-300' : ''}`}
+                  type="button"
+                  onClick={() => handleSortClick(sort)}
+                >
+                  {sort}
+                </button>
+              ))}
             </div>
           </section>
           {/* 판매 가격 입력 */}
@@ -175,7 +216,7 @@ function SellPage() {
           <section className="flex flex-col space-y-5">
             <div className="relative">
               <div>
-                <p className="font-Pretendard mt-6 font-semibold md:text-lg">
+                <p className="mt-6 font-Pretendard font-semibold md:text-lg">
                   상태 설명
                 </p>
                 <textarea
@@ -184,7 +225,7 @@ function SellPage() {
                   className="mt-3 inline-block h-[265px] w-full resize-none appearance-none items-center overflow-x-scroll rounded border border-solid border-gray-300 bg-white px-4 pb-7 pt-4 align-middle text-sm text-black outline-none transition duration-300 ease-in-out placeholder:leading-7 placeholder:text-gray-500 focus:border-black focus:shadow focus:outline-none focus:ring-0 md:text-base"
                   autoComplete="off"
                   spellCheck="false"
-                  placeholder="- 책 제목(자세한 제목)
+                  placeholder="- 서적 제목(자세한 제목)
 - 구매 시기
 - 오염 여부
 - 하자 여부
@@ -199,18 +240,18 @@ function SellPage() {
             {/* 책 상태 입력 */}
             <div className="mt-6 flex flex-col">
               <p className="font-Pretendard font-semibold md:text-lg">
-                책 상태
+                서적 상태
               </p>
               <div className="mt-3 flex gap-3">
                 <button
-                  className={`font-Pretendard mb-2 h-10 w-20 rounded-md border border-solid md:h-12 md:w-24 ${selectedBookState === '중고' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
+                  className={`mb-2 h-10 w-20 rounded-md border border-solid font-Pretendard md:h-12 md:w-24 ${selectedBookState === '중고' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
                   type="button"
                   onClick={() => handleBookStateClick('중고')}
                 >
                   중고
                 </button>
                 <button
-                  className={`font-Pretendard mb-2 h-10 w-20 rounded-md border border-solid md:h-12 md:w-24 ${selectedBookState === '새 책' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
+                  className={`mb-2 h-10 w-20 rounded-md border border-solid font-Pretendard md:h-12 md:w-24 ${selectedBookState === '새 책' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
                   type="button"
                   onClick={() => handleBookStateClick('새 책')}
                 >
@@ -225,7 +266,7 @@ function SellPage() {
                 name="bookTitle"
                 type="text"
                 placeholder="오픈채팅방 링크"
-                className="font-Pretendard h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+                className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
                 autoComplete="off"
                 spellCheck="false"
                 aria-invalid={!isValidLink}
@@ -244,7 +285,7 @@ function SellPage() {
         <div className="w-full px-5">
           <div className="my-8 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
             <button
-              className="font-Pretendard h-12 w-full rounded-3xl border border-transparent bg-white font-semibold md:h-14 md:text-lg"
+              className="h-12 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold md:h-14 md:text-lg"
               type="submit"
             >
               등록하기
