@@ -109,7 +109,7 @@ function NavBar() {
           {menuOpen && (
             <div className="absolute flex h-24 w-screen flex-col bg-white">
               <button
-                className={`${currentPath === '/' ? 'text-orange-500' : 'text-gray-950'} w-full py-3 active:bg-gray-200`}
+                className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} w-full py-3 active:bg-gray-200`}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);

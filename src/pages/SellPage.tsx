@@ -82,6 +82,11 @@ function SellPage() {
     setIsValidLink(value.startsWith('https://open.kakao.com/o/'));
   };
 
+  // 마운트 시 페이지 가장 상단에서 시작
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <section className="mx-auto my-0 flex w-full flex-col items-start px-5 sm:w-[599px]">
       {/* 사진 등록 */}
