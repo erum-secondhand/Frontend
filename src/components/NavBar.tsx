@@ -32,9 +32,9 @@ function NavBar() {
     <>
       {/* 검색 바 */}
       {searchClicked ? (
-        <div className="sticky top-0 z-[60] border-b-[1px] border-gray-200">
-          <div className="flex h-14 w-screen items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
-            <div className="mr-4 flex h-11 w-full items-center rounded-md bg-gray-100">
+        <div className="sticky top-0 z-[60] mx-auto border-b-[1px] border-gray-200">
+          <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
+            <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-100 md:h-12">
               <form className="relative w-full overflow-hidden rounded-md bg-gray-100">
                 <label
                   htmlFor="search"
@@ -42,7 +42,7 @@ function NavBar() {
                 >
                   <input
                     id="search-box"
-                    className="mx-3 h-10 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-12 lg:text-base"
+                    className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
                     placeholder="책 제목을 검색해주세요."
                     aria-label="search-box"
                     autoComplete="off"
@@ -53,7 +53,7 @@ function NavBar() {
             </div>
             <button
               type="button"
-              className="appearance-none whitespace-nowrap border-0 bg-none p-0 font-Pretendard text-lg font-semibold leading-6 text-gray-950"
+              className="appearance-none whitespace-nowrap border-0 bg-none p-0 font-Pretendard text-lg font-semibold leading-6 text-gray-950 md:text-xl"
               onClick={() => {
                 setSearchClicked(false);
               }}
@@ -107,9 +107,9 @@ function NavBar() {
           />
           {/* 메뉴 드롭다운 */}
           {menuOpen && (
-            <div className="absolute flex h-24 w-screen flex-col bg-white">
+            <div className="absolute flex h-24 w-screen flex-col bg-white md:h-32">
               <button
-                className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} w-full py-3 active:bg-gray-200`}
+                className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);
@@ -119,7 +119,7 @@ function NavBar() {
                 중고서적 거래
               </button>
               <button
-                className={`${currentPath === '/sell' ? 'text-orange-500' : 'text-gray-950'} w-full py-3 active:bg-gray-200`}
+                className={`${currentPath === '/sell' ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);
