@@ -74,7 +74,7 @@ function NavBar() {
             <div className="flex">
               <img
                 src={searchIcon}
-                alt="searchIcon"
+                alt="검색"
                 className="mr-4 hover:cursor-pointer md:w-7"
                 onClick={() => {
                   setSearchClicked(true);

@@ -1,14 +1,11 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import Slider, {
-  SliderThumb,
-  SliderValueLabelProps,
-} from '@mui/material/Slider';
+import axios from 'axios';
+import { FetchPostCards } from '../dataType';
 
-import { styled } from '@mui/material/styles';
 import filterIcon from '../assets/filter.svg';
 import upDownArrow from '../assets/upDownArrow.svg';
 import PostCard from '../components/PostCard';
@@ -23,6 +20,8 @@ function MainPage() {
   const [bookType, setBookType] = useState<string>('');
   const [bookCondition, setBookCondition] = useState<string>('');
 
+  const [postCardData, setPostCardData] = useState<FetchPostCards[]>([]);
+
   // 모든 상태를 초기화하는 함수
   const resetFilters = () => {
     setPrice('');
@@ -35,6 +34,25 @@ function MainPage() {
   const toggleAccordion = () => {
     setIsFilterOpen(!isFilterOpen);
   };
+
+  // 포스트카드 GET API 요청 함수
+  const fetchPostCards = async () => {
+    try {
+      const response = await axios.get<FetchPostCards[]>(
+        'http://localhost:8080/books',
+      );
+      console.log(response.data);
+      setPostCardData(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 컴포넌트 마운트 시 실행
+  useEffect(() => {
+    // 포스트카드 fetch 함수
+    fetchPostCards();
+  }, []);
 
   return (
     <div className="flex w-full flex-col px-5">
@@ -411,34 +429,15 @@ function MainPage() {
       ) : null}
       {/* 포스트 카드 */}
       <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
-        <PostCard />
+        {postCardData.map((post) => (
+          <PostCard
+            id={post.id}
+            imageUrls={post.imageUrls}
+            title={post.title}
+            publisher={post.publisher}
+            price={post.price}
+          />
+        ))}
       </div>
     </div>
   );

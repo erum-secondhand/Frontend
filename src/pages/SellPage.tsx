@@ -2,10 +2,17 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
 import { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
+import PostBookSell from '../dataType';
 
 function SellPage() {
+  const [bookTitle, setBookTitle] = useState<string>('');
+  const [publisher, setPublisher] = useState<string>('');
+  const [bookPrice, setBookPrice] = useState<string>('');
+  const [bookDescription, setBookDescription] = useState<string>('');
+
   const [selectedGrade, setSelectedGrade] = useState<string>('');
   const [selectedSort, setSelectedSort] = useState<string>('');
   const [selectedBookState, setSelectedBookState] = useState<string>('중고');
@@ -15,8 +22,43 @@ function SellPage() {
 
   const fileInputRef = useRef(null);
 
+  // 메인페이지로 새로고침하는 함수
+  const moveToMainPage = () => {
+    window.location.href = '/';
+  };
+
   const triggerFileInput = () => {
     fileInputRef.current?.click();
+  };
+
+  // 서적 제목 입력 이벤트 핸들러
+  const bookTitleHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBookTitle(e.target.value);
+  };
+
+  // 출판사 입력 이벤트 핸들러
+  const publisherHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPublisher(e.target.value);
+  };
+
+  // 판매가격 입력 이벤트 핸들러
+  const bookPriceHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBookPrice(e.target.value);
+  };
+
+  // 서적 상태 설명 입력 이벤트 핸들러
+  const bookDescriptionHandleChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setBookDescription(e.target.value);
+  };
+
+  // 오픈채팅방 링크 유효 검사 및 입력 이벤트 핸들러
+  const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setOpenChatLink(value);
+    // 링크가 https://open.kakao.com/o/ 로 시작하는지 검사
+    setIsValidLink(value.startsWith('https://open.kakao.com/o/'));
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,8 +81,7 @@ function SellPage() {
         <img
           src={URL.createObjectURL(file)}
           alt="preview"
-          className="h-20 w-20 rounded object-cover"
-          style={{ objectFit: 'contain' }}
+          className="h-20 w-20 rounded object-cover md:h-24 md:w-24"
         />
         <img
           src={deleteIcon}
@@ -74,18 +115,44 @@ function SellPage() {
     setSelectedBookState(state);
   };
 
-  // 오픈채팅방 링크 유효 검사
-  const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setOpenChatLink(value);
-    // 링크가 https://open.kakao.com/o/ 로 시작하는지 검사
-    setIsValidLink(value.startsWith('https://open.kakao.com/o/'));
-  };
-
   // 마운트 시 페이지 가장 상단에서 시작
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // 판매 등록 API 요청 함수
+  const postBookSell = async () => {
+    try {
+      const formData = new FormData();
+
+      // 파일 데이터 추가
+      selectedFiles.forEach((file) => {
+        formData.append('images', file);
+      });
+
+      // 문자열 데이터 추가
+      formData.append('title', bookTitle);
+      formData.append('publisher', publisher);
+      formData.append('grade', selectedGrade);
+      formData.append('price', bookPrice);
+      formData.append('description', bookDescription);
+      formData.append('condition', selectedBookState);
+      formData.append('kakaoLink', openChatLink);
+
+      const response = await axios.post(
+        'http://localhost:8080/books',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      );
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <section className="mx-auto my-0 flex w-full flex-col items-start px-5 sm:w-[599px]">
@@ -136,6 +203,7 @@ function SellPage() {
               autoComplete="off"
               spellCheck="false"
               aria-invalid="false"
+              onChange={bookTitleHandleChange}
             />
           </div>
           {/* 출판사 */}
@@ -149,19 +217,7 @@ function SellPage() {
               autoComplete="off"
               spellCheck="false"
               aria-invalid="false"
-            />
-          </div>
-          {/* 저자 */}
-          <div className="block">
-            <input
-              id="bookTitle"
-              name="bookTitle"
-              type="text"
-              placeholder="저자"
-              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
-              autoComplete="off"
-              spellCheck="false"
-              aria-invalid="false"
+              onChange={publisherHandleChange}
             />
           </div>
           {/* 학년 선택 */}
@@ -209,10 +265,11 @@ function SellPage() {
                 <span className="text-sm md:text-base">₩</span>
                 <input
                   name="bookPrice"
-                  type="number"
+                  type="text"
                   inputMode="numeric"
                   className="ml-1 h-11 w-2/3 bg-white text-sm focus:outline-none disabled:opacity-100 md:ml-2 md:h-12 md:text-base "
                   placeholder="판매가격"
+                  onChange={bookPriceHandleChange}
                 />
               </label>
             </div>
@@ -235,7 +292,9 @@ function SellPage() {
 - 오염 여부
 - 하자 여부
 * 실제 촬영한 사진과 함께 상세 정보를 입력해주세요."
-                  maxLength="1000"
+                  maxLength={1000}
+                  value={bookDescription}
+                  onChange={bookDescriptionHandleChange}
                 />
                 <span className="absolute -bottom-6 right-2 text-sm leading-5 text-gray-400 md:-bottom-8 md:text-base">
                   0 / 1000
@@ -291,7 +350,11 @@ function SellPage() {
           <div className="my-8 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
             <button
               className="h-12 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold md:h-14 md:text-lg"
-              type="submit"
+              type="button"
+              onClick={() => {
+                postBookSell();
+                moveToMainPage();
+              }}
             >
               등록하기
             </button>
