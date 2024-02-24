@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { FetchPostCards } from '../dataType';
-
+import { useRecoilValue } from 'recoil';
+import { searchPostCardsState } from '../RecoilState';
 import filterIcon from '../assets/filter.svg';
 import upDownArrow from '../assets/upDownArrow.svg';
 import PostCard from '../components/PostCard';
@@ -21,6 +22,8 @@ function MainPage() {
   const [bookCondition, setBookCondition] = useState<string>('');
 
   const [postCardData, setPostCardData] = useState<FetchPostCards[]>([]);
+
+  const searchPostCards = useRecoilValue(searchPostCardsState);
 
   // 모든 상태를 초기화하는 함수
   const resetFilters = () => {
@@ -428,17 +431,31 @@ function MainPage() {
         />
       ) : null}
       {/* 포스트 카드 */}
-      <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
-        {postCardData.map((post) => (
-          <PostCard
-            id={post.id}
-            imageUrls={post.imageUrls}
-            title={post.title}
-            publisher={post.publisher}
-            price={post.price}
-          />
-        ))}
-      </div>
+      {searchPostCards.length > 0 ? (
+        <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
+          {searchPostCards.map((post) => (
+            <PostCard
+              id={post.id}
+              imageUrls={post.imageUrls}
+              title={post.title}
+              publisher={post.publisher}
+              price={post.price}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
+          {postCardData.map((post) => (
+            <PostCard
+              id={post.id}
+              imageUrls={post.imageUrls}
+              title={post.title}
+              publisher={post.publisher}
+              price={post.price}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

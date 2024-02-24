@@ -1,13 +1,17 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { useState } from 'react';
+import { useState, KeyboardEvent, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 import searchIcon from '../assets/search.svg';
 import hamburgerIcon from '../assets/hamburger.svg';
 import cancelIcon from '../assets/cancel.svg';
 import '../theme.css';
+import axios from 'axios';
+import { FetchPostCards } from '../dataType';
+import { searchPostCardsState } from '../RecoilState';
+import { useSetRecoilState } from 'recoil';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -15,6 +19,23 @@ function NavBar() {
   const currentPath = location.pathname;
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [searchClicked, setSearchClicked] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string>('');
+
+  const setSearchPostCards = useSetRecoilState(searchPostCardsState);
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // 검색 아이콘 클릭 이벤트 핸들러
+  const handleSearchIconClick = () => {
+    setSearchClicked(true);
+    // 컴포넌트가 렌더링되고 나서 DOM 요소에 접근하기 위해 setTimeout 사용
+    setTimeout(() => {
+      if (searchInputRef.current) {
+        // input 요소에 포커스
+        searchInputRef.current.focus();
+      }
+    }, 0);
+  };
 
   const moveToMainPageWithRefresh = () => {
     window.location.href = '/';
@@ -28,6 +49,38 @@ function NavBar() {
     navigate('/sell');
   };
 
+  const moveToLoginPage = () => {
+    navigate('/login');
+  };
+
+  // 검색창 입력 이벤트 핸들러
+  const searchBoxHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  // 검색 API 요청
+  const fetchSearchPostCards = async (e: KeyboardEvent<HTMLInputElement>) => {
+    // 엔터 키 눌렀는지 확인
+    if (e.key === 'Enter') {
+      setSearchClicked(false); // 검색창 숨기기
+
+      try {
+        const response = await axios.get<FetchPostCards[]>(
+          'http://localhost:8080/books/search',
+          {
+            params: {
+              title: searchText,
+            },
+          },
+        );
+        console.log(response.data);
+        setSearchPostCards(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   return (
     <>
       {/* 검색 바 */}
@@ -35,21 +88,19 @@ function NavBar() {
         <div className="sticky top-0 z-[60] mx-auto border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
             <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-100 md:h-12">
-              <form className="relative w-full overflow-hidden rounded-md bg-gray-100">
-                <label
-                  htmlFor="search"
-                  className="flex items-center bg-gray-100 py-0.5"
-                >
-                  <input
-                    id="search-box"
-                    className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
-                    placeholder="책 제목을 검색해주세요."
-                    aria-label="search-box"
-                    autoComplete="off"
-                    name="search"
-                  />
-                </label>
-              </form>
+              <div className="relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5">
+                <input
+                  ref={searchInputRef}
+                  id="search-box"
+                  className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
+                  placeholder="책 제목을 검색해주세요."
+                  aria-label="search-box"
+                  autoComplete="off"
+                  name="search"
+                  onChange={searchBoxHandleChange}
+                  onKeyDown={fetchSearchPostCards}
+                />
+              </div>
             </div>
             <button
               type="button"
@@ -76,9 +127,7 @@ function NavBar() {
                 src={searchIcon}
                 alt="검색"
                 className="mr-4 hover:cursor-pointer md:w-7"
-                onClick={() => {
-                  setSearchClicked(true);
-                }}
+                onClick={handleSearchIconClick}
               />
               {menuOpen ? (
                 <img
@@ -107,7 +156,7 @@ function NavBar() {
           />
           {/* 메뉴 드롭다운 */}
           {menuOpen && (
-            <div className="absolute flex h-24 w-screen flex-col bg-white md:h-32">
+            <div className="absolute flex h-36 w-screen flex-col bg-white md:h-32">
               <button
                 className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
@@ -127,6 +176,16 @@ function NavBar() {
                 }}
               >
                 판매하기
+              </button>
+              <button
+                className={`${currentPath === '/login' ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
+                type="button"
+                onClick={() => {
+                  setMenuOpen(false);
+                  moveToLoginPage();
+                }}
+              >
+                로그인
               </button>
             </div>
           )}

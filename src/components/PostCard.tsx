@@ -22,19 +22,19 @@ function PostCard(props: FetchPostCards) {
           <img
             src={props.imageUrls[0]}
             alt="bookImage"
-            className="absolute inset-y-0 box-border w-full overflow-clip rounded-xl border-[1px] border-transparent"
+            className="absolute inset-y-0 box-border h-full w-full overflow-clip rounded-xl border-[1px] border-transparent object-cover"
             style={{ overflowClipMargin: 'content-box' }}
           />
         </div>
         {/* 책 설명 */}
         <div className="mt-2 md:mt-3">
-          <h2 className="mb-[2px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-5 tracking-tight text-[#212529] md:mb-1 md:text-base">
+          <h2 className="mb-[2px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-5 tracking-tight text-[#212529] sm:mb-1 sm:text-base">
             {props.title}
           </h2>
-          <h3 className="overflow-hidden text-ellipsis whitespace-nowrap font-Pretendard text-[0.8rem] font-normal leading-5 tracking-tight text-[#212529] md:mb-1 md:text-sm">
+          <h3 className="overflow-hidden text-ellipsis whitespace-nowrap font-Pretendard text-[0.8rem] font-normal leading-5 tracking-tight text-[#212529] sm:mb-1 sm:text-sm">
             {props.publisher}
           </h3>
-          <div className="mb-1 font-Pretendard text-sm font-bold leading-6 text-[#212529] hover:cursor-pointer md:text-[15px]">
+          <div className="mb-1 font-Pretendard text-sm font-bold leading-6 text-[#212529] hover:cursor-pointer sm:text-[15px]">
             {props.price.toLocaleString()}원
           </div>
         </div>

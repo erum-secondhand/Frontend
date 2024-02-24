@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
-import PostBookSell from '../dataType';
+import { PostBookSell } from '../dataType';
 
 function SellPage() {
   const [bookTitle, setBookTitle] = useState<string>('');
