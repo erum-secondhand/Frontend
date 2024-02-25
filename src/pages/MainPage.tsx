@@ -4,8 +4,8 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
-import { FetchPostCards } from '../dataType';
 import { useRecoilValue } from 'recoil';
+import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../RecoilState';
 import filterIcon from '../assets/filter.svg';
 import upDownArrow from '../assets/upDownArrow.svg';
@@ -435,6 +435,7 @@ function MainPage() {
         <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
           {searchPostCards.map((post) => (
             <PostCard
+              key={post.id}
               id={post.id}
               imageUrls={post.imageUrls}
               title={post.title}
@@ -447,6 +448,7 @@ function MainPage() {
         <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
           {postCardData.map((post) => (
             <PostCard
+              key={post.id}
               id={post.id}
               imageUrls={post.imageUrls}
               title={post.title}

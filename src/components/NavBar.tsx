@@ -74,7 +74,13 @@ function NavBar() {
           },
         );
         console.log(response.data);
-        setSearchPostCards(response.data);
+
+        // 검색 결과가 있는 경우에만 보여주기
+        if (response.data.length !== 0) {
+          setSearchPostCards(response.data);
+        } else {
+          alert('검색 결과가 없습니다!');
+        }
       } catch (e) {
         console.log(e);
       }
