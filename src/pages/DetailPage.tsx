@@ -6,6 +6,7 @@ import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import axios from 'axios';
 import { FetchDetailPostCard } from '../dataType';
+import React from 'react';
 
 function DetailPage() {
   const { id } = useParams();
@@ -88,7 +89,14 @@ function DetailPage() {
         {/* 책 설명 */}
         <div className="mt-4 flex w-full flex-col items-start sm:w-[599px] md:mt-6 lg:mt-8 lg:w-[677px]">
           <span className="font-Pretendard text-base leading-6 tracking-normal lg:text-lg">
-            {detailPostcardData?.description}
+            {detailPostcardData?.description.split('\n').map((line, index) => (
+              <React.Fragment key={index}>
+                {index > 0 && <br />}
+                <span className="font-Pretendard text-base leading-7 tracking-normal lg:text-lg lg:leading-8">
+                  {line}
+                </span>
+              </React.Fragment>
+            ))}
           </span>
         </div>
         {/* 책 상태 */}
