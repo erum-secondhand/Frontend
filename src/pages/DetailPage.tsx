@@ -36,9 +36,9 @@ function DetailPage() {
   }, [id]);
 
   return (
-    <div className="flex w-full flex-col items-center">
+    <div className="box-content flex w-full flex-col items-center sm:mt-2 md:mt-4">
       {/* 책 이미지 */}
-      <div className="w-full overflow-hidden">
+      <div className="w-full overflow-hidden sm:w-[599px] sm:rounded-md lg:w-[677px] lg:rounded-lg">
         {detailPostcardData?.imageUrls ? (
           <Carousel
             axis="horizontal"
@@ -64,58 +64,62 @@ function DetailPage() {
           <div>Loading...</div>
         )}
       </div>
-      <section className="mt-3 flex w-full flex-col items-center px-3">
+      <section className="mt-3 flex w-full flex-col items-center px-3 md:mt-4">
         {/* 책 정보 */}
-        <div className="flex w-full flex-col items-start space-y-1 sm:w-[599px]">
-          <span className="font-Pretendard text-xl font-semibold">
+        <div className="flex w-full flex-col items-start space-y-1 sm:w-[599px] md:space-y-2 lg:w-[677px] lg:space-y-3">
+          <span className="font-Pretendard text-xl font-semibold lg:text-2xl">
             {detailPostcardData?.title}
           </span>
           <div className="flex items-center">
-            <span className="font-Pretendard text-sm text-gray-500">
+            <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
               {detailPostcardData?.publisher}
             </span>
-            <span className="mx-[2px] font-Pretendard text-sm text-gray-500">
+            <span className="mx-[2px] font-Pretendard text-sm text-gray-500 lg:text-base">
               ∙
             </span>
-            <span className="font-Pretendard text-sm text-gray-500">
+            <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
               12시간 전
             </span>
           </div>
-          <span className="font-Pretendard text-2xl font-bold">
+          <span className="font-Pretendard text-2xl font-bold lg:text-3xl">
             {parseInt(detailPostcardData?.price ?? '0', 10).toLocaleString()}원
           </span>
         </div>
         {/* 책 설명 */}
-        <div className="mt-4 flex w-full flex-col items-start sm:w-[599px]">
-          <span className="font-Pretendard text-base leading-6 tracking-normal">
+        <div className="mt-4 flex w-full flex-col items-start sm:w-[599px] md:mt-6 lg:mt-8 lg:w-[677px]">
+          <span className="font-Pretendard text-base leading-6 tracking-normal lg:text-lg">
             {detailPostcardData?.description}
           </span>
         </div>
         {/* 책 상태 */}
-        <div className="flex w-full flex-col items-start py-6 sm:w-[599px]">
+        <div className="flex w-full flex-col items-start py-6 sm:w-[599px] md:py-10 lg:w-[677px]">
           <div className="flex flex-col">
             <div className="mr-5 flex min-w-[95px] items-center">
               <img src={checkIcon} alt="dot" />
-              <span className="ml-[6px] text-sm text-[#5a616b]">제품상태</span>
+              <span className="ml-[6px] text-sm text-[#5a616b] md:text-base">
+                제품상태
+              </span>
             </div>
-            <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313]">
+            <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
               {detailPostcardData?.condition}
             </span>
           </div>
           <div className="mt-2 flex flex-col">
             <div className="mr-5 flex min-w-[95px] items-center">
               <img src={checkIcon} alt="dot" />
-              <span className="ml-[6px] text-sm text-[#5a616b]">학년</span>
+              <span className="ml-[6px] text-sm text-[#5a616b] md:text-base">
+                학년
+              </span>
             </div>
-            <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313]">
+            <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
               {detailPostcardData?.grade}
             </span>
           </div>
         </div>
         {/* 채팅 버튼 */}
-        <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px]">
+        <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
           <button
-            className="h-11 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold sm:w-[599px]"
+            className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold sm:w-[599px] lg:w-[677px]"
             type="button"
             onClick={moveToOpenChatLink}
           >

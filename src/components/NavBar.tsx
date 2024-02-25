@@ -3,6 +3,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, KeyboardEvent, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
 import logo from '../assets/logo.svg';
 import searchIcon from '../assets/search.svg';
 import hamburgerIcon from '../assets/hamburger.svg';
@@ -11,7 +12,6 @@ import '../theme.css';
 import axios from 'axios';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../RecoilState';
-import { useSetRecoilState } from 'recoil';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -156,7 +156,7 @@ function NavBar() {
           />
           {/* 메뉴 드롭다운 */}
           {menuOpen && (
-            <div className="absolute flex h-36 w-screen flex-col bg-white md:h-32">
+            <div className="absolute flex h-36 w-screen flex-col bg-white md:h-48">
               <button
                 className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
