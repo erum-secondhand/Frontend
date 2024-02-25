@@ -187,6 +187,7 @@ function NavBar() {
                   src={sellingIcon}
                   alt="판매"
                   className="w-6 hover:cursor-pointer"
+                  onClick={moveToSellPage}
                 />
                 <span className="font-Pretendard text-sm">판매하기</span>
               </div>
@@ -195,6 +196,7 @@ function NavBar() {
                   src={personIcon}
                   alt="로그인"
                   className="w-6 hover:cursor-pointer"
+                  onClick={moveToLoginPage}
                 />
                 <span className="font-Pretendard text-sm">로그인</span>
               </div>
