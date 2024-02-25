@@ -4,12 +4,14 @@
 import { useState, KeyboardEvent, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
+import axios from 'axios';
 import logo from '../assets/logo.svg';
+import sellingIcon from '../assets/sellingIcon.svg';
+import personIcon from '../assets/personIcon.svg';
 import searchIcon from '../assets/search.svg';
 import hamburgerIcon from '../assets/hamburger.svg';
 import cancelIcon from '../assets/cancel.svg';
 import '../theme.css';
-import axios from 'axios';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../RecoilState';
 
@@ -37,18 +39,22 @@ function NavBar() {
     }, 0);
   };
 
+  // 메인 페이지로 새로고침 ('/')
   const moveToMainPageWithRefresh = () => {
     window.location.href = '/';
   };
 
+  // 메인 페이지로 이동 ('/')
   const moveToMainPage = () => {
     navigate('/');
   };
 
+  // 판매 등록 페이지로 이동 ('/sell')
   const moveToSellPage = () => {
     navigate('/sell');
   };
 
+  // 로그인 페이지로 이동 ('/login')
   const moveToLoginPage = () => {
     navigate('/login');
   };
@@ -121,14 +127,33 @@ function NavBar() {
         </div>
       ) : (
         <div className="sticky top-0 z-50 border-b-[1px] border-gray-200">
-          <div className="flex h-14 w-screen items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
+          <div className="flex h-14 w-screen items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem] md:px-10">
             <img
               src={logo}
               alt="logo"
               className="w-[4.5rem] pb-1 hover:cursor-pointer md:w-20"
               onClick={moveToMainPageWithRefresh}
             />
-            <div className="flex">
+            {/* 1024px 이상일 경우 검색바 나타남 */}
+            <div className="hidden lg:ml-24 lg:flex lg:w-3/5">
+              <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
+                <div className="relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5">
+                  <input
+                    ref={searchInputRef}
+                    id="search-box"
+                    className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
+                    placeholder="책 제목을 검색해주세요."
+                    aria-label="search-box"
+                    autoComplete="off"
+                    name="search"
+                    onChange={searchBoxHandleChange}
+                    onKeyDown={fetchSearchPostCards}
+                  />
+                </div>
+              </div>
+            </div>
+            {/* 검색 및 햄버거 아이콘 (1024px 이상일 경우 숨겨짐) */}
+            <div className="flex lg:hidden">
               <img
                 src={searchIcon}
                 alt="검색"
@@ -155,11 +180,26 @@ function NavBar() {
                 />
               )}
             </div>
+            {/* 판매하기 및 로그인 버튼 */}
+            <div className="md hidden space-x-4 lg:flex">
+              <div className="flex cursor-pointer items-center space-x-1">
+                <img
+                  src={sellingIcon}
+                  alt="판매"
+                  className="w-6 hover:cursor-pointer"
+                />
+                <span className="font-Pretendard text-sm">판매하기</span>
+              </div>
+              <div className="flex cursor-pointer items-center space-x-1">
+                <img
+                  src={personIcon}
+                  alt="로그인"
+                  className="w-6 hover:cursor-pointer"
+                />
+                <span className="font-Pretendard text-sm">로그인</span>
+              </div>
+            </div>
           </div>
-          <div
-            id="progress-bar"
-            className="absolute bottom-0 left-0 h-[2px] w-full"
-          />
           {/* 메뉴 드롭다운 */}
           {menuOpen && (
             <div className="absolute flex h-36 w-screen flex-col bg-white md:h-48">
