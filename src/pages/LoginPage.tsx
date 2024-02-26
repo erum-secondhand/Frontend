@@ -108,7 +108,7 @@ function LoginPage() {
                   회원이 아니십니까?
                 </span>
                 <span
-                  className="font-Pretendard text-base font-semibold text-green-600"
+                  className="cursor-pointer font-Pretendard text-base font-semibold text-green-600"
                   onClick={() => {
                     navigate('/register');
                   }}

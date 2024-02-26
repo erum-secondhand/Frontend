@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { SignUp } from '../dataType';
 import { useNavigate } from 'react-router-dom';
+import { SignUp } from '../dataType';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ function RegisterPage() {
       const response = await axios.post<string>(
         'http://localhost:8080/users/verify',
         {
-          email: email,
+          email,
         },
       );
       console.log(response.data);
@@ -95,12 +95,12 @@ function RegisterPage() {
       const response = await axios.post<SignUp>(
         'http://localhost:8080/users/register',
         {
-          email: email,
-          password: password,
+          email,
+          password,
           name: userName,
-          studentId: studentId,
+          studentId,
           major: selectedMajor,
-          verificationCode: verificationCode,
+          verificationCode,
         },
       );
       console.log(response.data);
@@ -194,10 +194,11 @@ function RegisterPage() {
                   )}
                 </div>
                 <button
+                  type="button"
                   className="mt-3 h-9 w-full rounded-md bg-gray-300 font-Pretendard text-sm font-semibold"
                   onClick={emailAuthentication}
                 >
-                  이메일 인증
+                  {isVerificationSuccessful ? '인증번호 재발급' : '이메일 인증'}
                 </button>
                 {/* 인증코드 입력 */}
                 {isVerificationSuccessful && (
