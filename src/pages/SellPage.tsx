@@ -20,7 +20,7 @@ function SellPage() {
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // 메인페이지로 새로고침하는 함수
   const moveToMainPage = () => {

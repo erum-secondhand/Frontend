@@ -1,7 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from 'react';
-import { SignIn } from '../dataType';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSetRecoilState } from 'recoil';
+import { SignIn } from '../dataType';
+import { userState } from '../userState';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -11,6 +15,8 @@ function LoginPage() {
 
   const [isValidEmail, setIsValidEmail] = useState<boolean>(true);
   const [isValidPassword, setIsValidPassword] = useState<boolean>(true);
+
+  const setUser = useSetRecoilState(userState);
 
   // 이메일 유효 검사 및 입력 이벤트 핸들러
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +40,8 @@ function LoginPage() {
       const response = await axios.post<SignIn>(
         'http://localhost:8080/users/login',
         {
-          email: email,
-          password: password,
+          email,
+          password,
         },
       );
       console.log(response.data);

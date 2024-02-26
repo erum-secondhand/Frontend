@@ -13,7 +13,7 @@ import hamburgerIcon from '../assets/hamburger.svg';
 import cancelIcon from '../assets/cancel.svg';
 import '../theme.css';
 import { FetchPostCards } from '../dataType';
-import { searchPostCardsState } from '../RecoilState';
+import { searchPostCardsState } from '../recoilState';
 
 function NavBar() {
   const navigate = useNavigate();

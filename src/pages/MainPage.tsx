@@ -6,16 +6,17 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { FetchPostCards } from '../dataType';
-import { searchPostCardsState } from '../RecoilState';
+import { searchPostCardsState } from '../recoilState';
 // import filterIcon from '../assets/filter.svg';
 // import upDownArrow from '../assets/upDownArrow.svg';
 import PostCard from '../components/PostCard';
 import leftArrowIcon from '../assets/leftArrow.svg';
-import banner from '../../public/banner.png';
+import banner from '../assets/banner.png';
 
 function MainPage() {
   const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
-  const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
+  // 정렬 필요시 사용
+  // const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
 
   const [price, setPrice] = useState<string>('');
   const [grade, setGrade] = useState<string>('');
@@ -34,10 +35,10 @@ function MainPage() {
     setBookCondition('');
   };
 
-  // 필터 아코디언 토글
-  const toggleAccordion = () => {
-    setIsFilterOpen(!isFilterOpen);
-  };
+  // // 필터 아코디언 토글 -> 필요시 사용
+  // const toggleAccordion = () => {
+  //   setIsFilterOpen(!isFilterOpen);
+  // };
 
   // 포스트카드 GET API 요청 함수
   const fetchPostCards = async () => {
@@ -66,6 +67,7 @@ function MainPage() {
           src={banner}
           alt="배너"
           className="mx-auto mb-10 sm:w-[599px] md:w-[730px]"
+          draggable={false}
         />
       </div>
       <div className="flex w-full">
