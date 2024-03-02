@@ -1,4 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-console */
+/* eslint-disable import/no-duplicates */
 /* eslint-disable react/no-array-index-key */
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
@@ -6,7 +10,6 @@ import axios from 'axios';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FetchDetailPostCard } from '../dataType';
-import React from 'react';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();

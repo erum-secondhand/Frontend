@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -87,8 +89,8 @@ function NavBar() {
         } else {
           alert('검색 결과가 없습니다!');
         }
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
       }
     }
   };

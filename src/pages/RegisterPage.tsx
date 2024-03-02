@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable react/no-array-index-key */
 import axios from 'axios';

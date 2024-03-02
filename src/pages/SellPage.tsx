@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
@@ -396,7 +397,8 @@ function SellPage() {
               />
               {!isValidLink && (
                 <p className="mt-1 text-xs text-red-500">
-                  링크는 "https://open.kakao.com/o/"로 시작해야 합니다.
+                  링크는 &quot;https://open.kakao.com/o/&quot;로 시작해야
+                  합니다.
                 </p>
               )}
             </div>
