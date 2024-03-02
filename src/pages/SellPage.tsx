@@ -176,6 +176,9 @@ function SellPage() {
       isValidLink
     ) {
       try {
+        // 마지막에 위치한 불필요한 개행 문자 제거
+        const trimmedDescription = bookDescription.replace(/[\r\n]+$/, '');
+
         const formData = new FormData();
 
         // 파일 데이터 추가
@@ -188,7 +191,7 @@ function SellPage() {
         formData.append('publisher', publisher);
         formData.append('grade', selectedGrade);
         formData.append('price', bookPrice);
-        formData.append('description', bookDescription);
+        formData.append('description', trimmedDescription);
         formData.append('condition', selectedBookState);
         formData.append('kakaoLink', openChatLink);
 

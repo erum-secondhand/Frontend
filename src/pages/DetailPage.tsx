@@ -105,6 +105,7 @@ function DetailPage() {
                   src={imageUrl}
                   alt={`bookImage ${index + 1}`}
                   className="h-full w-full object-cover"
+                  draggable={false}
                 />
               </div>
             ))}
