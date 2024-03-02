@@ -346,12 +346,12 @@ function SellPage() {
 - 오염 여부
 - 하자 여부
 * 실제 촬영한 사진과 함께 상세 정보를 입력해주세요."
-                  maxLength={1000}
+                  maxLength={250}
                   value={bookDescription}
                   onChange={bookDescriptionHandleChange}
                 />
                 <span className="absolute -bottom-6 right-2 text-sm leading-5 text-gray-400 md:-bottom-8 md:text-base">
-                  0 / 1000
+                  {bookDescription.length} / 250
                 </span>
               </div>
             </div>
