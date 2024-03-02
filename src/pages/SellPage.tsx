@@ -44,7 +44,10 @@ function SellPage() {
 
   // 판매가격 입력 이벤트 핸들러
   const bookPriceHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
+    let { value } = e.target;
+
+    // 첫 자리 0 불가
+    value = value.replace(/^0+/, '');
 
     // 6자리에서 자르기
     if (value.length <= 6) {
