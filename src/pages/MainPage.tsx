@@ -7,8 +7,6 @@ import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
-// import filterIcon from '../assets/filter.svg';
-// import upDownArrow from '../assets/upDownArrow.svg';
 import PostCard from '../components/PostCard';
 import leftArrowIcon from '../assets/leftArrow.svg';
 import banner from '../assets/banner.png';

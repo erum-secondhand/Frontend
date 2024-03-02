@@ -2,7 +2,7 @@
 import { atom } from 'recoil';
 import { SignIn } from './dataType';
 
-type UserState = {
+export type UserState = {
   isLoggedIn: boolean;
   userData: SignIn;
 };
