@@ -40,6 +40,7 @@ function LoginPage() {
           email,
           password,
         },
+        { withCredentials: true },
       );
       console.log(response.data);
       window.location.href = '/';
