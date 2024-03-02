@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable react/no-array-index-key */
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -73,19 +75,24 @@ function RegisterPage() {
 
   // 이메일 인증코드 API 요청
   const emailAuthentication = async () => {
-    try {
-      const response = await axios.post<string>(
-        'http://localhost:8080/users/verify',
-        {
-          email,
-        },
-      );
-      console.log(response.data);
-      if (response.status === 200) {
-        setIsVerificationSuccessful(true);
+    if (isValidEmail) {
+      try {
+        alert('인증번호를 전송했습니다!');
+        const response = await axios.post<string>(
+          'http://localhost:8080/users/verify',
+          {
+            email,
+          },
+        );
+        console.log(response.data);
+        if (response.status === 200) {
+          setIsVerificationSuccessful(true);
+        }
+      } catch (e) {
+        console.log(e);
       }
-    } catch (e) {
-      console.log(e);
+    } else {
+      alert('올바른 이메일을 입력해주세요.');
     }
   };
 

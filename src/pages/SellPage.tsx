@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
@@ -5,7 +6,6 @@ import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
-import { PostBookSell } from '../dataType';
 
 function SellPage() {
   const [bookTitle, setBookTitle] = useState<string>('');
@@ -27,6 +27,7 @@ function SellPage() {
     window.location.href = '/';
   };
 
+  // 사진파일 등록 함수
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -61,6 +62,7 @@ function SellPage() {
     setIsValidLink(value.startsWith('https://open.kakao.com/o/'));
   };
 
+  // 사진파일 변경 이벤트 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const filesArray = Array.from(event.target.files);
@@ -68,6 +70,7 @@ function SellPage() {
     }
   };
 
+  // 사진파일 삭제 이벤트 핸들러
   const handleRemoveFile = (indexToRemove: number) => {
     setSelectedFiles((currentFiles) =>
       currentFiles.filter((_, index) => index !== indexToRemove),
@@ -77,22 +80,28 @@ function SellPage() {
   // 선택된 파일 미리보기
   const renderFilePreviews = () => {
     return selectedFiles.map((file, index) => (
-      <div key={index} className="relative m-1">
+      <div
+        key={index}
+        className="relative m-1 h-20 w-20 shrink-0 md:h-24 md:w-24"
+      >
         <img
           src={URL.createObjectURL(file)}
           alt="preview"
           className="h-20 w-20 rounded object-cover md:h-24 md:w-24"
+          draggable={false}
         />
         <img
           src={deleteIcon}
           alt="delete"
-          onClick={() => handleRemoveFile(index)} // 삭제 핸들러 호출
+          onClick={() => handleRemoveFile(index)}
           className="absolute right-0 top-0 text-white hover:cursor-pointer"
+          draggable={false}
         />
       </div>
     ));
   };
 
+  // 서적 학년(1, 2, 3, 4, 기타) 선택 이벤트 핸들러
   const handleGradeClick = (grade: string) => {
     // 이미 선택된 학년을 클릭하면 선택 취소
     if (selectedGrade === grade) {
@@ -102,6 +111,7 @@ function SellPage() {
     }
   };
 
+  // 서적 분류(전공, 교양) 선택 이벤트 핸들러
   const handleSortClick = (sort: string) => {
     // 이미 선택된 서적 분류를 클릭하면 선택 취소
     if (selectedSort === sort) {
@@ -111,6 +121,7 @@ function SellPage() {
     }
   };
 
+  // 서적 상태(중고, 새 책) 선택 이벤트 핸들러
   const handleBookStateClick = (state: string) => {
     setSelectedBookState(state);
   };
@@ -122,42 +133,59 @@ function SellPage() {
 
   // 판매 등록 API 요청 함수
   const postBookSell = async () => {
-    try {
-      const formData = new FormData();
+    // 모든 칸을 입력했을 시에만 API 요청
+    if (
+      selectedFiles &&
+      bookTitle &&
+      publisher &&
+      selectedGrade &&
+      selectedSort &&
+      bookPrice &&
+      bookDescription &&
+      selectedBookState &&
+      openChatLink &&
+      isValidLink
+    ) {
+      try {
+        const formData = new FormData();
 
-      // 파일 데이터 추가
-      selectedFiles.forEach((file) => {
-        formData.append('images', file);
-      });
+        // 파일 데이터 추가
+        selectedFiles.forEach((file) => {
+          formData.append('images', file);
+        });
 
-      // 문자열 데이터 추가
-      formData.append('title', bookTitle);
-      formData.append('publisher', publisher);
-      formData.append('grade', selectedGrade);
-      formData.append('price', bookPrice);
-      formData.append('description', bookDescription);
-      formData.append('condition', selectedBookState);
-      formData.append('kakaoLink', openChatLink);
+        // 문자열 데이터 추가
+        formData.append('title', bookTitle);
+        formData.append('publisher', publisher);
+        formData.append('grade', selectedGrade);
+        formData.append('price', bookPrice);
+        formData.append('description', bookDescription);
+        formData.append('condition', selectedBookState);
+        formData.append('kakaoLink', openChatLink);
 
-      const response = await axios.post(
-        'http://localhost:8080/books',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
+        const response = await axios.post(
+          'http://localhost:8080/books',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
           },
-        },
-      );
-      console.log(response.data);
-    } catch (e) {
-      console.log(e);
+        );
+        console.log(response.data);
+        moveToMainPage();
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      alert('모든 칸을 입력해주세요!');
     }
   };
 
   return (
     <section className="mx-auto my-0 flex w-full flex-col items-start px-5 sm:w-[599px]">
       {/* 사진 등록 */}
-      <div className="mt-4 flex items-center px-5 pb-1.5">
+      <div className="mt-4 flex w-full items-center px-5 pb-1.5">
         <div>
           <input
             ref={fileInputRef}
@@ -178,13 +206,15 @@ function SellPage() {
                 src={cameraIcon}
                 alt="camera"
                 className="h-8 w-8 md:h-9 md:w-9"
+                draggable={false}
               />
               <p className="mt-1 text-xs text-gray-500 md:text-sm">사진 등록</p>
             </div>
           </button>
         </div>
+        {/* 선택한 사진 보여주기 */}
         {selectedFiles.length > 0 && (
-          <div className="mr-2 flex flex-wrap rounded">
+          <div className="mr-2 flex overflow-x-auto whitespace-nowrap rounded">
             {renderFilePreviews()}
           </div>
         )}
@@ -345,7 +375,7 @@ function SellPage() {
             </div>
           </section>
         </div>
-        {/* 책 등록 */}
+        {/* 책 등록 버튼 */}
         <div className="w-full px-5">
           <div className="my-8 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
             <button
@@ -353,7 +383,6 @@ function SellPage() {
               type="button"
               onClick={() => {
                 postBookSell();
-                moveToMainPage();
               }}
             >
               등록하기

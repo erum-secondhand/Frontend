@@ -182,21 +182,25 @@ function NavBar() {
             </div>
             {/* 판매하기 및 로그인 버튼 */}
             <div className="md hidden space-x-4 lg:flex">
-              <div className="flex cursor-pointer items-center space-x-1">
+              <div
+                className="flex cursor-pointer items-center space-x-1"
+                onClick={moveToSellPage}
+              >
                 <img
                   src={sellingIcon}
                   alt="판매"
                   className="w-6 hover:cursor-pointer"
-                  onClick={moveToSellPage}
                 />
                 <span className="font-Pretendard text-sm">판매하기</span>
               </div>
-              <div className="flex cursor-pointer items-center space-x-1">
+              <div
+                className="flex cursor-pointer items-center space-x-1"
+                onClick={moveToLoginPage}
+              >
                 <img
                   src={personIcon}
                   alt="로그인"
                   className="w-6 hover:cursor-pointer"
-                  onClick={moveToLoginPage}
                 />
                 <span className="font-Pretendard text-sm">로그인</span>
               </div>
