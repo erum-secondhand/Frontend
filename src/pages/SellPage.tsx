@@ -70,8 +70,15 @@ function SellPage() {
   // 사진파일 변경 이벤트 핸들러
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const filesArray = Array.from(event.target.files);
-      setSelectedFiles(filesArray); // 선택된 파일들을 상태에 저장
+      const newFilesArray = Array.from(event.target.files);
+      const totalFiles = selectedFiles.length + newFilesArray.length;
+
+      // 선택된 파일들의 총 개수가 10개 이하인지 확인
+      if (totalFiles <= 10) {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...newFilesArray]);
+      } else {
+        alert('최대 10개의 사진만 등록할 수 있습니다.');
+      }
     }
   };
 
@@ -213,7 +220,15 @@ function SellPage() {
                 className="h-8 w-8 md:h-9 md:w-9"
                 draggable={false}
               />
-              <p className="mt-1 text-xs text-gray-500 md:text-sm">사진 등록</p>
+              {selectedFiles.length > 0 ? (
+                <p className="mt-1 text-xs text-gray-500 md:text-sm">
+                  {selectedFiles.length} / 10
+                </p>
+              ) : (
+                <p className="mt-1 text-xs text-gray-500 md:text-sm">
+                  사진 등록
+                </p>
+              )}
             </div>
           </button>
         </div>
