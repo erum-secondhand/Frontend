@@ -5,9 +5,9 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
 import { useState, useRef, useEffect } from 'react';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
+import api from '../baseURL/baseURL';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
 import { userState } from '../userState';
@@ -192,15 +192,11 @@ function SellPage() {
         formData.append('condition', selectedBookState);
         formData.append('kakaoLink', openChatLink);
 
-        const response = await axios.post(
-          'http://localhost:8080/books',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+        const response = await api.post('/books', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
           },
-        );
+        });
         console.log(response.data);
         moveToMainPage();
       } catch (e) {

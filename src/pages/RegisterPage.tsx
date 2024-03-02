@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable react/no-array-index-key */
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../baseURL/baseURL';
 import { SignUp } from '../dataType';
 
 function RegisterPage() {
@@ -79,12 +79,9 @@ function RegisterPage() {
     if (isValidEmail) {
       try {
         alert('인증번호를 전송했습니다!');
-        const response = await axios.post<string>(
-          'http://localhost:8080/users/verify',
-          {
-            email,
-          },
-        );
+        const response = await api.post<string>('/users/verify', {
+          email,
+        });
         console.log(response.data);
         if (response.status === 200) {
           setIsVerificationSuccessful(true);
@@ -100,17 +97,14 @@ function RegisterPage() {
   // 회원가입 API 요청
   const signUp = async () => {
     try {
-      const response = await axios.post<SignUp>(
-        'http://localhost:8080/users/register',
-        {
-          email,
-          password,
-          name: userName,
-          studentId,
-          major: selectedMajor,
-          verificationCode,
-        },
-      );
+      const response = await api.post<SignUp>('/users/register', {
+        email,
+        password,
+        name: userName,
+        studentId,
+        major: selectedMajor,
+        verificationCode,
+      });
       console.log(response.data);
       navigate('/login');
     } catch (e) {

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
+import api from '../baseURL/baseURL';
 import { UserState, userState } from '../userState';
 
 const useCheckLoginStatus = () => {
@@ -8,12 +8,9 @@ const useCheckLoginStatus = () => {
 
   const checkLoginStatus = async () => {
     try {
-      const response = await axios.get<UserState>(
-        'http://localhost:8080/users/status',
-        {
-          withCredentials: true,
-        },
-      );
+      const response = await api.get<UserState>('/users/status', {
+        withCredentials: true,
+      });
       // 로그인 상태일 때 사용자 정보를 Recoil 상태에 저장
       console.log(response.data);
       setUser({

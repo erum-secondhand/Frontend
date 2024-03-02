@@ -7,8 +7,8 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
+import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FetchDetailPostCard } from '../dataType';
@@ -58,8 +58,8 @@ function DetailPage() {
   // 특정 서적 내용 조회 API 요청 함수
   const fetchDetailPostCard = async () => {
     try {
-      const response = await axios.get<FetchDetailPostCard>(
-        `http://localhost:8080/books/detail/${id}`,
+      const response = await api.get<FetchDetailPostCard>(
+        `/books/detail/${id}`,
       );
       console.log(response.data);
       setDetailPostCardData(response.data);

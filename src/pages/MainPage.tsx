@@ -1,10 +1,13 @@
+/* eslint-disable no-console */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
 import { useRecoilValue } from 'recoil';
+import api from '../baseURL/baseURL';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
@@ -41,9 +44,7 @@ function MainPage() {
   // 포스트카드 GET API 요청 함수
   const fetchPostCards = async () => {
     try {
-      const response = await axios.get<FetchPostCards[]>(
-        'http://localhost:8080/books',
-      );
+      const response = await api.get<FetchPostCards[]>('/books');
       console.log(response.data);
       setPostCardData(response.data);
     } catch (e) {

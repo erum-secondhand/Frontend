@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../baseURL/baseURL';
 import { SignIn } from '../dataType';
 
 function LoginPage() {
@@ -34,8 +34,8 @@ function LoginPage() {
   // 로그인 API 요청 함수
   const singIn = async () => {
     try {
-      const response = await axios.post<SignIn>(
-        'http://localhost:8080/users/login',
+      const response = await api.post<SignIn>(
+        '/users/login',
         {
           email,
           password,

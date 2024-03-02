@@ -6,7 +6,7 @@
 import { useState, KeyboardEvent, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSetRecoilState, useRecoilState } from 'recoil';
-import axios from 'axios';
+import api from '../baseURL/baseURL';
 import logo from '../assets/logo.svg';
 import sellingIcon from '../assets/sellingIcon.svg';
 import personIcon from '../assets/personIcon.svg';
@@ -75,14 +75,11 @@ function NavBar() {
       setSearchClicked(false); // 검색창 숨기기
 
       try {
-        const response = await axios.get<FetchPostCards[]>(
-          'http://localhost:8080/books/search',
-          {
-            params: {
-              title: searchText,
-            },
+        const response = await api.get<FetchPostCards[]>('/books/search', {
+          params: {
+            title: searchText,
           },
-        );
+        });
         console.log(response.data);
 
         // 검색 결과가 있는 경우에만 보여주기
@@ -100,8 +97,8 @@ function NavBar() {
   // 로그아웃 API 요청
   const logOutRequest = async () => {
     try {
-      const response = await axios.post<string>(
-        'http://localhost:8080/users/logout',
+      const response = await api.post<string>(
+        '/users/logout',
         {},
         { withCredentials: true },
       );
