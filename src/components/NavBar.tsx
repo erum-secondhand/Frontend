@@ -5,7 +5,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { useState, KeyboardEvent, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
+import { useSetRecoilState, useRecoilState } from 'recoil';
 import axios from 'axios';
 import logo from '../assets/logo.svg';
 import sellingIcon from '../assets/sellingIcon.svg';
@@ -16,6 +16,7 @@ import cancelIcon from '../assets/cancel.svg';
 import '../theme.css';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
+import { userState } from '../userState';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ function NavBar() {
   const [searchText, setSearchText] = useState<string>('');
 
   const setSearchPostCards = useSetRecoilState(searchPostCardsState);
+  const [userStateValue, setUserStateValue] = useRecoilState(userState);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
 
@@ -95,6 +97,27 @@ function NavBar() {
     }
   };
 
+  // 로그아웃 API 요청
+  const logOutRequest = async () => {
+    try {
+      const response = await axios.post<string>(
+        'http://localhost:8080/users/logout',
+        {},
+        { withCredentials: true },
+      );
+      console.log(response.data);
+      if (response.status === 200) {
+        setUserStateValue({
+          isLoggedIn: false,
+          userData: { id: 0, message: '' },
+        });
+      }
+      moveToMainPageWithRefresh();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <>
       {/* 검색 바 */}
@@ -154,7 +177,7 @@ function NavBar() {
                 </div>
               </div>
             </div>
-            {/* 검색 및 햄버거 아이콘 (1024px 이상일 경우 숨겨짐) */}
+            {/* 검색 및 햄버거 아이콘 (1024px 미만) */}
             <div className="flex lg:hidden">
               <img
                 src={searchIcon}
@@ -182,7 +205,7 @@ function NavBar() {
                 />
               )}
             </div>
-            {/* 판매하기 및 로그인 버튼 */}
+            {/* 판매하기 및 로그인 버튼 (1024px 이상) */}
             <div className="md hidden space-x-4 lg:flex">
               <div
                 className="flex cursor-pointer items-center space-x-1"
@@ -197,14 +220,22 @@ function NavBar() {
               </div>
               <div
                 className="flex cursor-pointer items-center space-x-1"
-                onClick={moveToLoginPage}
+                onClick={() => {
+                  if (userStateValue.isLoggedIn) {
+                    logOutRequest();
+                  } else {
+                    moveToLoginPage();
+                  }
+                }}
               >
                 <img
                   src={personIcon}
-                  alt="로그인"
+                  alt="로그인 / 로그아웃"
                   className="w-6 hover:cursor-pointer"
                 />
-                <span className="font-Pretendard text-sm">로그인</span>
+                <span className="font-Pretendard text-sm">
+                  {userStateValue.isLoggedIn ? '로그아웃' : '로그인'}
+                </span>
               </div>
             </div>
           </div>
@@ -235,11 +266,16 @@ function NavBar() {
                 className={`${currentPath === '/login' ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
                 onClick={() => {
-                  setMenuOpen(false);
-                  moveToLoginPage();
+                  if (userStateValue.isLoggedIn) {
+                    setMenuOpen(false);
+                    logOutRequest();
+                  } else {
+                    setMenuOpen(false);
+                    moveToLoginPage();
+                  }
                 }}
               >
-                로그인
+                {userStateValue.isLoggedIn ? '로그아웃' : '로그인'}
               </button>
             </div>
           )}

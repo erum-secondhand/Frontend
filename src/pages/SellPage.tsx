@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -5,10 +6,15 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
+import { userState } from '../userState';
 
 function SellPage() {
+  const navigate = useNavigate();
+
   const [bookTitle, setBookTitle] = useState<string>('');
   const [publisher, setPublisher] = useState<string>('');
   const [bookPrice, setBookPrice] = useState<string>('');
@@ -20,6 +26,8 @@ function SellPage() {
   const [openChatLink, setOpenChatLink] = useState<string>('');
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
+  const userStateValue = useRecoilValue(userState);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -144,7 +152,12 @@ function SellPage() {
 
   // 마운트 시 페이지 가장 상단에서 시작
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (userStateValue.isLoggedIn) {
+      window.scrollTo(0, 0);
+    } else {
+      alert('로그인을 해주세요.');
+      navigate('/login');
+    }
   }, []);
 
   // 판매 등록 API 요청 함수

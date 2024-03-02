@@ -1,21 +1,27 @@
+/* eslint-disable no-alert */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import axios from 'axios';
+import { useRecoilValue } from 'recoil';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FetchDetailPostCard } from '../dataType';
+import { userState } from '../userState';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const [detailPostcardData, setDetailPostCardData] =
     useState<FetchDetailPostCard>();
+
+  const userStateValue = useRecoilValue(userState);
 
   // 시간 차이를 계산하여 문자열로 반환하는 함수
   const calculateTimePassed = (date: Date) => {
@@ -69,7 +75,13 @@ function DetailPage() {
 
   // 마운트 시 서적 내용 조회 API 요청
   useEffect(() => {
-    fetchDetailPostCard();
+    if (userStateValue.isLoggedIn) {
+      fetchDetailPostCard();
+      window.scrollTo(0, 0);
+    } else {
+      alert('로그인을 해주세요.');
+      navigate('/login');
+    }
   }, [id]);
 
   return (
