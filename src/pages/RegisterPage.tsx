@@ -1,13 +1,16 @@
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable react/no-array-index-key */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
 import { SignUp } from '../dataType';
 
 function RegisterPage() {
   const navigate = useNavigate();
+
+  const [timer, setTimer] = useState<number>(299);
+  const [timerActive, setTimerActive] = useState<boolean>(false);
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -78,20 +81,46 @@ function RegisterPage() {
   const emailAuthentication = async () => {
     if (isValidEmail) {
       try {
-        alert('인증번호를 전송했습니다!');
         const response = await api.post<string>('/users/verify', {
           email,
         });
         console.log(response.data);
         if (response.status === 200) {
+          alert('인증번호를 전송했습니다!');
           setIsVerificationSuccessful(true);
+          setTimerActive(true);
+          setTimer(299);
         }
       } catch (e) {
         console.log(e);
+        alert('올바른 이메일을 입력해주세요.');
       }
-    } else {
-      alert('올바른 이메일을 입력해주세요.');
     }
+  };
+
+  // 타이머 카운트다운
+  useEffect(() => {
+    let interval: number | null = null; // interval 타입을 number | null로 지정
+    if (timerActive && timer > 0) {
+      interval = window.setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setTimerActive(false);
+      alert('인증 시간이 만료되었습니다.');
+    }
+    return () => {
+      if (interval !== null) {
+        clearInterval(interval);
+      }
+    };
+  }, [timer, timerActive]);
+
+  // 타이머를 MM:SS 형식으로 표시
+  const formatTime = () => {
+    const minutes = Math.floor(timer / 60);
+    const seconds = timer % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   // 회원가입 API 요청
@@ -205,14 +234,20 @@ function RegisterPage() {
                 {/* 인증코드 입력 */}
                 {isVerificationSuccessful && (
                   <div className="mt-3 block">
-                    <input
-                      type="text"
-                      placeholder="인증코드"
-                      className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValideVericationCode ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
-                      aria-invalid={!isValideVericationCode}
-                      value={verificationCode}
-                      onChange={handleVerificationCode}
-                    />
+                    <div className="relative flex items-center justify-between">
+                      <input
+                        type="text"
+                        placeholder="인증코드"
+                        className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValideVericationCode ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
+                        aria-invalid={!isValideVericationCode}
+                        value={verificationCode}
+                        onChange={handleVerificationCode}
+                        maxLength={6}
+                      />
+                      <span className="absolute right-0 my-auto mr-5 text-sm font-medium text-gray-400">
+                        {formatTime()}
+                      </span>
+                    </div>
                     {!isValideVericationCode && (
                       <p className="my-2 text-xs text-rose-500">
                         6자리 인증코드를 입력해주세요.

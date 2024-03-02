@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -32,20 +33,27 @@ function LoginPage() {
   };
 
   // 로그인 API 요청 함수
-  const singIn = async () => {
-    try {
-      const response = await api.post<SignIn>(
-        '/users/login',
-        {
-          email,
-          password,
-        },
-        { withCredentials: true },
-      );
-      console.log(response.data);
-      window.location.href = '/';
-    } catch (e) {
-      console.log(e);
+  const signInRequest = async () => {
+    if (email && password) {
+      try {
+        const response = await api.post<SignIn>(
+          '/users/login',
+          {
+            email,
+            password,
+          },
+          { withCredentials: true },
+        );
+        console.log(response.data);
+        window.location.href = '/';
+      } catch (e) {
+        console.log(e);
+        alert('이메일 또는 비밀번호를 잘못 입력했습니다.');
+      }
+    } else if (email.length <= 0) {
+      alert('이메일을 입력하십시오.');
+    } else if (password.length <= 0) {
+      alert('비밀번호를 입력하십시오.');
     }
   };
 
@@ -93,6 +101,11 @@ function LoginPage() {
                     aria-invalid={!isValidPassword}
                     value={password}
                     onChange={handlePasswordChange}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        signInRequest();
+                      }
+                    }}
                   />
                   {!isValidPassword && (
                     <p className="my-2 text-xs text-rose-500">
@@ -120,7 +133,7 @@ function LoginPage() {
                   <button
                     className="h-12 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold md:h-14 md:text-lg"
                     type="button"
-                    onClick={singIn}
+                    onClick={signInRequest}
                   >
                     로그인
                   </button>

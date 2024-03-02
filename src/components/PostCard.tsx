@@ -24,6 +24,7 @@ function PostCard(props: FetchPostCards) {
             alt="bookImage"
             className="absolute inset-y-0 box-border h-full w-full overflow-clip rounded-xl border-[1px] border-transparent object-cover"
             style={{ overflowClipMargin: 'content-box' }}
+            draggable={false}
           />
         </div>
         {/* 책 설명 */}

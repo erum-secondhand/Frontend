@@ -114,14 +114,14 @@ function MainPage() {
             )}
           </div>
         </div> */}
-        {/* 필터 아코디언 */}
-        <motion.div
+        {/* 필터 아코디언 -> 필요 시 사용 */}
+        {/* <motion.div
           className="fixed left-0 top-0 z-[1000] flex h-full w-[370px] transform flex-col bg-white"
           initial={{ x: -500 }}
           animate={{ x: isFilterOpen ? 0 : -500 }}
           transition={{ duration: 0.3 }}
         >
-          {/* 닫기 버튼 */}
+          닫기 버튼
           <div className="flex h-14 w-full flex-shrink-0 items-center justify-between border-b border-gray-100 py-0.5 pe-5 md:pe-7">
             <button
               type="button"
@@ -136,10 +136,10 @@ function MainPage() {
               필터
             </h2>
           </div>
-          {/* 필터 콘텐츠 */}
+          필터 콘텐츠
           <div className="flex-grow overflow-y-auto">
             <div className="flex flex-col px-5 py-7 md:px-7">
-              {/* 필터 텍스트 및 초기화 버튼 */}
+              필터 텍스트 및 초기화 버튼
               <div className="flex w-full items-center justify-between">
                 <span className="font-Pretendard text-xl font-semibold text-gray-950">
                   필터
@@ -152,7 +152,7 @@ function MainPage() {
                   초기화
                 </button>
               </div>
-              {/* 가격 선택 */}
+              가격 선택
               <div className="mt-5 flex flex-col items-start">
                 <p className="font-Pretendard font-semibold md:text-lg">가격</p>
                 <ul className="mt-4 flex flex-col space-y-4">
@@ -234,7 +234,7 @@ function MainPage() {
                   </li>
                 </ul>
               </div>
-              {/* 학년 선택 */}
+              학년 선택
               <div className="mt-5 flex flex-col items-start">
                 <p className="font-Pretendard font-semibold md:text-lg">학년</p>
                 <ul className="mt-4 flex flex-col space-y-4">
@@ -335,7 +335,7 @@ function MainPage() {
                   </li>
                 </ul>
               </div>
-              {/* 서적 분류 (전공 / 교양) */}
+              서적 분류 (전공 / 교양)
               <div className="mt-5 flex flex-col items-start">
                 <p className="font-Pretendard font-semibold md:text-lg">
                   서적 분류
@@ -381,7 +381,7 @@ function MainPage() {
                   </li>
                 </ul>
               </div>
-              {/* 서적 상태 (중고 / 새 책) */}
+              서적 상태 (중고 / 새 책)
               <div className="mt-5 flex flex-col items-start">
                 <p className="font-Pretendard font-semibold md:text-lg">
                   서적 상태
@@ -429,23 +429,23 @@ function MainPage() {
               </div>
             </div>
           </div>
-          {/* 검색 버튼 */}
+          검색 버튼
           <button
             type="button"
             className="absolute bottom-0 flex h-14 w-full flex-shrink-0 items-center justify-center bg-gray-950 px-7 text-sm leading-4 text-white md:text-base"
           >
             검색
           </button>
-        </motion.div>
-        {/* 필터 열렸을 때 배경 어둡게 */}
-        {isFilterOpen ? (
+        </motion.div> */}
+        {/* 필터 열렸을 때 배경 어둡게 -> 필요 시 사용 */}
+        {/* {isFilterOpen ? (
           <div
             className="fixed inset-0 z-[900] bg-[rgba(23,23,26,0.5)]"
             onClick={() => {
               setIsFilterOpen(false);
             }}
           />
-        ) : null}
+        ) : null} */}
         {/* 포스트 카드 */}
         {searchPostCards.length > 0 ? (
           <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
