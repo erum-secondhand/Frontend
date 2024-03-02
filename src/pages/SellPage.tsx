@@ -44,7 +44,12 @@ function SellPage() {
 
   // 판매가격 입력 이벤트 핸들러
   const bookPriceHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setBookPrice(e.target.value);
+    const { value } = e.target;
+
+    // 6자리에서 자르기
+    if (value.length <= 6) {
+      setBookPrice(value);
+    }
   };
 
   // 서적 상태 설명 입력 이벤트 핸들러
@@ -295,11 +300,15 @@ function SellPage() {
                 <span className="text-sm md:text-base">₩</span>
                 <input
                   name="bookPrice"
-                  type="text"
+                  type="number"
                   inputMode="numeric"
-                  className="ml-1 h-11 w-2/3 bg-white text-sm focus:outline-none disabled:opacity-100 md:ml-2 md:h-12 md:text-base "
+                  pattern="\d*"
+                  className="ml-1 h-11 w-2/3 bg-white text-sm focus:outline-none disabled:opacity-100 md:ml-2 md:h-12 md:text-base"
                   placeholder="판매가격"
+                  value={bookPrice}
                   onChange={bookPriceHandleChange}
+                  min="0"
+                  max="999999"
                 />
               </label>
             </div>
