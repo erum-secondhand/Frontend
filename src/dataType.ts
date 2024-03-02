@@ -18,9 +18,7 @@ export type FetchPostCards = {
 };
 
 export type FetchDetailPostCard = {
-  createdAt: Date;
-  updateAt: Date;
-  deletedAt: Date;
+  createAt: Date;
   id: number;
   imageUrls: string[];
   title: string;

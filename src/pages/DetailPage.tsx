@@ -2,17 +2,49 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
+import axios from 'axios';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import axios from 'axios';
 import { FetchDetailPostCard } from '../dataType';
 import React from 'react';
 
 function DetailPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   const [detailPostcardData, setDetailPostCardData] =
     useState<FetchDetailPostCard>();
+
+  // 시간 차이를 계산하여 문자열로 반환하는 함수
+  const calculateTimePassed = (date: Date) => {
+    const now = new Date();
+    const postedDate = new Date(date);
+    const differenceInSeconds = Math.round(
+      (now.getTime() - postedDate.getTime()) / 1000,
+    );
+
+    const minute = 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const month = day * 30;
+    const year = day * 365;
+
+    if (differenceInSeconds < minute) {
+      return `${differenceInSeconds}초 전`;
+    }
+    if (differenceInSeconds < hour) {
+      return `${Math.floor(differenceInSeconds / minute)}분 전`;
+    }
+    if (differenceInSeconds < day) {
+      return `${Math.floor(differenceInSeconds / hour)}시간 전`;
+    }
+    if (differenceInSeconds < month) {
+      return `${Math.floor(differenceInSeconds / day)}일 전`;
+    }
+    if (differenceInSeconds < year) {
+      return `${Math.floor(differenceInSeconds / month)}개월 전`;
+    }
+    return `${Math.floor(differenceInSeconds / year)}년 전`;
+  };
 
   // 특정 서적 내용 조회 API 요청 함수
   const fetchDetailPostCard = async () => {
@@ -32,6 +64,7 @@ function DetailPage() {
     window.open(`${detailPostcardData?.kakaoLink}`, '_blank');
   };
 
+  // 마운트 시 서적 내용 조회 API 요청
   useEffect(() => {
     fetchDetailPostCard();
   }, [id]);
@@ -78,9 +111,11 @@ function DetailPage() {
             <span className="mx-[2px] font-Pretendard text-sm text-gray-500 lg:text-base">
               ∙
             </span>
-            <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
-              12시간 전
-            </span>
+            {detailPostcardData?.createAt && (
+              <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
+                {calculateTimePassed(new Date(detailPostcardData.createAt))}
+              </span>
+            )}
           </div>
           <span className="font-Pretendard text-2xl font-bold lg:text-3xl">
             {parseInt(detailPostcardData?.price ?? '0', 10).toLocaleString()}원
