@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 /* eslint-disable react/no-array-index-key */
@@ -127,19 +128,34 @@ function RegisterPage() {
 
   // 회원가입 API 요청
   const signUp = async () => {
-    try {
-      const response = await api.post<SignUp>('/users/register', {
-        email,
-        password,
-        name: userName,
-        studentId,
-        major: selectedMajor,
-        verificationCode,
-      });
-      console.log(response.data);
-      navigate('/login');
-    } catch (e) {
-      console.log(e);
+    if (
+      email &&
+      password &&
+      userName &&
+      studentId &&
+      selectedMajor &&
+      verificationCode
+    ) {
+      try {
+        const response = await api.post<SignUp>('/users/register', {
+          email,
+          password,
+          name: userName,
+          studentId,
+          major: selectedMajor,
+          verificationCode,
+        });
+        console.log(response.data);
+        if (response.status === 201) {
+          navigate('/login');
+        }
+      } catch (e: any) {
+        console.log(e);
+        if (e.response && e.response.status === 409) {
+          alert('이미 존재하는 계정입니다.');
+        }
+      }
+    } else {
       alert('모든 칸을 입력해주세요.');
     }
   };
