@@ -63,6 +63,11 @@ function NavBar() {
     navigate('/login');
   };
 
+  // 마이 페이지로 이동 ('/mypage/:id')
+  const moveToMyPage = () => {
+    navigate(`/mypage/${userStateValue.user.id}`);
+  };
+
   // 검색창 입력 이벤트 핸들러
   const searchBoxHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
@@ -106,7 +111,14 @@ function NavBar() {
       if (response.status === 200) {
         setUserStateValue({
           isLoggedIn: false,
-          userData: { id: 0, message: '' },
+          user: {
+            email: '',
+            id: 0,
+            major: '',
+            name: '',
+            password: '',
+            studentId: '',
+          },
         });
       }
       moveToMainPageWithRefresh();
@@ -238,9 +250,11 @@ function NavBar() {
           </div>
           {/* 메뉴 드롭다운 */}
           {menuOpen && (
-            <div className="absolute flex h-36 w-screen flex-col bg-white md:h-48">
+            <div
+              className={`${userStateValue.isLoggedIn ? 'h-48 md:h-60' : 'h-24 md:h-36'} absolute flex w-screen flex-col bg-white`}
+            >
               <button
-                className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
+                className={`${currentPath === '/' || currentPath.startsWith('/detail') ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
                 onClick={() => {
                   setMenuOpen(false);
@@ -249,18 +263,32 @@ function NavBar() {
               >
                 중고서적 거래
               </button>
+              {userStateValue.isLoggedIn && (
+                <button
+                  className={`${currentPath === '/sell' ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    moveToSellPage();
+                  }}
+                >
+                  판매하기
+                </button>
+              )}
+              {userStateValue.isLoggedIn && (
+                <button
+                  className={`${currentPath === `/mypage/` ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    moveToMyPage();
+                  }}
+                >
+                  마이페이지
+                </button>
+              )}
               <button
-                className={`${currentPath === '/sell' ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
-                type="button"
-                onClick={() => {
-                  setMenuOpen(false);
-                  moveToSellPage();
-                }}
-              >
-                판매하기
-              </button>
-              <button
-                className={`${currentPath === '/login' ? 'text-orange-500' : 'text-gray-950'} h-1/2 w-full py-3 active:bg-gray-200 md:text-lg`}
+                className={`${currentPath === '/login' ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
                 type="button"
                 onClick={() => {
                   if (userStateValue.isLoggedIn) {

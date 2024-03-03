@@ -152,6 +152,7 @@ function DetailPage() {
         </div>
         {/* 책 상태 */}
         <div className="flex w-full flex-col items-start py-6 sm:w-[599px] md:py-10 lg:w-[677px]">
+          {/* 제품상태 */}
           <div className="flex flex-col">
             <div className="mr-5 flex min-w-[95px] items-center">
               <img src={checkIcon} alt="dot" />
@@ -163,6 +164,7 @@ function DetailPage() {
               {detailPostcardData?.condition}
             </span>
           </div>
+          {/* 판매여부 */}
           <div className="mt-2 flex flex-col">
             <div className="mr-5 flex min-w-[95px] items-center">
               <img src={checkIcon} alt="dot" />
@@ -172,6 +174,18 @@ function DetailPage() {
             </div>
             <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
               {detailPostcardData?.grade}
+            </span>
+          </div>
+          {/* 학년 */}
+          <div className="mt-2 flex flex-col">
+            <div className="mr-5 flex min-w-[95px] items-center">
+              <img src={checkIcon} alt="dot" />
+              <span className="ml-[6px] text-sm text-[#5a616b] md:text-base">
+                상태
+              </span>
+            </div>
+            <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
+              {detailPostcardData?.salesStatus}
             </span>
           </div>
         </div>

@@ -15,11 +15,21 @@ const useCheckLoginStatus = () => {
       console.log(response.data);
       setUser({
         isLoggedIn: response.data.isLoggedIn,
-        userData: response.data.userData,
+        user: response.data.user,
       });
     } catch (error) {
       // 로그인 상태가 아닐 때 Recoil 상태를 기본값으로 초기화
-      setUser({ isLoggedIn: false, userData: { id: 0, message: '' } });
+      setUser({
+        isLoggedIn: false,
+        user: {
+          email: '',
+          id: 0,
+          major: '',
+          name: '',
+          password: '',
+          studentId: '',
+        },
+      });
     }
   };
 

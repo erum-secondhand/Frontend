@@ -30,7 +30,9 @@ function RegisterPage() {
 
   // 이름 입력 이벤트 핸들러
   const handleUserNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(e.target.value);
+    const { value } = e.target;
+
+    setUserName(value);
   };
 
   // 학번 유효 검사 및 입력 이벤트 핸들러
@@ -86,10 +88,10 @@ function RegisterPage() {
         });
         console.log(response.data);
         if (response.status === 200) {
-          alert('인증번호를 전송했습니다!');
           setIsVerificationSuccessful(true);
           setTimerActive(true);
           setTimer(299);
+          alert('인증번호를 전송했습니다!');
         }
       } catch (e) {
         console.log(e);

@@ -1,5 +1,6 @@
 export type PostBookSell = {
-  images: File[];
+  id: number;
+  images: string[];
   title: string;
   publisher: string;
   grade: string;
@@ -7,6 +8,10 @@ export type PostBookSell = {
   description: string;
   condition: string;
   kakaoLink: string;
+  salesStatus: string;
+  createAt: string;
+  deleteAt: string | null;
+  updateAt: string;
 };
 
 export type FetchPostCards = {
@@ -15,10 +20,10 @@ export type FetchPostCards = {
   title: string;
   publisher: string;
   price: string;
+  salesStatus: string;
 };
 
 export type FetchDetailPostCard = {
-  createAt: Date;
   id: number;
   imageUrls: string[];
   title: string;
@@ -28,21 +33,33 @@ export type FetchDetailPostCard = {
   description: string;
   condition: string;
   kakaoLink: string;
+  salesStatus: string;
+  createAt: string;
+  deleteAt: string | null;
+  updateAt: string;
 };
 
 export type SignUp = {
+  id: number;
   email: string;
   password: string;
   name: string;
   studentId: string;
   major: string;
-  createAt: Date;
-  updateAt: Date;
-  deleteAt: Date;
-  id: number;
+  createAt: string;
+  deleteAt: string | null;
+  updateAt: string;
 };
 
 export type SignIn = {
   id: number;
   message: string;
+};
+
+export type FetchUserPostCards = {
+  id: number;
+  imageUrls: string[];
+  title: string;
+  publisher: string;
+  price: string;
 };

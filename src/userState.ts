@@ -1,13 +1,29 @@
 /* eslint-disable import/prefer-default-export */
 import { atom } from 'recoil';
-import { SignIn } from './dataType';
 
 export type UserState = {
   isLoggedIn: boolean;
-  userData: SignIn;
+  user: {
+    email: string;
+    id: number;
+    major: string;
+    name: string;
+    password: string;
+    studentId: string;
+  };
 };
 
 export const userState = atom<UserState>({
   key: 'userState',
-  default: { isLoggedIn: false, userData: { id: 0, message: '' } },
+  default: {
+    isLoggedIn: false,
+    user: {
+      email: '',
+      id: 0,
+      major: '',
+      name: '',
+      password: '',
+      studentId: '',
+    },
+  },
 });

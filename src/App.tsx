@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import useCheckLoginStatus from './services/authService';
+// import MyPage from './pages/MyPage';
 
 function App() {
   const checkLoginStatus = useCheckLoginStatus();
@@ -26,6 +27,7 @@ function App() {
         <Route path="/sell" element={<SellPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+        {/* <Route path="/mypage/:id" element={<MyPage />} /> */}
       </Routes>
     </BrowserRouter>
   );
