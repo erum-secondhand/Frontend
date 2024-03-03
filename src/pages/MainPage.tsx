@@ -456,6 +456,7 @@ function MainPage() {
                 title={post.title}
                 publisher={post.publisher}
                 price={post.price}
+                salesStatus={post.salesStatus}
               />
             ))}
           </div>
@@ -469,6 +470,7 @@ function MainPage() {
                 title={post.title}
                 publisher={post.publisher}
                 price={post.price}
+                salesStatus={post.salesStatus}
               />
             ))}
           </div>
