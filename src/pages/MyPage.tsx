@@ -14,8 +14,14 @@ function MyPage() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [userPostCardData, setUserPostCardData] =
-    useState<FetchUserPostCards>();
+  const [userPostCardData, setUserPostCardData] = useState<FetchUserPostCards>({
+    onSaleBooks: {
+      books: [],
+    },
+    soldOutBooks: {
+      books: [],
+    },
+  });
 
   const userStateValue = useRecoilValue(userState);
   const isLoggedIn = useCheckLoginStatus();
@@ -70,17 +76,21 @@ function MyPage() {
         </span>
         {/* 판매중인 포스트카드 */}
         <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
-          {userPostCardData?.onSalebooks.books.map((post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              imageUrls={post.imageUrls}
-              title={post.title}
-              publisher={post.publisher}
-              price={post.price}
-              salesStatus={post.salesStatus}
-            />
-          ))}
+          {userPostCardData.onSaleBooks.books.length > 0 ? (
+            userPostCardData.onSaleBooks.books.map((post) => (
+              <PostCard
+                key={post.id}
+                id={post.id}
+                imageUrls={post.imageUrls}
+                title={post.title}
+                publisher={post.publisher}
+                price={post.price}
+                salesStatus={post.salesStatus}
+              />
+            ))
+          ) : (
+            <span>없음</span>
+          )}
         </div>
       </div>
       {/* 판매완료 서적 */}
@@ -90,17 +100,21 @@ function MyPage() {
         </span>
         {/* 판매완료 포스트카드 */}
         <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
-          {userPostCardData?.soldOutBooks.books.map((post) => (
-            <PostCard
-              key={post.id}
-              id={post.id}
-              imageUrls={post.imageUrls}
-              title={post.title}
-              publisher={post.publisher}
-              price={post.price}
-              salesStatus={post.salesStatus}
-            />
-          ))}
+          {userPostCardData.soldOutBooks.books.length > 0 ? (
+            userPostCardData.soldOutBooks.books.map((post) => (
+              <PostCard
+                key={post.id}
+                id={post.id}
+                imageUrls={post.imageUrls}
+                title={post.title}
+                publisher={post.publisher}
+                price={post.price}
+                salesStatus={post.salesStatus}
+              />
+            ))
+          ) : (
+            <span>없음</span>
+          )}
         </div>
       </div>
     </section>

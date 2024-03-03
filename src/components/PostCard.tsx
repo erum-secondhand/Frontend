@@ -8,7 +8,7 @@ function PostCard(props: FetchPostCards) {
   const navigate = useNavigate();
 
   const moveToDetailPage = () => {
-    navigate(`detail/${props.id}`);
+    navigate(`/detail/${props.id}`);
   };
 
   return (

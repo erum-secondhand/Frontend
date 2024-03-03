@@ -194,6 +194,7 @@ function SellPage() {
         formData.append('grade', selectedGrade);
         formData.append('price', bookPrice);
         formData.append('description', trimmedDescription);
+        formData.append('type', selectedSort);
         formData.append('condition', selectedBookState);
         formData.append('kakaoLink', openChatLink);
 

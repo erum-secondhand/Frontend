@@ -6,6 +6,7 @@ export type PostBookSell = {
   grade: string;
   price: string;
   description: string;
+  type: string;
   condition: string;
   kakaoLink: string;
   salesStatus: string;
@@ -23,7 +24,7 @@ export type FetchPostCards = {
   salesStatus: string;
 };
 
-export type FetchDetailPostCard = {
+export type BookDto = {
   id: number;
   imageUrls: string[];
   title: string;
@@ -31,12 +32,18 @@ export type FetchDetailPostCard = {
   grade: string;
   price: string;
   description: string;
+  type: string;
   condition: string;
   kakaoLink: string;
   salesStatus: string;
   createAt: string;
   deleteAt: string | null;
   updateAt: string;
+};
+
+export type FetchDetailPostCard = {
+  bookDto: BookDto;
+  userId: number;
 };
 
 export type SignUp = {
@@ -64,6 +71,7 @@ type UserPostCards = {
   grade: string;
   price: string;
   description: string;
+  type: string;
   condition: string;
   kakaoLink: string;
   salesStatus: string;
@@ -73,7 +81,7 @@ type UserPostCards = {
 };
 
 export type FetchUserPostCards = {
-  onSalebooks: {
+  onSaleBooks: {
     books: UserPostCards[];
   };
   soldOutBooks: {

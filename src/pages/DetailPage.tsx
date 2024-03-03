@@ -9,12 +9,14 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
+import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { FetchDetailPostCard } from '../dataType';
+import { BookDto, FetchDetailPostCard } from '../dataType';
 import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
+import { userState } from '../userState';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +27,7 @@ function DetailPage() {
   const [detailPostcardData, setDetailPostCardData] =
     useState<FetchDetailPostCard>();
 
+  const userStateValue = useRecoilValue(userState);
   const isLoggedIn = useCheckLoginStatus();
 
   // 시간 차이를 계산하여 문자열로 반환하는 함수
@@ -77,21 +80,26 @@ function DetailPage() {
     // if (userStateValue.user.id === detailPostcardData.userId)  -> 추가해야함
     if (detailPostcardData) {
       try {
-        const response = await api.put<FetchDetailPostCard>(
-          `books/${detailPostcardData?.id}`,
+        const response = await api.put<BookDto>(
+          `books/${detailPostcardData?.bookDto.id}`,
           {
             salesStatus: selectedSalesStatus,
           },
+          { withCredentials: true },
         );
         console.log(response.data);
         setDetailPostCardData((prevData) => {
           if (!prevData) return undefined; // prevData가 undefined인 경우 처리
           return {
             ...prevData,
-            salesStatus: selectedSalesStatus, // salesStatus만 업데이트
+            bookDto: {
+              ...prevData.bookDto,
+              salesStatus: selectedSalesStatus, // salesStatus만 업데이트
+            },
           };
         });
         setIsUpdateDropDownOpen(false);
+        window.location.reload();
       } catch (e) {
         console.log(e);
       }
@@ -100,7 +108,7 @@ function DetailPage() {
 
   // 카카오톡 오픈채팅 링크 이동
   const moveToOpenChatLink = () => {
-    window.open(`${detailPostcardData?.kakaoLink}`, '_blank');
+    window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
   };
 
   // 마운트 시 서적 내용 조회 API 요청
@@ -121,7 +129,7 @@ function DetailPage() {
     <div className="box-content flex w-full flex-col items-center sm:mt-2 md:mt-4">
       {/* 책 이미지 */}
       <div className="w-full overflow-hidden sm:w-[599px] sm:rounded-md lg:w-[677px] lg:rounded-lg">
-        {detailPostcardData?.imageUrls ? (
+        {detailPostcardData?.bookDto.imageUrls ? (
           <Carousel
             axis="horizontal"
             emulateTouch
@@ -132,7 +140,7 @@ function DetailPage() {
             showThumbs={false}
             useKeyboardArrows
           >
-            {detailPostcardData?.imageUrls.map((imageUrl, index) => (
+            {detailPostcardData?.bookDto.imageUrls.map((imageUrl, index) => (
               <div key={index} className="aspect-square w-full">
                 <img
                   src={imageUrl}
@@ -152,74 +160,85 @@ function DetailPage() {
         <div className="flex w-full items-center sm:w-[599px] lg:w-[677px]">
           <div className="w-full space-y-1 md:space-y-2 lg:space-y-3">
             <span className="font-Pretendard text-xl font-semibold lg:text-2xl">
-              {detailPostcardData?.title}
+              {detailPostcardData?.bookDto.title}
             </span>
             <div className="flex items-center">
               <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
-                {detailPostcardData?.publisher}
+                {detailPostcardData?.bookDto.publisher}
               </span>
               <span className="mx-[2px] font-Pretendard text-sm text-gray-500 lg:text-base">
                 ∙
               </span>
-              {detailPostcardData?.createAt && (
+              {detailPostcardData?.bookDto.createAt && (
                 <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
-                  {calculateTimePassed(new Date(detailPostcardData.createAt))}
+                  {calculateTimePassed(
+                    new Date(detailPostcardData.bookDto.createAt),
+                  )}
                 </span>
               )}
             </div>
             <span className="font-Pretendard text-2xl font-bold lg:text-3xl">
-              {parseInt(detailPostcardData?.price ?? '0', 10).toLocaleString()}
+              {parseInt(
+                detailPostcardData?.bookDto.price ?? '0',
+                10,
+              ).toLocaleString()}
               원
             </span>
           </div>
           {/* 거래 상태 드롭다운 */}
-          <div className="relative">
-            <button
-              className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
-              type="button"
-              onClick={() => setIsUpdateDropDownOpen(!isUpdateDropDownOpen)}
-            >
-              <span className="">{detailPostcardData?.salesStatus}</span>
-              <img
-                src={upDownArrow}
-                alt="upDownArrow"
-                className=""
-                draggable={false}
-              />
-            </button>
-            {isUpdateDropDownOpen && (
-              <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:text-base">
-                <li
-                  className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
-                  onClick={() => {
-                    updateDetailPostCard('판매중');
-                  }}
-                >
-                  <span className="block truncate font-normal">판매중</span>
-                </li>
-                <li
-                  className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
-                  onClick={() => {
-                    updateDetailPostCard('판매완료');
-                  }}
-                >
-                  <span className="block truncate font-normal">판매완료</span>
-                </li>
-              </ul>
-            )}
-          </div>
+          {userStateValue.user.id === detailPostcardData?.userId && (
+            <div className="relative">
+              <button
+                className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
+                type="button"
+                onClick={() => setIsUpdateDropDownOpen(!isUpdateDropDownOpen)}
+              >
+                <span className="">
+                  {detailPostcardData?.bookDto.salesStatus}
+                </span>
+                <img
+                  src={upDownArrow}
+                  alt="upDownArrow"
+                  className=""
+                  draggable={false}
+                />
+              </button>
+              {isUpdateDropDownOpen && (
+                <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:text-base">
+                  <li
+                    className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
+                    onClick={() => {
+                      updateDetailPostCard('판매중');
+                    }}
+                  >
+                    <span className="block truncate font-normal">판매중</span>
+                  </li>
+                  <li
+                    className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
+                    onClick={() => {
+                      updateDetailPostCard('판매완료');
+                    }}
+                  >
+                    <span className="block truncate font-normal">판매완료</span>
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
         </div>
         {/* 책 설명 */}
         <div className="mt-4 flex w-full flex-col items-start sm:w-[599px] md:mt-6 lg:mt-8 lg:w-[677px]">
           <span className="font-Pretendard text-base leading-6 tracking-normal lg:text-lg">
-            {detailPostcardData?.description.split('\n').map((line, index) => (
-              <React.Fragment key={index}>
-                {index > 0 && <br />}
-                <span className="font-Pretendard text-base leading-7 tracking-normal lg:text-lg lg:leading-8">
-                  {line}
-                </span>
-              </React.Fragment>
-            ))}
+            {detailPostcardData?.bookDto.description
+              .split('\n')
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {index > 0 && <br />}
+                  <span className="font-Pretendard text-base leading-7 tracking-normal lg:text-lg lg:leading-8">
+                    {line}
+                  </span>
+                </React.Fragment>
+              ))}
           </span>
         </div>
         {/* 책 상태 */}
@@ -233,7 +252,7 @@ function DetailPage() {
               </span>
             </div>
             <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
-              {detailPostcardData?.condition}
+              {detailPostcardData?.bookDto.condition}
             </span>
           </div>
           {/* 판매여부 */}
@@ -245,7 +264,7 @@ function DetailPage() {
               </span>
             </div>
             <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
-              {detailPostcardData?.grade}
+              {detailPostcardData?.bookDto.grade}
             </span>
           </div>
           {/* 학년 */}
@@ -257,7 +276,7 @@ function DetailPage() {
               </span>
             </div>
             <span className="block pl-6 pt-1 text-sm font-medium tracking-[0.2px] text-[#141313] md:text-base">
-              {detailPostcardData?.salesStatus}
+              {detailPostcardData?.bookDto.salesStatus}
             </span>
           </div>
         </div>
