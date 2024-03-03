@@ -115,8 +115,8 @@ function DetailPage() {
   useEffect(() => {
     // isLoggedIn이 null이 아닐 때만 로직 실행
     if (isLoggedIn !== null) {
+      fetchDetailPostCard();
       if (isLoggedIn) {
-        fetchDetailPostCard();
         window.scrollTo(0, 0);
       } else {
         alert('로그인을 해주세요.');
@@ -186,45 +186,50 @@ function DetailPage() {
             </span>
           </div>
           {/* 거래 상태 드롭다운 */}
-          {userStateValue.user.id === detailPostcardData?.userId && (
-            <div className="relative">
-              <button
-                className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
-                type="button"
-                onClick={() => setIsUpdateDropDownOpen(!isUpdateDropDownOpen)}
-              >
-                <span className="">
-                  {detailPostcardData?.bookDto.salesStatus}
-                </span>
-                <img
-                  src={upDownArrow}
-                  alt="upDownArrow"
-                  className=""
-                  draggable={false}
-                />
-              </button>
-              {isUpdateDropDownOpen && (
-                <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:text-base">
-                  <li
-                    className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
-                    onClick={() => {
-                      updateDetailPostCard('판매중');
-                    }}
-                  >
-                    <span className="block truncate font-normal">판매중</span>
-                  </li>
-                  <li
-                    className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
-                    onClick={() => {
-                      updateDetailPostCard('판매완료');
-                    }}
-                  >
-                    <span className="block truncate font-normal">판매완료</span>
-                  </li>
-                </ul>
-              )}
-            </div>
-          )}
+          {userStateValue &&
+            userStateValue.user &&
+            detailPostcardData &&
+            userStateValue.user.id === detailPostcardData?.userId && (
+              <div className="relative">
+                <button
+                  className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
+                  type="button"
+                  onClick={() => setIsUpdateDropDownOpen(!isUpdateDropDownOpen)}
+                >
+                  <span className="">
+                    {detailPostcardData?.bookDto.salesStatus}
+                  </span>
+                  <img
+                    src={upDownArrow}
+                    alt="upDownArrow"
+                    className=""
+                    draggable={false}
+                  />
+                </button>
+                {isUpdateDropDownOpen && (
+                  <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:text-base">
+                    <li
+                      className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
+                      onClick={() => {
+                        updateDetailPostCard('판매중');
+                      }}
+                    >
+                      <span className="block truncate font-normal">판매중</span>
+                    </li>
+                    <li
+                      className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
+                      onClick={() => {
+                        updateDetailPostCard('판매완료');
+                      }}
+                    >
+                      <span className="block truncate font-normal">
+                        판매완료
+                      </span>
+                    </li>
+                  </ul>
+                )}
+              </div>
+            )}
         </div>
         {/* 책 설명 */}
         <div className="mt-4 flex w-full flex-col items-start sm:w-[599px] md:mt-6 lg:mt-8 lg:w-[677px]">

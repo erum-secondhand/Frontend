@@ -140,6 +140,7 @@ function RegisterPage() {
       navigate('/login');
     } catch (e) {
       console.log(e);
+      alert('모든 칸을 입력해주세요.');
     }
   };
 
