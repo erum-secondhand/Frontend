@@ -56,10 +56,27 @@ export type SignIn = {
   message: string;
 };
 
-export type FetchUserPostCards = {
+type UserPostCards = {
   id: number;
   imageUrls: string[];
   title: string;
   publisher: string;
+  grade: string;
   price: string;
+  description: string;
+  condition: string;
+  kakaoLink: string;
+  salesStatus: string;
+  createAt: string;
+  updateAt: string;
+  deleteAt: string | null;
+};
+
+export type FetchUserPostCards = {
+  onSalebooks: {
+    books: UserPostCards[];
+  };
+  soldOutBooks: {
+    books: UserPostCards[];
+  };
 };
