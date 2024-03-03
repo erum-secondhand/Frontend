@@ -13,6 +13,7 @@ import personIcon from '../assets/personIcon.svg';
 import searchIcon from '../assets/search.svg';
 import hamburgerIcon from '../assets/hamburger.svg';
 import cancelIcon from '../assets/cancel.svg';
+import myPageIcon from '../assets/myPageIcon.svg';
 import '../theme.css';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
@@ -224,7 +225,9 @@ function NavBar() {
                   alt="판매"
                   className="w-6 hover:cursor-pointer"
                 />
-                <span className="font-Pretendard text-sm">판매하기</span>
+                <span className="text-nowrap font-Pretendard text-sm">
+                  판매하기
+                </span>
               </div>
               <div
                 className="flex cursor-pointer items-center space-x-1"
@@ -241,10 +244,25 @@ function NavBar() {
                   alt="로그인 / 로그아웃"
                   className="w-6 hover:cursor-pointer"
                 />
-                <span className="font-Pretendard text-sm">
+                <span className="text-nowrap font-Pretendard text-sm">
                   {userStateValue.isLoggedIn ? '로그아웃' : '로그인'}
                 </span>
               </div>
+              {userStateValue.isLoggedIn && (
+                <div
+                  className="flex cursor-pointer items-center space-x-1"
+                  onClick={moveToMyPage}
+                >
+                  <img
+                    src={myPageIcon}
+                    alt="마이"
+                    className="w-6 hover:cursor-pointer"
+                  />
+                  <span className="text-nowrap font-Pretendard text-sm">
+                    마이
+                  </span>
+                </div>
+              )}
             </div>
           </div>
           {/* 메뉴 드롭다운 */}
