@@ -5,36 +5,35 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
-import leftArrowIcon from '../assets/leftArrow.svg';
 import banner from '../assets/banner.png';
 
 function MainPage() {
-  const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
+  // 필터 필요시 사용
+  // const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   // 정렬 필요시 사용
   // const [isSortOpen, setIsSortOpen] = useState<boolean>(false);
 
-  const [price, setPrice] = useState<string>('');
-  const [grade, setGrade] = useState<string>('');
-  const [bookType, setBookType] = useState<string>('');
-  const [bookCondition, setBookCondition] = useState<string>('');
+  // const [price, setPrice] = useState<string>('');
+  // const [grade, setGrade] = useState<string>('');
+  // const [bookType, setBookType] = useState<string>('');
+  // const [bookCondition, setBookCondition] = useState<string>('');
 
   const [postCardData, setPostCardData] = useState<FetchPostCards[]>([]);
 
   const searchPostCards = useRecoilValue(searchPostCardsState);
 
   // 모든 상태를 초기화하는 함수
-  const resetFilters = () => {
-    setPrice('');
-    setGrade('');
-    setBookType('');
-    setBookCondition('');
-  };
+  // const resetFilters = () => {
+  //   setPrice('');
+  //   setGrade('');
+  //   setBookType('');
+  //   setBookCondition('');
+  // };
 
   // // 필터 아코디언 토글 -> 필요시 사용
   // const toggleAccordion = () => {
