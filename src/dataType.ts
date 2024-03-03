@@ -49,7 +49,6 @@ export type FetchDetailPostCard = {
 export type SignUp = {
   id: number;
   email: string;
-  password: string;
   name: string;
   studentId: string;
   major: string;

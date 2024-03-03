@@ -116,7 +116,6 @@ function NavBar() {
             id: 0,
             major: '',
             name: '',
-            password: '',
             studentId: '',
           },
         });

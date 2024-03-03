@@ -8,7 +8,6 @@ export type UserState = {
     id: number;
     major: string;
     name: string;
-    password: string;
     studentId: string;
   };
 };
@@ -22,7 +21,6 @@ export const userState = atom<UserState>({
       id: 0,
       major: '',
       name: '',
-      password: '',
       studentId: '',
     },
   },
