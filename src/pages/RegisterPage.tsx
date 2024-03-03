@@ -83,7 +83,7 @@ function RegisterPage() {
   const emailAuthentication = async () => {
     if (isValidEmail) {
       try {
-        const response = await api.post<string>('/users/verify', {
+        const response = await api.post<string>('users/verify', {
           email,
         });
         console.log(response.data);
