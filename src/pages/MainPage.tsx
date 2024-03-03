@@ -11,8 +11,10 @@ import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
 import banner from '../assets/banner.png';
+import useCheckLoginStatus from '../services/authService';
 
 function MainPage() {
+  useCheckLoginStatus();
   // 필터 필요시 사용
   // const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   // 정렬 필요시 사용

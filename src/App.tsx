@@ -1,5 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import DetailPage from './pages/DetailPage';
 import NavBar from './components/NavBar';
@@ -8,18 +7,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
-import useCheckLoginStatus from './services/authService';
-// import MyPage from './pages/MyPage';
+import MyPage from './pages/MyPage';
 
 function App() {
-  const checkLoginStatus = useCheckLoginStatus();
-
-  useEffect(() => {
-    checkLoginStatus();
-  }, [checkLoginStatus]);
-
   return (
-    <BrowserRouter>
+    <>
       <NavBar />
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -27,9 +19,9 @@ function App() {
         <Route path="/sell" element={<SellPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="/mypage/:id" element={<MyPage />} /> */}
+        <Route path="/mypage/:id" element={<MyPage />} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

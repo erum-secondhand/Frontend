@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable no-alert */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-console */
@@ -7,21 +9,23 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
-import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FetchDetailPostCard } from '../dataType';
-import { userState } from '../userState';
+import upDownArrow from '../assets/upDownArrow.svg';
+import useCheckLoginStatus from '../services/authService';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
+  const [isUpdateDropDownOpen, setIsUpdateDropDownOpen] =
+    useState<boolean>(false);
   const [detailPostcardData, setDetailPostCardData] =
     useState<FetchDetailPostCard>();
 
-  const userStateValue = useRecoilValue(userState);
+  const isLoggedIn = useCheckLoginStatus();
 
   // 시간 차이를 계산하여 문자열로 반환하는 함수
   const calculateTimePassed = (date: Date) => {
@@ -68,6 +72,32 @@ function DetailPage() {
     }
   };
 
+  // 특정 서적 수정 API
+  const updateDetailPostCard = async (selectedSalesStatus: string) => {
+    // if (userStateValue.user.id === detailPostcardData.userId)  -> 추가해야함
+    if (detailPostcardData) {
+      try {
+        const response = await api.put<FetchDetailPostCard>(
+          `books/${detailPostcardData?.id}`,
+          {
+            salesStatus: selectedSalesStatus,
+          },
+        );
+        console.log(response.data);
+        setDetailPostCardData((prevData) => {
+          if (!prevData) return undefined; // prevData가 undefined인 경우 처리
+          return {
+            ...prevData,
+            salesStatus: selectedSalesStatus, // salesStatus만 업데이트
+          };
+        });
+        setIsUpdateDropDownOpen(false);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   // 카카오톡 오픈채팅 링크 이동
   const moveToOpenChatLink = () => {
     window.open(`${detailPostcardData?.kakaoLink}`, '_blank');
@@ -75,14 +105,17 @@ function DetailPage() {
 
   // 마운트 시 서적 내용 조회 API 요청
   useEffect(() => {
-    if (userStateValue.isLoggedIn) {
-      fetchDetailPostCard();
-      window.scrollTo(0, 0);
-    } else {
-      alert('로그인을 해주세요.');
-      navigate('/login');
+    // isLoggedIn이 null이 아닐 때만 로직 실행
+    if (isLoggedIn !== null) {
+      if (isLoggedIn) {
+        fetchDetailPostCard();
+        window.scrollTo(0, 0);
+      } else {
+        alert('로그인을 해주세요.');
+        navigate('/login');
+      }
     }
-  }, [id]);
+  }, [id, isLoggedIn]);
 
   return (
     <div className="box-content flex w-full flex-col items-center sm:mt-2 md:mt-4">
@@ -116,26 +149,65 @@ function DetailPage() {
       </div>
       <section className="mt-3 flex w-full flex-col items-center px-3 md:mt-4">
         {/* 책 정보 */}
-        <div className="flex w-full flex-col items-start space-y-1 sm:w-[599px] md:space-y-2 lg:w-[677px] lg:space-y-3">
-          <span className="font-Pretendard text-xl font-semibold lg:text-2xl">
-            {detailPostcardData?.title}
-          </span>
-          <div className="flex items-center">
-            <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
-              {detailPostcardData?.publisher}
+        <div className="flex w-full items-center sm:w-[599px] lg:w-[677px]">
+          <div className="w-full space-y-1 md:space-y-2 lg:space-y-3">
+            <span className="font-Pretendard text-xl font-semibold lg:text-2xl">
+              {detailPostcardData?.title}
             </span>
-            <span className="mx-[2px] font-Pretendard text-sm text-gray-500 lg:text-base">
-              ∙
-            </span>
-            {detailPostcardData?.createAt && (
+            <div className="flex items-center">
               <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
-                {calculateTimePassed(new Date(detailPostcardData.createAt))}
+                {detailPostcardData?.publisher}
               </span>
+              <span className="mx-[2px] font-Pretendard text-sm text-gray-500 lg:text-base">
+                ∙
+              </span>
+              {detailPostcardData?.createAt && (
+                <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
+                  {calculateTimePassed(new Date(detailPostcardData.createAt))}
+                </span>
+              )}
+            </div>
+            <span className="font-Pretendard text-2xl font-bold lg:text-3xl">
+              {parseInt(detailPostcardData?.price ?? '0', 10).toLocaleString()}
+              원
+            </span>
+          </div>
+          {/* 거래 상태 드롭다운 */}
+          <div className="relative">
+            <button
+              className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
+              type="button"
+              onClick={() => setIsUpdateDropDownOpen(!isUpdateDropDownOpen)}
+            >
+              <span className="">{detailPostcardData?.salesStatus}</span>
+              <img
+                src={upDownArrow}
+                alt="upDownArrow"
+                className=""
+                draggable={false}
+              />
+            </button>
+            {isUpdateDropDownOpen && (
+              <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none lg:text-base">
+                <li
+                  className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
+                  onClick={() => {
+                    updateDetailPostCard('판매중');
+                  }}
+                >
+                  <span className="block truncate font-normal">판매중</span>
+                </li>
+                <li
+                  className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
+                  onClick={() => {
+                    updateDetailPostCard('판매완료');
+                  }}
+                >
+                  <span className="block truncate font-normal">판매완료</span>
+                </li>
+              </ul>
             )}
           </div>
-          <span className="font-Pretendard text-2xl font-bold lg:text-3xl">
-            {parseInt(detailPostcardData?.price ?? '0', 10).toLocaleString()}원
-          </span>
         </div>
         {/* 책 설명 */}
         <div className="mt-4 flex w-full flex-col items-start sm:w-[599px] md:mt-6 lg:mt-8 lg:w-[677px]">

@@ -5,12 +5,11 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable react/no-array-index-key */
 import { useState, useRef, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
-import { userState } from '../userState';
+import useCheckLoginStatus from '../services/authService';
 
 function SellPage() {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ function SellPage() {
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
-  const userStateValue = useRecoilValue(userState);
+  const isLoggedIn = useCheckLoginStatus();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -152,13 +151,16 @@ function SellPage() {
 
   // 마운트 시 페이지 가장 상단에서 시작
   useEffect(() => {
-    if (userStateValue.isLoggedIn) {
-      window.scrollTo(0, 0);
-    } else {
-      alert('로그인을 해주세요.');
-      navigate('/login');
+    // isLoggedIn이 null이 아닐 때만 로직 실행
+    if (isLoggedIn !== null) {
+      if (isLoggedIn) {
+        window.scrollTo(0, 0);
+      } else {
+        alert('로그인을 해주세요.');
+        navigate('/login');
+      }
     }
-  }, []);
+  }, [isLoggedIn]);
 
   // 판매 등록 API 요청 함수
   const postBookSell = async () => {
