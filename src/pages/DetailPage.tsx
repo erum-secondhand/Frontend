@@ -33,36 +33,36 @@ function DetailPage() {
   const isLoggedIn = useCheckLoginStatus();
 
   // 시간 차이를 계산하여 문자열로 반환하는 함수
-  const calculateTimePassed = (date: Date) => {
-    const now = new Date();
-    const postedDate = new Date(date);
-    const differenceInSeconds = Math.round(
-      (now.getTime() - postedDate.getTime()) / 1000,
-    );
+  // const calculateTimePassed = (date: Date) => {
+  //   const now = new Date();
+  //   const postedDate = new Date(date);
+  //   const differenceInSeconds = Math.round(
+  //     (now.getTime() - postedDate.getTime()) / 1000,
+  //   );
 
-    const minute = 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-    const month = day * 30;
-    const year = day * 365;
+  //   const minute = 60;
+  //   const hour = minute * 60;
+  //   const day = hour * 24;
+  //   const month = day * 30;
+  //   const year = day * 365;
 
-    if (differenceInSeconds < minute) {
-      return `${differenceInSeconds}초 전`;
-    }
-    if (differenceInSeconds < hour) {
-      return `${Math.floor(differenceInSeconds / minute)}분 전`;
-    }
-    if (differenceInSeconds < day) {
-      return `${Math.floor(differenceInSeconds / hour)}시간 전`;
-    }
-    if (differenceInSeconds < month) {
-      return `${Math.floor(differenceInSeconds / day)}일 전`;
-    }
-    if (differenceInSeconds < year) {
-      return `${Math.floor(differenceInSeconds / month)}개월 전`;
-    }
-    return `${Math.floor(differenceInSeconds / year)}년 전`;
-  };
+  //   if (differenceInSeconds < minute) {
+  //     return `${differenceInSeconds}초 전`;
+  //   }
+  //   if (differenceInSeconds < hour) {
+  //     return `${Math.floor(differenceInSeconds / minute)}분 전`;
+  //   }
+  //   if (differenceInSeconds < day) {
+  //     return `${Math.floor(differenceInSeconds / hour)}시간 전`;
+  //   }
+  //   if (differenceInSeconds < month) {
+  //     return `${Math.floor(differenceInSeconds / day)}일 전`;
+  //   }
+  //   if (differenceInSeconds < year) {
+  //     return `${Math.floor(differenceInSeconds / month)}개월 전`;
+  //   }
+  //   return `${Math.floor(differenceInSeconds / year)}년 전`;
+  // };
 
   // 특정 서적 내용 조회 API 요청 함수
   const fetchDetailPostCard = async () => {
