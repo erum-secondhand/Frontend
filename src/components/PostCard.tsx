@@ -15,7 +15,7 @@ function PostCard(props: FetchPostCards) {
 
   return (
     <article
-      className={`mb-8 w-[47%] overflow-hidden hover:cursor-pointer md:mb-14 md:w-56 ${currentPath.startsWith('/mypage') ? '' : '2xl:w-[270px]'}`}
+      className={`mb-8 w-[47%] overflow-hidden hover:cursor-pointer md:mx-[14.5px] md:mb-14 md:w-56 ${currentPath.startsWith('/mypage') ? '' : '2xl:mx-[20px] 2xl:w-[270px]'}`}
       onClick={moveToDetailPage}
     >
       <div className="select-none text-[#212529]">

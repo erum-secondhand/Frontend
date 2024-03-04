@@ -210,7 +210,7 @@ function SellPage() {
         console.log(e);
       }
     } else {
-      alert('모든 칸을 입력해주세요!');
+      alert('모든 칸을 정확히 입력해주세요!');
     }
   };
 

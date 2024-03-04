@@ -78,7 +78,7 @@ function MainPage() {
       <div className="flex w-full flex-col px-5">
         {/* 포스트 카드 */}
         {searchPostCards.length > 0 ? (
-          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px] 2xl:w-[1200px]">
+          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[759px] md:justify-start 2xl:w-[1240px]">
             {searchPostCards.map((post) => (
               <PostCard
                 key={post.id}
@@ -92,7 +92,7 @@ function MainPage() {
             ))}
           </div>
         ) : (
-          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px] 2xl:w-[1200px]">
+          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[759px] md:justify-start 2xl:w-[1240px]">
             {postCardData.map((post) => (
               <PostCard
                 key={post.id}

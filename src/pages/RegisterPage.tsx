@@ -86,6 +86,9 @@ function RegisterPage() {
   const emailAuthentication = async () => {
     if (isValidEmail && email.length > 0) {
       try {
+        alert('인증번호를 전송했습니다!');
+        setTimerActive(true);
+        setTimer(299);
         setEmailVerificationClicked(true);
         const response = await api.post<string>('users/verify', {
           email,
@@ -93,9 +96,6 @@ function RegisterPage() {
         console.log(response.data);
         if (response.status === 200) {
           setIsVerificationSuccessful(true);
-          alert('인증번호를 전송했습니다!');
-          setTimerActive(true);
-          setTimer(299);
         }
       } catch (e) {
         console.log(e);
