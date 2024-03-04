@@ -91,6 +91,7 @@ function NavBar() {
         // 검색 결과가 있는 경우에만 보여주기
         if (response.data.length !== 0) {
           setSearchPostCards(response.data);
+          navigate('/');
         } else {
           alert('검색 결과가 없습니다!');
         }
@@ -139,7 +140,7 @@ function NavBar() {
                   ref={searchInputRef}
                   id="search-box"
                   className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
-                  placeholder="책 제목을 검색해주세요."
+                  placeholder="책 제목을 검색해주세요"
                   aria-label="search-box"
                   autoComplete="off"
                   name="search"
@@ -176,7 +177,7 @@ function NavBar() {
                     ref={searchInputRef}
                     id="search-box"
                     className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
-                    placeholder="책 제목을 검색해주세요."
+                    placeholder="책 제목을 검색해주세요"
                     aria-label="search-box"
                     autoComplete="off"
                     name="search"
@@ -253,10 +254,10 @@ function NavBar() {
                 >
                   <img
                     src={myPageIcon}
-                    alt="마이"
+                    alt="MY"
                     className="w-6 hover:cursor-pointer"
                   />
-                  <span className="text-nowrap text-sm">마이</span>
+                  <span className="text-nowrap text-sm">MY</span>
                 </div>
               )}
             </div>

@@ -1,0 +1,6 @@
+.control-dots {
+  position: fixed !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  z-index: 2000 !important;
+}

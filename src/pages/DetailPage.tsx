@@ -155,8 +155,7 @@ function DetailPage() {
           <Carousel
             axis="horizontal"
             emulateTouch
-            infiniteLoop
-            showArrows={false}
+            showArrows
             showStatus={false}
             swipeable
             showThumbs={false}
@@ -188,7 +187,7 @@ function DetailPage() {
               <span className="text-sm text-gray-500 lg:text-base">
                 {detailPostcardData?.bookDto.publisher}
               </span>
-              <span className="mx-[2px] text-sm text-gray-500 lg:text-base">
+              {/* <span className="mx-[2px] text-sm text-gray-500 lg:text-base">
                 ∙
               </span>
               {detailPostcardData?.bookDto.createAt && (
@@ -197,7 +196,7 @@ function DetailPage() {
                     new Date(detailPostcardData.bookDto.createAt),
                   )}
                 </span>
-              )}
+              )} */}
             </div>
             <span className="my-1 text-2xl font-bold md:my-2 lg:text-3xl">
               {parseInt(

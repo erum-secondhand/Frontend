@@ -165,52 +165,55 @@ function SellPage() {
   // 판매 등록 API 요청 함수
   const postBookSell = async () => {
     // 모든 칸을 입력했을 시에만 API 요청
-    if (
-      selectedFiles &&
-      bookTitle &&
-      publisher &&
-      selectedGrade &&
-      selectedSort &&
-      bookPrice &&
-      bookDescription &&
-      selectedBookState &&
-      openChatLink &&
-      isValidLink
-    ) {
-      try {
-        // 마지막에 위치한 불필요한 개행 문자 제거
-        const trimmedDescription = bookDescription.replace(/[\r\n]+$/, '');
+    if (selectedFiles.length > 0) {
+      if (
+        bookTitle &&
+        publisher &&
+        selectedGrade &&
+        selectedSort &&
+        bookPrice &&
+        bookDescription &&
+        selectedBookState &&
+        openChatLink &&
+        isValidLink
+      ) {
+        try {
+          // 마지막에 위치한 불필요한 개행 문자 제거
+          const trimmedDescription = bookDescription.replace(/[\r\n]+$/, '');
 
-        const formData = new FormData();
+          const formData = new FormData();
 
-        // 파일 데이터 추가
-        selectedFiles.forEach((file) => {
-          formData.append('images', file);
-        });
+          // 파일 데이터 추가
+          selectedFiles.forEach((file) => {
+            formData.append('images', file);
+          });
 
-        // 문자열 데이터 추가
-        formData.append('title', bookTitle);
-        formData.append('publisher', publisher);
-        formData.append('grade', selectedGrade);
-        formData.append('price', bookPrice);
-        formData.append('description', trimmedDescription);
-        formData.append('type', selectedSort);
-        formData.append('condition', selectedBookState);
-        formData.append('kakaoLink', openChatLink);
+          // 문자열 데이터 추가
+          formData.append('title', bookTitle);
+          formData.append('publisher', publisher);
+          formData.append('grade', selectedGrade);
+          formData.append('price', bookPrice);
+          formData.append('description', trimmedDescription);
+          formData.append('type', selectedSort);
+          formData.append('condition', selectedBookState);
+          formData.append('kakaoLink', openChatLink);
 
-        const response = await api.post('/books', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          withCredentials: true,
-        });
-        console.log(response.data);
-        moveToMainPage();
-      } catch (e) {
-        console.log(e);
+          const response = await api.post('/books', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+          });
+          console.log(response.data);
+          moveToMainPage();
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        alert('모든 칸을 정확히 입력해주세요!');
       }
     } else {
-      alert('모든 칸을 정확히 입력해주세요!');
+      alert('사진 등록을 해주세요.');
     }
   };
 
