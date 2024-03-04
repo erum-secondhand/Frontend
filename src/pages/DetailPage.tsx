@@ -158,11 +158,11 @@ function DetailPage() {
       <section className="mt-3 flex w-full flex-col items-center px-3 md:mt-4">
         {/* 책 정보 */}
         <div className="flex w-full items-center sm:w-[599px] lg:w-[677px]">
-          <div className="w-full space-y-1 md:space-y-2 lg:space-y-3">
-            <span className="text-xl font-semibold lg:text-2xl">
+          <div className="w-full">
+            <span className="mb-1 text-xl font-semibold md:mb-2 lg:text-2xl">
               {detailPostcardData?.bookDto.title}
             </span>
-            <div className="flex items-center">
+            <div className="my-1 flex items-center md:my-2">
               <span className="text-sm text-gray-500 lg:text-base">
                 {detailPostcardData?.bookDto.publisher}
               </span>
@@ -177,7 +177,7 @@ function DetailPage() {
                 </span>
               )}
             </div>
-            <span className="text-2xl font-bold lg:text-3xl">
+            <span className="my-1 text-2xl font-bold md:my-2 lg:text-3xl">
               {parseInt(
                 detailPostcardData?.bookDto.price ?? '0',
                 10,
@@ -247,7 +247,7 @@ function DetailPage() {
           </span>
         </div>
         {/* 책 상태 */}
-        <div className="flex w-full flex-col items-start py-6 sm:w-[599px] md:py-10 lg:w-[677px]">
+        <div className="flex w-full flex-col items-start py-8 sm:w-[599px] md:py-12 lg:w-[677px]">
           {/* 제품상태 */}
           <div className="flex flex-col">
             <div className="mr-5 flex min-w-[95px] items-center">
@@ -261,7 +261,7 @@ function DetailPage() {
             </span>
           </div>
           {/* 판매여부 */}
-          <div className="mt-2 flex flex-col">
+          <div className="mt-3 flex flex-col lg:mt-4">
             <div className="mr-5 flex min-w-[95px] items-center">
               <img src={checkIcon} alt="dot" />
               <span className="ml-[6px] text-sm text-[#5a616b] md:text-base">
@@ -273,7 +273,7 @@ function DetailPage() {
             </span>
           </div>
           {/* 학년 */}
-          <div className="mt-2 flex flex-col">
+          <div className="mt-3 flex flex-col lg:mt-4">
             <div className="mr-5 flex min-w-[95px] items-center">
               <img src={checkIcon} alt="dot" />
               <span className="ml-[6px] text-sm text-[#5a616b] md:text-base">

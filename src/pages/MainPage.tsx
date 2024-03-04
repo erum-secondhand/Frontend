@@ -71,11 +71,41 @@ function MainPage() {
         />
       </div>
       <div className="flex w-full">
-        <span className="mx-auto my-8 text-2xl font-semibold sm:my-11 md:my-16 md:text-3xl">
+        <span className="mx-auto my-8 text-2xl font-semibold sm:my-11 sm:text-[26px] md:my-16 md:text-3xl md:font-bold lg:text-[32px]">
           중고거래 인기서적
         </span>
       </div>
       <div className="flex w-full flex-col px-5">
+        {/* 포스트 카드 */}
+        {searchPostCards.length > 0 ? (
+          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px] 2xl:w-[1200px]">
+            {searchPostCards.map((post) => (
+              <PostCard
+                key={post.id}
+                id={post.id}
+                imageUrls={post.imageUrls}
+                title={post.title}
+                publisher={post.publisher}
+                price={post.price}
+                salesStatus={post.salesStatus}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px] 2xl:w-[1200px]">
+            {postCardData.map((post) => (
+              <PostCard
+                key={post.id}
+                id={post.id}
+                imageUrls={post.imageUrls}
+                title={post.title}
+                publisher={post.publisher}
+                price={post.price}
+                salesStatus={post.salesStatus}
+              />
+            ))}
+          </div>
+        )}
         {/* 필터 및 정렬  -> 필요하면 사용 */}
         {/* <div className="mx-auto my-0 flex w-full items-center justify-between py-6 md:w-[730px]">
           필터 버튼
@@ -447,36 +477,6 @@ function MainPage() {
             }}
           />
         ) : null} */}
-        {/* 포스트 카드 */}
-        {searchPostCards.length > 0 ? (
-          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
-            {searchPostCards.map((post) => (
-              <PostCard
-                key={post.id}
-                id={post.id}
-                imageUrls={post.imageUrls}
-                title={post.title}
-                publisher={post.publisher}
-                price={post.price}
-                salesStatus={post.salesStatus}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[730px]">
-            {postCardData.map((post) => (
-              <PostCard
-                key={post.id}
-                id={post.id}
-                imageUrls={post.imageUrls}
-                title={post.title}
-                publisher={post.publisher}
-                price={post.price}
-                salesStatus={post.salesStatus}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </>
   );

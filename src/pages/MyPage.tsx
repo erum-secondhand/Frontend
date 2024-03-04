@@ -67,7 +67,7 @@ function MyPage() {
   }, [id, isLoggedIn]);
 
   return (
-    <section className="mx-auto mt-5 flex w-full flex-col items-start sm:w-[599px] md:w-[730px]">
+    <section className="mx-auto mt-5 flex w-full flex-col items-center sm:w-[599px] md:w-[730px]">
       <div className="mb-3 flex w-full items-center gap-12 rounded-lg border-2 border-solid border-gray-200 px-8 py-9 sm:px-10">
         <div className="flex flex-col items-start space-y-4 text-lg font-semibold md:text-xl">
           <span className="">이름</span>
@@ -83,8 +83,8 @@ function MyPage() {
         </div>
       </div>
       {/* 판매중인 서적 */}
-      <div className="flex w-full flex-col px-5">
-        <ul className="-me-3 mb-4 flex flex-nowrap justify-between border-b border-[#DADEE5] sm:mb-6 lg:mb-7">
+      <div className="flex w-full flex-col">
+        <ul className="mb-4 flex flex-nowrap justify-between border-b border-[#DADEE5] sm:mb-6 lg:mb-7">
           {['판매중', '판매완료'].map((status, index) => (
             <button
               key={index}
