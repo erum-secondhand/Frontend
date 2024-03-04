@@ -5,7 +5,7 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-duplicates */
 /* eslint-disable react/no-array-index-key */
-import React from 'react';
+import React, { useRef } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
@@ -21,6 +21,8 @@ import { userState } from '../userState';
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+
+  const dropDownRef = useRef<HTMLDivElement>(null);
 
   const [isUpdateDropDownOpen, setIsUpdateDropDownOpen] =
     useState<boolean>(false);
@@ -111,6 +113,26 @@ function DetailPage() {
     window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
   };
 
+  // 드롭다운 바깥 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target as Node)
+      ) {
+        // 드롭다운 바깥 클릭 시 드롭다운 닫기
+        setIsUpdateDropDownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      // 컴포넌트가 언마운트 될 때 리스너 제거
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [dropDownRef]);
+
   // 마운트 시 서적 내용 조회 API 요청
   useEffect(() => {
     // isLoggedIn이 null이 아닐 때만 로직 실행
@@ -190,7 +212,7 @@ function DetailPage() {
             userStateValue.user &&
             detailPostcardData &&
             userStateValue.user.id === detailPostcardData?.userId && (
-              <div className="relative">
+              <div className="relative" ref={dropDownRef}>
                 <button
                   className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
                   type="button"
