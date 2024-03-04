@@ -158,6 +158,10 @@ function RegisterPage() {
         console.log(e);
         if (e.response && e.response.status === 409) {
           alert('이미 존재하는 계정입니다.');
+        } else if (e.response && e.response.status === 400) {
+          alert('인증번호가 일치하지 않습니다.');
+        } else {
+          alert('에러 : 학생회에게 문의해주세요.');
         }
       }
     } else {
