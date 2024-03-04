@@ -32,10 +32,10 @@ function PostCard(props: FetchPostCards) {
           <h2 className="mb-[2px] overflow-hidden text-ellipsis whitespace-nowrap text-sm leading-5 tracking-tight text-[#212529] sm:mb-1 sm:text-base">
             {props.title}
           </h2>
-          <h3 className="overflow-hidden text-ellipsis whitespace-nowrap font-Pretendard text-[0.8rem] font-normal leading-5 tracking-tight text-[#212529] sm:mb-1 sm:text-sm">
+          <h3 className="overflow-hidden text-ellipsis whitespace-nowrap text-[0.8rem] font-normal leading-5 tracking-tight text-[#212529] sm:mb-1 sm:text-sm">
             {props.publisher}
           </h3>
-          <div className="mb-1 font-Pretendard text-sm font-bold leading-6 text-[#212529] hover:cursor-pointer sm:text-[15px]">
+          <div className="mb-1 text-sm font-bold leading-6 text-[#212529] hover:cursor-pointer sm:text-[15px]">
             {props.price.toLocaleString()}원
           </div>
         </div>

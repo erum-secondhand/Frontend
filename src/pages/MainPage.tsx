@@ -71,7 +71,7 @@ function MainPage() {
         />
       </div>
       <div className="flex w-full">
-        <span className="mx-auto my-7 font-Pretendard text-2xl font-semibold md:text-3xl">
+        <span className="mx-auto my-8 text-2xl font-semibold sm:my-11 md:my-16 md:text-3xl">
           중고거래 인기서적
         </span>
       </div>
@@ -85,7 +85,7 @@ function MainPage() {
             onClick={toggleAccordion}
           >
             <img src={filterIcon} alt="filter" />
-            <span className="ps-[0.625rem] font-Pretendard text-sm font-semibold">
+            <span className="ps-[0.625rem] text-sm font-semibold">
               필터
             </span>
           </button>
@@ -142,7 +142,7 @@ function MainPage() {
             <div className="flex flex-col px-5 py-7 md:px-7">
               필터 텍스트 및 초기화 버튼
               <div className="flex w-full items-center justify-between">
-                <span className="font-Pretendard text-xl font-semibold text-gray-950">
+                <span className="text-xl font-semibold text-gray-950">
                   필터
                 </span>
                 <button
@@ -155,7 +155,7 @@ function MainPage() {
               </div>
               가격 선택
               <div className="mt-5 flex flex-col items-start">
-                <p className="font-Pretendard font-semibold md:text-lg">가격</p>
+                <p className="font-semibold md:text-lg">가격</p>
                 <ul className="mt-4 flex flex-col space-y-4">
                   <li>
                     <div className="relative flex items-center justify-between">
@@ -237,7 +237,7 @@ function MainPage() {
               </div>
               학년 선택
               <div className="mt-5 flex flex-col items-start">
-                <p className="font-Pretendard font-semibold md:text-lg">학년</p>
+                <p className="font-semibold md:text-lg">학년</p>
                 <ul className="mt-4 flex flex-col space-y-4">
                   <li>
                     <div className="relative flex items-center justify-between">
@@ -338,7 +338,7 @@ function MainPage() {
               </div>
               서적 분류 (전공 / 교양)
               <div className="mt-5 flex flex-col items-start">
-                <p className="font-Pretendard font-semibold md:text-lg">
+                <p className="font-semibold md:text-lg">
                   서적 분류
                 </p>
                 <ul className="mt-4 flex flex-col space-y-4">
@@ -384,7 +384,7 @@ function MainPage() {
               </div>
               서적 상태 (중고 / 새 책)
               <div className="mt-5 flex flex-col items-start">
-                <p className="font-Pretendard font-semibold md:text-lg">
+                <p className="font-semibold md:text-lg">
                   서적 상태
                 </p>
                 <ul className="mt-4 flex flex-col space-y-4">

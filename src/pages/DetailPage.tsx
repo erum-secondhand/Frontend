@@ -159,25 +159,25 @@ function DetailPage() {
         {/* 책 정보 */}
         <div className="flex w-full items-center sm:w-[599px] lg:w-[677px]">
           <div className="w-full space-y-1 md:space-y-2 lg:space-y-3">
-            <span className="font-Pretendard text-xl font-semibold lg:text-2xl">
+            <span className="text-xl font-semibold lg:text-2xl">
               {detailPostcardData?.bookDto.title}
             </span>
             <div className="flex items-center">
-              <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
+              <span className="text-sm text-gray-500 lg:text-base">
                 {detailPostcardData?.bookDto.publisher}
               </span>
-              <span className="mx-[2px] font-Pretendard text-sm text-gray-500 lg:text-base">
+              <span className="mx-[2px] text-sm text-gray-500 lg:text-base">
                 ∙
               </span>
               {detailPostcardData?.bookDto.createAt && (
-                <span className="font-Pretendard text-sm text-gray-500 lg:text-base">
+                <span className="text-sm text-gray-500 lg:text-base">
                   {calculateTimePassed(
                     new Date(detailPostcardData.bookDto.createAt),
                   )}
                 </span>
               )}
             </div>
-            <span className="font-Pretendard text-2xl font-bold lg:text-3xl">
+            <span className="text-2xl font-bold lg:text-3xl">
               {parseInt(
                 detailPostcardData?.bookDto.price ?? '0',
                 10,
@@ -233,13 +233,13 @@ function DetailPage() {
         </div>
         {/* 책 설명 */}
         <div className="mt-4 flex w-full flex-col items-start sm:w-[599px] md:mt-6 lg:mt-8 lg:w-[677px]">
-          <span className="font-Pretendard text-base leading-6 tracking-normal lg:text-lg">
+          <span className="text-base leading-6 tracking-normal lg:text-lg">
             {detailPostcardData?.bookDto.description
               .split('\n')
               .map((line, index) => (
                 <React.Fragment key={index}>
                   {index > 0 && <br />}
-                  <span className="font-Pretendard text-base leading-7 tracking-normal lg:text-lg lg:leading-8">
+                  <span className="text-base leading-7 tracking-normal lg:text-lg lg:leading-8">
                     {line}
                   </span>
                 </React.Fragment>
@@ -288,7 +288,7 @@ function DetailPage() {
         {/* 채팅 버튼 */}
         <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
           <button
-            className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold sm:w-[599px] lg:w-[677px]"
+            className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
             type="button"
             onClick={moveToOpenChatLink}
           >

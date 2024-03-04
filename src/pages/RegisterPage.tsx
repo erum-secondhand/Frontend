@@ -14,6 +14,8 @@ function RegisterPage() {
   const [timerActive, setTimerActive] = useState<boolean>(false);
 
   const [email, setEmail] = useState<string>('');
+  const [emailVerificationClicked, setEmailVerificationClicked] =
+    useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [studentId, setStudentId] = useState<string>('');
@@ -82,22 +84,25 @@ function RegisterPage() {
 
   // 이메일 인증코드 API 요청
   const emailAuthentication = async () => {
-    if (isValidEmail) {
+    if (isValidEmail && email.length > 0) {
       try {
+        setEmailVerificationClicked(true);
         const response = await api.post<string>('users/verify', {
           email,
         });
         console.log(response.data);
         if (response.status === 200) {
           setIsVerificationSuccessful(true);
+          alert('인증번호를 전송했습니다!');
           setTimerActive(true);
           setTimer(299);
-          alert('인증번호를 전송했습니다!');
         }
       } catch (e) {
         console.log(e);
         alert('올바른 이메일을 입력해주세요.');
       }
+    } else {
+      alert('올바른 이메일을 입력해주세요.');
     }
   };
 
@@ -163,7 +168,7 @@ function RegisterPage() {
   return (
     <div className="mx-auto box-content flex min-h-[100vh] max-w-[1280px] flex-col items-center justify-center px-4 md:px-8 2xl:px-16">
       <div className="mx-auto my-auto mt-4 flex flex-col items-center justify-center space-y-5 max-[767px]:w-full">
-        <h1 className="font-Pretendard text-3xl font-semibold">회원가입</h1>
+        <h1 className="text-3xl font-semibold">회원가입</h1>
         <div className="relative mx-auto w-full overflow-hidden rounded-lg bg-white px-5 py-5 sm:w-[450px] sm:border sm:border-gray-300 sm:px-8">
           <div>
             <div className="flex min-h-[578px] flex-col space-y-4">
@@ -176,7 +181,7 @@ function RegisterPage() {
                   <input
                     type="text"
                     placeholder="이름을 입력해주세요."
-                    className="!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid border-[#DADEE5] bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:border-amber-600 focus:bg-white focus:shadow md:px-5 lg:text-sm"
+                    className="!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid border-[#DADEE5] bg-white px-[16px] py-[12px] text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:border-amber-600 focus:bg-white focus:shadow md:px-5 lg:text-sm"
                     value={userName}
                     onChange={handleUserNameChange}
                   />
@@ -191,7 +196,7 @@ function RegisterPage() {
                   <input
                     type="string"
                     placeholder="학번을 입력해주세요."
-                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValidStudentId ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
+                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValidStudentId ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
                     aria-invalid={!isValidStudentId}
                     value={studentId}
                     onChange={handleStudentIdChange}
@@ -232,7 +237,7 @@ function RegisterPage() {
                   <input
                     type="email"
                     placeholder="example@tukorea.ac.kr"
-                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValidEmail ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
+                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValidEmail ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
                     aria-invalid={!isValidEmail}
                     value={email}
                     onChange={handleEmailChange}
@@ -245,19 +250,21 @@ function RegisterPage() {
                 </div>
                 <button
                   type="button"
-                  className="mt-3 h-9 w-full rounded-md bg-gray-300 font-Pretendard text-sm font-semibold"
+                  className="mt-3 h-9 w-full rounded-md bg-gray-300 text-sm font-semibold"
                   onClick={emailAuthentication}
                 >
-                  {isVerificationSuccessful ? '인증번호 재발급' : '이메일 인증'}
+                  {emailVerificationClicked && isVerificationSuccessful
+                    ? '인증번호 재발급'
+                    : '이메일 인증'}
                 </button>
                 {/* 인증코드 입력 */}
-                {isVerificationSuccessful && (
+                {emailVerificationClicked && (
                   <div className="mt-3 block">
                     <div className="relative flex items-center justify-between">
                       <input
                         type="text"
                         placeholder="인증코드"
-                        className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValideVericationCode ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
+                        className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValideVericationCode ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
                         aria-invalid={!isValideVericationCode}
                         value={verificationCode}
                         onChange={handleVerificationCode}
@@ -284,7 +291,7 @@ function RegisterPage() {
                   <input
                     type="password"
                     placeholder="비밀번호를 입력해주세요."
-                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValidPassword ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] font-Pretendard text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
+                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${isValidPassword ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
                     aria-invalid={!isValidPassword}
                     value={password}
                     onChange={handlePasswordChange}
@@ -300,7 +307,7 @@ function RegisterPage() {
               <div className="w-full">
                 <div className="my-8 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
                   <button
-                    className="h-12 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold md:h-14 md:text-lg"
+                    className="h-12 w-full rounded-3xl border border-transparent bg-white font-semibold md:h-14 md:text-lg"
                     type="button"
                     onClick={() => {
                       signUp();

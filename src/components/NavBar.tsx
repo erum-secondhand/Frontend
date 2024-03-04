@@ -150,7 +150,7 @@ function NavBar() {
             </div>
             <button
               type="button"
-              className="appearance-none whitespace-nowrap border-0 bg-none p-0 font-Pretendard text-lg font-semibold leading-6 text-gray-950 md:text-xl"
+              className="appearance-none whitespace-nowrap border-0 bg-none p-0 text-lg font-semibold leading-6 text-gray-950 md:text-xl"
               onClick={() => {
                 setSearchClicked(false);
               }}
@@ -225,9 +225,7 @@ function NavBar() {
                   alt="판매"
                   className="w-6 hover:cursor-pointer"
                 />
-                <span className="text-nowrap font-Pretendard text-sm">
-                  판매하기
-                </span>
+                <span className="text-nowrap text-sm">판매하기</span>
               </div>
               <div
                 className="flex cursor-pointer items-center space-x-1"
@@ -244,7 +242,7 @@ function NavBar() {
                   alt="로그인 / 로그아웃"
                   className="w-6 hover:cursor-pointer"
                 />
-                <span className="text-nowrap font-Pretendard text-sm">
+                <span className="text-nowrap text-sm">
                   {userStateValue.isLoggedIn ? '로그아웃' : '로그인'}
                 </span>
               </div>
@@ -258,9 +256,7 @@ function NavBar() {
                     alt="마이"
                     className="w-6 hover:cursor-pointer"
                   />
-                  <span className="text-nowrap font-Pretendard text-sm">
-                    마이
-                  </span>
+                  <span className="text-nowrap text-sm">마이</span>
                 </div>
               )}
             </div>

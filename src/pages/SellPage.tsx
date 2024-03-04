@@ -269,7 +269,7 @@ function SellPage() {
               name="bookTitle"
               type="text"
               placeholder="서적 제목"
-              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
               autoComplete="off"
               spellCheck="false"
               aria-invalid="false"
@@ -283,7 +283,7 @@ function SellPage() {
               name="bookTitle"
               type="text"
               placeholder="출판사"
-              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+              className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
               autoComplete="off"
               spellCheck="false"
               aria-invalid="false"
@@ -292,9 +292,7 @@ function SellPage() {
           </div>
           {/* 학년 선택 */}
           <section>
-            <p className="mt-2 font-Pretendard font-semibold md:text-lg">
-              서적 학년 정보
-            </p>
+            <p className="mt-2 font-semibold md:text-lg">서적 학년 정보</p>
             <div className="mt-3 flex h-14 w-full overflow-hidden rounded-md border border-solid border-gray-300 text-[13px] font-medium">
               {['1학년', '2학년', '3학년', '4학년', '기타'].map(
                 (grade, index, array) => (
@@ -309,9 +307,7 @@ function SellPage() {
                 ),
               )}
             </div>
-            <p className="mt-6 font-Pretendard font-semibold md:text-lg">
-              서적 분류
-            </p>
+            <p className="mt-6 font-semibold md:text-lg">서적 분류</p>
             <div className="mt-3 flex h-14 w-full overflow-hidden rounded-md border border-solid border-gray-300 text-[13px] font-medium">
               {['전공', '교양'].map((sort, index, array) => (
                 <button
@@ -352,9 +348,7 @@ function SellPage() {
           <section className="flex flex-col space-y-5">
             <div className="relative">
               <div>
-                <p className="mt-6 font-Pretendard font-semibold md:text-lg">
-                  상태 설명
-                </p>
+                <p className="mt-6 font-semibold md:text-lg">상태 설명</p>
                 <textarea
                   name="bookDescription"
                   id="bookDescription"
@@ -377,19 +371,17 @@ function SellPage() {
             </div>
             {/* 책 상태 입력 */}
             <div className="mt-6 flex flex-col">
-              <p className="font-Pretendard font-semibold md:text-lg">
-                서적 상태
-              </p>
+              <p className="font-semibold md:text-lg">서적 상태</p>
               <div className="mt-3 flex gap-3">
                 <button
-                  className={`mb-2 h-10 w-20 rounded-md border border-solid font-Pretendard md:h-12 md:w-24 ${selectedBookState === '중고' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
+                  className={`mb-2 h-10 w-20 rounded-md border border-solid md:h-12 md:w-24 ${selectedBookState === '중고' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
                   type="button"
                   onClick={() => handleBookStateClick('중고')}
                 >
                   중고
                 </button>
                 <button
-                  className={`mb-2 h-10 w-20 rounded-md border border-solid font-Pretendard md:h-12 md:w-24 ${selectedBookState === '새 책' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
+                  className={`mb-2 h-10 w-20 rounded-md border border-solid md:h-12 md:w-24 ${selectedBookState === '새 책' ? 'border-gray-300 bg-gray-300 text-black' : 'border-black bg-white text-black'} font-semibold md:text-lg`}
                   type="button"
                   onClick={() => handleBookStateClick('새 책')}
                 >
@@ -404,7 +396,7 @@ function SellPage() {
                 name="bookTitle"
                 type="text"
                 placeholder="오픈채팅방 링크"
-                className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 font-Pretendard text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
+                className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
                 autoComplete="off"
                 spellCheck="false"
                 aria-invalid={!isValidLink}
@@ -424,7 +416,7 @@ function SellPage() {
         <div className="w-full px-5">
           <div className="my-8 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
             <button
-              className="h-12 w-full rounded-3xl border border-transparent bg-white font-Pretendard font-semibold md:h-14 md:text-lg"
+              className="h-12 w-full rounded-3xl border border-transparent bg-white font-semibold md:h-14 md:text-lg"
               type="button"
               onClick={() => {
                 postBookSell();
