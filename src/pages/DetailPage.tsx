@@ -18,7 +18,7 @@ import { BookDto, FetchDetailPostCard } from '../dataType';
 import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
 import { userState } from '../userState';
-import cancelIcon from '../assets/cancelIcon.svg';
+// import cancelIcon from '../assets/cancelIcon.svg';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,8 +28,8 @@ function DetailPage() {
 
   const [isUpdateDropDownOpen, setIsUpdateDropDownOpen] =
     useState<boolean>(false);
-  const [isImageClicked, setIsImageClicked] = useState<boolean>(false);
-  const [bookImageIndex, setBookImageIndex] = useState<number>(0);
+  // const [isImageClicked, setIsImageClicked] = useState<boolean>(false);
+  // const [bookImageIndex, setBookImageIndex] = useState<number>(0);
 
   const [detailPostcardData, setDetailPostCardData] =
     useState<FetchDetailPostCard>();
@@ -170,10 +170,10 @@ function DetailPage() {
               <div
                 key={index}
                 className="aspect-square w-full"
-                onClick={() => {
-                  setBookImageIndex(index);
-                  setIsImageClicked(true);
-                }}
+                // onClick={() => {
+                //   setBookImageIndex(index);
+                //   setIsImageClicked(true);
+                // }}
               >
                 <img
                   src={imageUrl}
@@ -188,23 +188,27 @@ function DetailPage() {
           <div>Loading...</div>
         )}
       </div>
-      {isImageClicked && (
-        <div className="fixed left-0 top-0 z-[1000] flex h-screen w-screen items-center bg-black">
-          <img
-            src={cancelIcon}
-            alt="cancel"
-            className="absolute right-7 top-7 w-8"
-            onClick={() => {
-              setIsImageClicked(false);
-            }}
-          />
-          <img
-            src={detailPostcardData?.bookDto.imageUrls[bookImageIndex]}
-            alt="bookImage"
-            className="w-full"
-          />
+      {/* 보완 후 넣기 */}
+      {/* {isImageClicked && (
+        <div>
+          <div className="fixed left-0 top-0 z-[900] h-screen w-screen bg-black bg-opacity-80" />
+          <div className="fixed left-1/2 top-1/2 z-[1000] flex h-screen w-screen -translate-x-1/2 -translate-y-1/2 transform items-center bg-black">
+            <img
+              src={cancelIcon}
+              alt="cancel"
+              className="absolute right-7 top-7 w-8"
+              onClick={() => {
+                setIsImageClicked(false);
+              }}
+            />
+            <img
+              src={detailPostcardData?.bookDto.imageUrls[bookImageIndex]}
+              alt="bookImage"
+              className="mx-auto sm:h-screen"
+            />
+          </div>
         </div>
-      )}
+      )} */}
       <section className="mt-3 flex w-full flex-col items-center px-3 md:mt-4">
         {/* 책 정보 */}
         <div className="flex w-full items-center sm:w-[599px] lg:w-[677px]">
