@@ -189,7 +189,7 @@ function DetailPage() {
         )}
       </div>
       {/* 이미지 클릭 시 전체 확대 */}
-      {isImageClicked && (
+      {isImageClicked && bookImageIndex && (
         <div className="fixed left-0 top-0 z-[1000] h-screen w-screen bg-black">
           <div className="mx-auto my-auto h-full w-full p-5">
             <div className="relative flex h-full w-full items-center justify-center">

@@ -69,7 +69,7 @@ function MyPage() {
   return (
     <section className="mx-auto mt-5 flex w-full flex-col items-center sm:w-[599px] md:w-[730px]">
       {/* 유저 정보 */}
-      <div className="mb-3 flex w-full items-center gap-12 rounded-lg border-2 border-solid border-gray-200 px-8 py-9 sm:px-10">
+      <div className="mb-3 flex w-full items-center gap-12 border-y-2 border-solid border-gray-200 px-8 py-9 sm:rounded-lg sm:border-2 sm:px-10">
         <div className="flex flex-col items-start space-y-4 text-lg font-semibold md:text-xl">
           <span className="">이름</span>
           <span className="">학번</span>
