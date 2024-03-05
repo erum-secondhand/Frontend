@@ -84,11 +84,11 @@ function SellPage() {
       const newFilesArray = Array.from(event.target.files);
       const totalFiles = selectedFiles.length + newFilesArray.length;
 
-      // 선택된 파일들의 총 개수가 10개 이하인지 확인
-      if (totalFiles <= 10) {
+      // 선택된 파일들의 총 개수가 5개 이하인지 확인
+      if (totalFiles <= 5) {
         setSelectedFiles((prevFiles) => [...prevFiles, ...newFilesArray]);
       } else {
-        alert('최대 10개의 사진만 등록할 수 있습니다.');
+        alert('최대 5개의 사진만 등록할 수 있습니다.');
       }
     }
   };
@@ -245,7 +245,7 @@ function SellPage() {
               />
               {selectedFiles.length > 0 ? (
                 <p className="mt-1 text-xs text-gray-500 md:text-sm">
-                  {selectedFiles.length} / 10
+                  {selectedFiles.length} / 5
                 </p>
               ) : (
                 <p className="mt-1 text-xs text-gray-500 md:text-sm">
