@@ -16,7 +16,6 @@ const useCheckLoginStatus = () => {
         withCredentials: true,
       });
       // 로그인 상태일 때 사용자 정보를 Recoil 상태에 저장
-      console.log(response.data);
       setUser({
         isLoggedIn: response.data.isLoggedIn,
         user: response.data.user,

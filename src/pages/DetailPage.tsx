@@ -75,10 +75,9 @@ function DetailPage() {
       const response = await api.get<FetchDetailPostCard>(
         `/books/detail/${id}`,
       );
-      console.log(response.data);
       setDetailPostCardData(response.data);
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 
@@ -87,14 +86,14 @@ function DetailPage() {
     // if (userStateValue.user.id === detailPostcardData.userId)  -> 추가해야함
     if (detailPostcardData) {
       try {
-        const response = await api.put<BookDto>(
+        await api.put<BookDto>(
           `books/${detailPostcardData?.bookDto.id}`,
           {
             salesStatus: selectedSalesStatus,
           },
           { withCredentials: true },
         );
-        console.log(response.data);
+
         setDetailPostCardData((prevData) => {
           if (!prevData) return undefined; // prevData가 undefined인 경우 처리
           return {
@@ -108,7 +107,7 @@ function DetailPage() {
         setIsUpdateDropDownOpen(false);
         window.location.reload();
       } catch (e) {
-        console.log(e);
+        alert(e);
       }
     }
   };

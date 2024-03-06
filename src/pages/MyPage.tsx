@@ -46,10 +46,9 @@ function MyPage() {
         `books/${userStateValue.user.id}`,
         { withCredentials: true },
       );
-      console.log(response.data);
       setUserPostCardData(response.data);
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 

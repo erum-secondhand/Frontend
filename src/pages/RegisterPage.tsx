@@ -93,12 +93,10 @@ function RegisterPage() {
         const response = await api.post<string>('users/verify', {
           email,
         });
-        console.log(response.data);
         if (response.status === 200) {
           setIsVerificationSuccessful(true);
         }
       } catch (e) {
-        console.log(e);
         alert('올바른 이메일을 입력해주세요.');
       }
     } else {
@@ -150,12 +148,10 @@ function RegisterPage() {
           major: selectedMajor,
           verificationCode,
         });
-        console.log(response.data);
         if (response.status === 201) {
           navigate('/login');
         }
       } catch (e: any) {
-        console.log(e);
         if (e.response && e.response.status === 409) {
           alert('이미 존재하는 계정입니다.');
         } else if (e.response && e.response.status === 400) {

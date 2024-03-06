@@ -198,16 +198,15 @@ function SellPage() {
           formData.append('condition', selectedBookState);
           formData.append('kakaoLink', openChatLink);
 
-          const response = await api.post('/books', formData, {
+          await api.post('/books', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
             withCredentials: true,
           });
-          console.log(response.data);
           moveToMainPage();
         } catch (e) {
-          console.log(e);
+          alert(e);
         }
       } else {
         alert('모든 칸을 정확히 입력해주세요!');

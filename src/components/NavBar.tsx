@@ -86,7 +86,6 @@ function NavBar() {
             title: searchText,
           },
         });
-        console.log(response.data);
 
         // 검색 결과가 있는 경우에만 보여주기
         if (response.data.length !== 0) {
@@ -96,7 +95,7 @@ function NavBar() {
           alert('검색 결과가 없습니다!');
         }
       } catch (error) {
-        console.log(error);
+        alert(error);
       }
     }
   };
@@ -109,7 +108,6 @@ function NavBar() {
         {},
         { withCredentials: true },
       );
-      console.log(response.data);
       if (response.status === 200) {
         setUserStateValue({
           isLoggedIn: false,
@@ -124,7 +122,7 @@ function NavBar() {
       }
       moveToMainPageWithRefresh();
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 

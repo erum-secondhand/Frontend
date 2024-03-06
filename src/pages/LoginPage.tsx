@@ -36,7 +36,7 @@ function LoginPage() {
   const signInRequest = async () => {
     if (email && password) {
       try {
-        const response = await api.post<SignIn>(
+        await api.post<SignIn>(
           '/users/login',
           {
             email,
@@ -44,10 +44,8 @@ function LoginPage() {
           },
           { withCredentials: true },
         );
-        console.log(response.data);
         window.location.href = '/';
       } catch (e) {
-        console.log(e);
         alert('이메일 또는 비밀번호를 잘못 입력했습니다.');
       }
     } else if (email.length <= 0) {

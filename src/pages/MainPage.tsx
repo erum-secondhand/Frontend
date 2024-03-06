@@ -1,3 +1,4 @@
+/* eslint-disable no-alert */
 /* eslint-disable no-console */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -46,10 +47,9 @@ function MainPage() {
   const fetchPostCards = async () => {
     try {
       const response = await api.get<FetchPostCards[]>('/books');
-      console.log(response.data);
       setPostCardData(response.data);
     } catch (e) {
-      console.log(e);
+      alert(e);
     }
   };
 
