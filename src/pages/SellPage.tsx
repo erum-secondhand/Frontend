@@ -402,7 +402,7 @@ function SellPage() {
                 autoComplete="off"
                 spellCheck="false"
                 aria-invalid={!isValidLink}
-                value={openChatLink}
+                value={openChatLink.trim()}
                 onChange={handleLinkChange}
               />
               {!isValidLink && (
