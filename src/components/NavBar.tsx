@@ -11,6 +11,7 @@ import logo from '../assets/logo.svg';
 import sellingIcon from '../assets/sellingIcon.svg';
 import personIcon from '../assets/personIcon.svg';
 import searchIcon from '../assets/search.svg';
+import searchBoldIcon from '../assets/searchBold.svg';
 import hamburgerIcon from '../assets/hamburger.svg';
 import cancelIcon from '../assets/cancel.svg';
 import myPageIcon from '../assets/myPageIcon.svg';
@@ -25,6 +26,7 @@ function NavBar() {
   const currentPath = location.pathname;
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [searchClicked, setSearchClicked] = useState<boolean>(false);
+  const [isSearchBarFocused, setIsSearchBarFocused] = useState<boolean>(false);
   const [searchText, setSearchText] = useState<string>('');
 
   const setSearchPostCards = useSetRecoilState(searchPostCardsState);
@@ -42,6 +44,20 @@ function NavBar() {
         searchInputRef.current.focus();
       }
     }, 0);
+  };
+
+  // 검색창 포커스 이벤트 핸들러
+  const handleSearchBarFocus = () => {
+    if (isSearchBarFocused) {
+      setIsSearchBarFocused(false);
+    } else {
+      setIsSearchBarFocused(true);
+    }
+  };
+
+  // 검색창 입력 이벤트 핸들러
+  const searchBoxHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   };
 
   // 메인 페이지로 새로고침 ('/')
@@ -69,34 +85,31 @@ function NavBar() {
     navigate(`/mypage/${userStateValue.user.id}`);
   };
 
-  // 검색창 입력 이벤트 핸들러
-  const searchBoxHandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-  };
-
   // 검색 API 요청
-  const fetchSearchPostCards = async (e: KeyboardEvent<HTMLInputElement>) => {
-    // 엔터 키 눌렀는지 확인
-    if (e.key === 'Enter') {
-      setSearchClicked(false); // 검색창 숨기기
+  const fetchSearchPostCards = async () => {
+    setSearchClicked(false); // 검색창 숨기기
 
-      try {
-        const response = await api.get<FetchPostCards[]>('/books/search', {
-          params: {
-            title: searchText,
-          },
-        });
+    if (searchText === '') {
+      alert('검색어를 입력해주세요!');
+      return;
+    }
 
-        // 검색 결과가 있는 경우에만 보여주기
-        if (response.data.length !== 0) {
-          setSearchPostCards(response.data);
-          navigate('/');
-        } else {
-          alert('검색 결과가 없습니다!');
-        }
-      } catch (error) {
-        alert(error);
+    try {
+      const response = await api.get<FetchPostCards[]>('/books/search', {
+        params: {
+          title: searchText,
+        },
+      });
+
+      // 검색 결과가 있는 경우에만 보여주기
+      if (response.data.length !== 0) {
+        setSearchPostCards(response.data);
+        navigate('/');
+      } else {
+        alert('검색 결과가 없습니다!');
       }
+    } catch (error) {
+      alert(error);
     }
   };
 
@@ -126,6 +139,13 @@ function NavBar() {
     }
   };
 
+  // 검색창 엔터키 이벤트 핸들러
+  const searchBoxHandleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      fetchSearchPostCards();
+    }
+  };
+
   return (
     <>
       {/* 검색 바 */}
@@ -133,17 +153,27 @@ function NavBar() {
         <div className="sticky top-0 z-[60] mx-auto border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
             <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-100 md:h-12">
-              <div className="relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5">
+              <div
+                className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
+              >
                 <input
                   ref={searchInputRef}
                   id="search-box"
-                  className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
+                  className="mx-4 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
                   placeholder="책 제목을 검색해주세요"
                   aria-label="search-box"
                   autoComplete="off"
                   name="search"
                   onChange={searchBoxHandleChange}
-                  onKeyDown={fetchSearchPostCards}
+                  onKeyDown={searchBoxHandleKeyDown}
+                  onFocus={handleSearchBarFocus}
+                  onBlur={handleSearchBarFocus}
+                />
+                <img
+                  src={searchBoldIcon}
+                  alt="검색"
+                  className="absolute right-4 w-6 cursor-pointer"
+                  onClick={fetchSearchPostCards}
                 />
               </div>
             </div>
@@ -170,17 +200,27 @@ function NavBar() {
             {/* 1024px 이상일 경우 검색바 나타남 */}
             <div className="hidden lg:ml-24 lg:flex lg:w-3/5">
               <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
-                <div className="relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5">
+                <div
+                  className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
+                >
                   <input
                     ref={searchInputRef}
                     id="search-box"
-                    className="mx-3 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
+                    className="mx-4 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
                     placeholder="책 제목을 검색해주세요"
                     aria-label="search-box"
                     autoComplete="off"
                     name="search"
                     onChange={searchBoxHandleChange}
-                    onKeyDown={fetchSearchPostCards}
+                    onKeyDown={searchBoxHandleKeyDown}
+                    onFocus={handleSearchBarFocus}
+                    onBlur={handleSearchBarFocus}
+                  />
+                  <img
+                    src={searchBoldIcon}
+                    alt="검색"
+                    className="absolute right-4 w-6 cursor-pointer"
+                    onClick={fetchSearchPostCards}
                   />
                 </div>
               </div>
