@@ -29,7 +29,7 @@ function DetailPage() {
   const [isUpdateDropDownOpen, setIsUpdateDropDownOpen] =
     useState<boolean>(false);
   const [isImageClicked, setIsImageClicked] = useState<boolean>(false);
-  const [bookImageIndex, setBookImageIndex] = useState<number | null>(null);
+  const [bookImageIndex, setBookImageIndex] = useState<number>();
 
   const [detailPostcardData, setDetailPostCardData] =
     useState<FetchDetailPostCard>();
@@ -175,7 +175,7 @@ function DetailPage() {
             {detailPostcardData?.bookDto.imageUrls.map((imageUrl, index) => (
               <div
                 key={index}
-                className="aspect-square w-full"
+                className="aspect-square w-full cursor-pointer"
                 onClick={() => {
                   setBookImageIndex(index);
                   setIsImageClicked(true);
@@ -195,8 +195,8 @@ function DetailPage() {
         )}
       </div>
       {/* 이미지 클릭 시 전체 확대 */}
-      {isImageClicked && bookImageIndex && (
-        <div className="fixed left-0 top-0 z-[1000] h-screen w-screen bg-black">
+      {isImageClicked && typeof bookImageIndex === 'number' && (
+        <div className="fixed left-0 top-0 z-[1000] h-screen w-screen overflow-hidden bg-black">
           <div className="mx-auto my-auto h-full w-full p-5">
             <div className="relative flex h-full w-full items-center justify-center">
               <div className="absolute top-0 z-10 h-[45px] w-full bg-black bg-opacity-30">
