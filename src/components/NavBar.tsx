@@ -160,7 +160,7 @@ function NavBar() {
         </div>
       ) : (
         <div className="sticky top-0 z-50 border-b-[1px] border-gray-200">
-          <div className="flex h-14 w-screen items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem] md:px-10">
+          <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem] md:px-10">
             <img
               src={logo}
               alt="logo"
