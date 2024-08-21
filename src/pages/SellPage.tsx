@@ -6,6 +6,7 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import heic2any from 'heic2any';
 import api from '../baseURL/baseURL';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
@@ -79,17 +80,64 @@ function SellPage() {
   };
 
   // 사진파일 변경 이벤트 핸들러
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (event.target.files) {
       const newFilesArray = Array.from(event.target.files);
-      const totalFiles = selectedFiles.length + newFilesArray.length;
 
-      // 선택된 파일들의 총 개수가 5개 이하인지 확인
-      if (totalFiles <= 5) {
-        setSelectedFiles((prevFiles) => [...prevFiles, ...newFilesArray]);
+      // HEIC 파일을 JPEG로 변환
+      const convertedFilesArray = await Promise.all(
+        newFilesArray.map(async (file) => {
+          if (file.type === 'image/heic') {
+            try {
+              const convertedBlob = await heic2any({
+                blob: file,
+                toType: 'image/jpeg',
+              });
+
+              const convertedFile = new File(
+                [convertedBlob as Blob],
+                file.name.replace(/\.heic$/i, '.jpg'),
+                {
+                  type: 'image/jpeg',
+                },
+              );
+              return convertedFile;
+            } catch (e) {
+              console.error('HEIC 파일 변환 오류:', e);
+              alert('HEIC 파일 변환 중 오류가 발생했습니다.');
+              return null;
+            }
+          } else {
+            return file;
+          }
+        }),
+      );
+
+      // null 값을 필터링하여 유효한 파일만 추가
+      const validFiles = convertedFilesArray.filter(
+        (file) => file !== null,
+      ) as File[];
+
+      const totalFiles = selectedFiles.length + validFiles.length;
+
+      // 선택된 파일들의 총 개수가 10개 이하인지 확인
+      if (totalFiles <= 10) {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
       } else {
-        alert('최대 5개의 사진만 등록할 수 있습니다.');
+        alert('최대 10개의 사진만 등록할 수 있습니다.');
       }
+
+      /**  기존 코드 (HEIC 변환 X 버전) */
+      // const totalFiles = selectedFiles.length + newFilesArray.length;
+
+      // // 선택된 파일들의 총 개수가 5개 이하인지 확인
+      // if (totalFiles <= 5) {
+      //   setSelectedFiles((prevFiles) => [...prevFiles, ...newFilesArray]);
+      // } else {
+      //   alert('최대 5개의 사진만 등록할 수 있습니다.');
+      // }
     }
   };
 
@@ -226,7 +274,7 @@ function SellPage() {
             name="media"
             type="file"
             multiple
-            accept="image/png, image/jpeg, image/jpg"
+            accept="image/png, image/jpeg, image/jpg, image/webp, image/heic"
             className="hidden"
             onChange={handleFileChange}
           />
