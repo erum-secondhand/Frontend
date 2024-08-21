@@ -219,7 +219,7 @@ function SellPage() {
   return (
     <section className="mx-auto my-0 flex w-full flex-col items-start px-5 sm:w-[599px]">
       {/* 사진 등록 */}
-      <div className="mt-4 flex w-full items-center px-5 pb-1.5">
+      <div className="mt-4 flex w-full items-start px-5 pb-1.5">
         <div>
           <input
             ref={fileInputRef}
