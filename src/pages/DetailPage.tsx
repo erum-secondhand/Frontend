@@ -81,8 +81,8 @@ function DetailPage() {
     }
   };
 
-  // 특정 서적 수정 API
-  const updateDetailPostCard = async (selectedSalesStatus: string) => {
+  // 거래 상태 수정 API
+  const updateSalesStatus = async (selectedSalesStatus: string) => {
     // if (userStateValue.user.id === detailPostcardData.userId)  -> 추가해야함
     if (detailPostcardData) {
       try {
@@ -115,6 +115,13 @@ function DetailPage() {
   // 카카오톡 오픈채팅 링크 이동
   const moveToOpenChatLink = () => {
     window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
+  };
+
+  // 수정 페이지로 이동 ('/update/:id')
+  const moveToUpdatePage = () => {
+    navigate(`/update/${id}`, {
+      state: { detailPostcardData },
+    });
   };
 
   // 드롭다운 바깥 클릭 감지
@@ -159,7 +166,7 @@ function DetailPage() {
           <Carousel
             axis="horizontal"
             emulateTouch
-            showArrows
+            showArrows={false}
             showStatus={false}
             swipeable
             showThumbs={false}
@@ -247,7 +254,7 @@ function DetailPage() {
             userStateValue.user &&
             detailPostcardData &&
             userStateValue.user.id === detailPostcardData?.userId && (
-              <div className="relative" ref={dropDownRef}>
+              <div className="relative mb-3" ref={dropDownRef}>
                 <button
                   className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
                   type="button"
@@ -268,7 +275,7 @@ function DetailPage() {
                     <li
                       className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
                       onClick={() => {
-                        updateDetailPostCard('판매중');
+                        updateSalesStatus('판매중');
                       }}
                     >
                       <span className="block truncate font-normal">판매중</span>
@@ -276,7 +283,7 @@ function DetailPage() {
                     <li
                       className="relative cursor-default select-none py-2 pl-10 pr-4 text-gray-900 hover:cursor-pointer"
                       onClick={() => {
-                        updateDetailPostCard('판매완료');
+                        updateSalesStatus('판매완료');
                       }}
                     >
                       <span className="block truncate font-normal">
@@ -342,16 +349,37 @@ function DetailPage() {
             </span>
           </div>
         </div>
-        {/* 채팅 버튼 */}
-        <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
-          <button
-            className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
-            type="button"
-            onClick={moveToOpenChatLink}
-          >
-            판매자와 채팅하기
-          </button>
-        </div>
+        {/* 채팅 및 게시글 수정 버튼 */}
+        {userStateValue &&
+        userStateValue.user &&
+        detailPostcardData &&
+        userStateValue.user.id === detailPostcardData?.userId ? (
+          <div>
+            {/* 게시글 수정 버튼 */}
+            <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
+              <button
+                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                type="button"
+                onClick={moveToUpdatePage}
+              >
+                게시글 수정하기
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            {/* 채팅 버튼 */}
+            <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
+              <button
+                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                type="button"
+                onClick={moveToOpenChatLink}
+              >
+                판매자와 채팅하기
+              </button>
+            </div>
+          </div>
+        )}
       </section>
     </div>
   );

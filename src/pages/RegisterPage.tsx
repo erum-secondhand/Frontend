@@ -17,6 +17,7 @@ function RegisterPage() {
   const [emailVerificationClicked, setEmailVerificationClicked] =
     useState<boolean>(false);
   const [password, setPassword] = useState<string>('');
+  const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const [userName, setUserName] = useState<string>('');
   const [studentId, setStudentId] = useState<string>('');
   const [selectedMajor, setSelectedMajor] = useState<string>('');
@@ -82,6 +83,13 @@ function RegisterPage() {
     setIsValidPassword(e.target.value.length >= 6);
   };
 
+  // 비밀번호 확인 입력 이벤트 핸들러
+  const handlePasswordConfirmChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setPasswordConfirm(e.target.value);
+  };
+
   // 이메일 인증코드 API 요청
   const emailAuthentication = async () => {
     if (isValidEmail && email.length > 0) {
@@ -134,6 +142,8 @@ function RegisterPage() {
     if (
       email &&
       password &&
+      passwordConfirm &&
+      password === passwordConfirm &&
       userName &&
       studentId &&
       selectedMajor &&
@@ -301,6 +311,27 @@ function RegisterPage() {
                       6자리 이상 입력해주세요.
                     </p>
                   )}
+                </div>
+              </div>
+              {/* 비밀번호 확인 */}
+              <div className="flex shrink-0 grow basis-auto flex-col">
+                <div className="mb-[12px]">
+                  <span>비밀번호 확인</span>
+                </div>
+                <div className="block">
+                  <input
+                    type="password"
+                    placeholder="비밀번호를 다시 입력해주세요."
+                    className={`!border-1 box-border min-h-12 w-full appearance-none rounded-md border border-solid ${password === passwordConfirm ? 'border-[#DADEE5] focus:border-amber-600' : 'border-red-500 focus:border-amber-600'} bg-white px-[16px] py-[12px] text-[14px] text-gray-950 placeholder-[#9CA3AF] transition duration-200 ease-in-out focus:bg-white focus:shadow md:px-5 lg:text-sm`}
+                    value={passwordConfirm}
+                    onChange={handlePasswordConfirmChange}
+                  />
+                  {password !== passwordConfirm &&
+                    passwordConfirm.length > 0 && (
+                      <p className="my-2 text-xs text-rose-500">
+                        비밀번호가 일치하지 않습니다.
+                      </p>
+                    )}
                 </div>
               </div>
               {/* 회원가입 제출 버튼 */}
