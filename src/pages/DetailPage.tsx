@@ -19,6 +19,8 @@ import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
 import { userState } from '../userState';
 import cancelIcon from '../assets/cancelIcon.svg';
+import expandLeftIcon from '../assets/expandLeft.svg';
+import expandRightIcon from '../assets/expandRight.svg';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -68,6 +70,26 @@ function DetailPage() {
   //   }
   //   return `${Math.floor(differenceInSeconds / year)}년 전`;
   // };
+
+  const carouselLeftArrowClick = () => {
+    const carouselPrevButton = document.querySelector(
+      '.control-arrow.control-prev',
+    );
+
+    if (carouselPrevButton) {
+      (carouselPrevButton as HTMLElement).click();
+    }
+  };
+
+  const carouselRightArrowClick = () => {
+    const carouselNextButton = document.querySelector(
+      '.control-arrow.control-next',
+    );
+
+    if (carouselNextButton) {
+      (carouselNextButton as HTMLElement).click();
+    }
+  };
 
   // 특정 서적 내용 조회 API 요청 함수
   const fetchDetailPostCard = async () => {
@@ -161,7 +183,7 @@ function DetailPage() {
   return (
     <div className="box-content flex w-full flex-col items-center sm:mt-2 md:mt-4">
       {/* 책 이미지 */}
-      <div className="w-full overflow-hidden sm:w-[599px] sm:rounded-md lg:w-[677px] lg:rounded-lg">
+      <div className="relative w-full overflow-hidden sm:w-[599px] sm:rounded-md lg:w-[677px] lg:rounded-lg">
         {detailPostcardData?.bookDto.imageUrls ? (
           <Carousel
             axis="horizontal"
@@ -169,6 +191,7 @@ function DetailPage() {
             showArrows={false}
             showStatus={false}
             swipeable
+            infiniteLoop
             showThumbs={false}
             useKeyboardArrows
           >
@@ -193,6 +216,26 @@ function DetailPage() {
         ) : (
           <div>Loading...</div>
         )}
+        {/* 이미지 좌우 화살표 */}
+        {detailPostcardData?.bookDto.imageUrls &&
+          detailPostcardData?.bookDto.imageUrls.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="absolute left-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black bg-opacity-50 transition hover:bg-opacity-70"
+                onClick={carouselLeftArrowClick}
+              >
+                <img src={expandLeftIcon} alt="이전" className="w-full" />
+              </button>
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black bg-opacity-50 transition hover:bg-opacity-70"
+                onClick={carouselRightArrowClick}
+              >
+                <img src={expandRightIcon} alt="다음" className="w-full" />
+              </button>
+            </>
+          )}
       </div>
       {/* 이미지 클릭 시 전체 확대 */}
       {isImageClicked && typeof bookImageIndex === 'number' && (
