@@ -198,7 +198,7 @@ function NavBar() {
               onClick={moveToMainPageWithRefresh}
             />
             {/* 1024px 이상일 경우 검색바 나타남 */}
-            <div className="hidden lg:ml-24 lg:flex lg:w-3/5">
+            <div className="hidden lg:ml-24 lg:flex lg:w-1/2">
               <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
                 <div
                   className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
