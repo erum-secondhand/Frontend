@@ -39,6 +39,10 @@ function MyPage() {
     }
   };
 
+  const moveToPasswordResetPage = () => {
+    navigate('/password/reset');
+  };
+
   // 특정 유저별 서적 필터링 및 조회 API 요청
   const fetchUserPostCards = async () => {
     try {
@@ -68,19 +72,28 @@ function MyPage() {
   return (
     <section className="mx-auto mt-5 flex w-full flex-col items-center sm:w-[599px] md:w-[730px]">
       {/* 유저 정보 */}
-      <div className="mb-3 flex w-full items-center gap-12 border-y-2 border-solid border-gray-200 px-8 py-9 sm:rounded-lg sm:border-2 sm:px-10">
-        <div className="flex flex-col items-start space-y-4 text-lg font-semibold md:text-xl">
-          <span className="">이름</span>
-          <span className="">학번</span>
-          <span className="">전공</span>
-          <span className="text-nowrap">이메일</span>
+      <div className="mb-3 flex w-full flex-col gap-7 border-y-2 border-solid border-gray-200 px-8 py-9 sm:rounded-lg sm:border-2 sm:px-10">
+        <div className="flex w-full items-center gap-12">
+          <div className="flex flex-col items-start space-y-4 text-lg font-semibold md:text-xl">
+            <span className="">이름</span>
+            <span className="">학번</span>
+            <span className="">전공</span>
+            <span className="text-nowrap">이메일</span>
+          </div>
+          <div className="flex flex-col items-start space-y-4 text-lg md:text-xl">
+            <span className="">{userStateValue.user.name}</span>
+            <span className="">{userStateValue.user.studentId}</span>
+            <span className="">{userStateValue.user.major}</span>
+            <span className="">{userStateValue.user.email}</span>
+          </div>
         </div>
-        <div className="flex flex-col items-start space-y-4 text-lg md:text-xl">
-          <span className="">{userStateValue.user.name}</span>
-          <span className="">{userStateValue.user.studentId}</span>
-          <span className="">{userStateValue.user.major}</span>
-          <span className="">{userStateValue.user.email}</span>
-        </div>
+        <button
+          type="button"
+          className="md: flex h-11 w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-gray-300 text-lg font-semibold text-black transition hover:bg-gray-400 md:h-12 md:text-xl"
+          onClick={moveToPasswordResetPage}
+        >
+          비밀번호 재설정
+        </button>
       </div>
       {/* 판매 분류 바 */}
       <ul className="mb-4 flex w-full flex-nowrap justify-between border-b border-[#DADEE5] sm:mb-6 lg:mb-7">
