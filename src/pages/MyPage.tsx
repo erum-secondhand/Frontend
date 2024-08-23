@@ -39,6 +39,10 @@ function MyPage() {
     }
   };
 
+  const moveToPasswordResetPage = () => {
+    navigate('/password/reset');
+  };
+
   // 특정 유저별 서적 필터링 및 조회 API 요청
   const fetchUserPostCards = async () => {
     try {
@@ -86,6 +90,7 @@ function MyPage() {
         <button
           type="button"
           className="md: flex h-11 w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-gray-300 text-lg font-semibold text-black transition hover:bg-gray-400 md:h-12 md:text-xl"
+          onClick={moveToPasswordResetPage}
         >
           비밀번호 재설정
         </button>

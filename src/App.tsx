@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
+import PasswordResetPage from './pages/PasswordResetPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/mypage/:id" element={<MyPage />} />
+        <Route path="/password/reset" element={<PasswordResetPage />} />
       </Routes>
     </>
   );
