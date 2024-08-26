@@ -123,7 +123,12 @@ function LoginPage() {
                   회원가입
                 </span>
                 <div className="flex h-4 w-[1px] bg-gray-400" />
-                <span className="cursor-pointer text-sm font-semibold text-gray-800 hover:underline sm:text-base">
+                <span
+                  className="cursor-pointer text-sm font-semibold text-gray-800 hover:underline sm:text-base"
+                  onClick={() => {
+                    navigate('/password/reset');
+                  }}
+                >
                   비밀번호 찾기
                 </span>
               </div>
