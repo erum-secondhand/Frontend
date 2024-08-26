@@ -3,7 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
-import { PasswordResetResponse } from '../api/user';
+import {
+  EmailAuthenticationResponse,
+  EmailVerificationResponse,
+  PasswordResetResponse,
+} from '../api/user';
 
 function PasswordResetPage() {
   const navigate = useNavigate();
@@ -78,9 +82,12 @@ function PasswordResetPage() {
         setTimerActive(true);
         setTimer(299);
         setEmailVerificationClicked(true);
-        const response = await api.post<string>('auth/send', {
-          email,
-        });
+        const response = await api.post<EmailAuthenticationResponse>(
+          'auth/send',
+          {
+            email,
+          },
+        );
         if (response.status === 200) {
           setIsVerificationSuccessful(true);
         }
@@ -96,11 +103,15 @@ function PasswordResetPage() {
   const emailVerification = async () => {
     if (verificationCode.length === 6) {
       try {
-        const response = await api.post<string>('auth/verify', {
-          email,
-          verificationCode,
-        });
+        const response = await api.post<EmailVerificationResponse>(
+          'auth/verify',
+          {
+            email,
+            verificationCode,
+          },
+        );
         if (response.status === 200) {
+          alert(response.data.message);
           setIsCorrectVerificationCode(true);
           setEmailVerificationClicked(false);
         }
@@ -122,11 +133,11 @@ function PasswordResetPage() {
           },
         );
         if (response.data.status === 200) {
-          alert('비밀번호가 변경되었습니다.');
+          alert(response.data.data);
           setIsPasswordResetSuccessful(true);
           navigate('/login');
         } else if (response.data.status === 409) {
-          alert('기존 비밀번호와 동일합니다.');
+          alert(response.data.data);
           setIsPasswordResetSuccessful(false);
           setNewPassword('');
           setNewPasswordConfirm('');
