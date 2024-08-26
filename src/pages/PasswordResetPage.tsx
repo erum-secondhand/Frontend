@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
+import { PasswordResetResponse } from '../api/user';
 
 function PasswordResetPage() {
   const navigate = useNavigate();
@@ -113,16 +114,23 @@ function PasswordResetPage() {
   const passwordReset = async () => {
     if (newPassword.length >= 6 && newPassword === newPasswordConfirm) {
       try {
-        const response = await api.put<string>('users/reset-password', {
-          email,
-          newPassword,
-        });
-        if (response.status === 200) {
+        const response = await api.put<PasswordResetResponse>(
+          'users/reset-password',
+          {
+            email,
+            newPassword,
+          },
+        );
+        if (response.data.status === 200) {
           alert('비밀번호가 변경되었습니다.');
           setIsPasswordResetSuccessful(true);
           navigate('/login');
+        } else if (response.data.status === 409) {
+          alert('기존 비밀번호와 동일합니다.');
+          setIsPasswordResetSuccessful(false);
+          setNewPassword('');
+          setNewPasswordConfirm('');
         }
-        console.log(response.data);
       } catch (e) {
         alert('비밀번호 변경에 실패했습니다.');
       }
