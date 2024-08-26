@@ -16,6 +16,7 @@ import hamburgerIcon from '../assets/hamburger.svg';
 import cancelIcon from '../assets/cancel.svg';
 import myPageIcon from '../assets/myPageIcon.svg';
 import chatIcon from '../assets/chatIcon.svg';
+import prevIcon from '../assets/prevIcon.svg';
 import '../theme.css';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
@@ -197,14 +198,23 @@ function NavBar() {
       ) : (
         <div className="sticky top-0 z-50 border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem] md:px-10">
+            {/* 채팅방일 경우 뒤로가기 버튼 나타남 */}
+            {currentPath.includes('/room/') && (
+              <img
+                src={prevIcon}
+                alt="prev"
+                className="w-4 mr-3 hover:cursor-pointer md:mr-40"
+                onClick={moveToChatPage}
+              />
+            )}
             <img
               src={logo}
               alt="logo"
               className="w-[4.5rem] pb-1 hover:cursor-pointer md:w-20"
               onClick={moveToMainPageWithRefresh}
             />
-            {/* 1024px 이상일 경우 검색바 나타남 */}
-            <div className="hidden lg:ml-24 lg:flex lg:w-1/2">
+            {/* 1024px 이상일 경우 검색바 나타남(채팅하기 페이지 제외) */}
+            <div className={`hidden ${!currentPath.includes('/chat/') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}>
               <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
                 <div
                   className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
@@ -233,12 +243,15 @@ function NavBar() {
             </div>
             {/* 검색 및 햄버거 아이콘 (1024px 미만) */}
             <div className="flex lg:hidden">
-              <img
-                src={searchIcon}
-                alt="검색"
-                className="mr-4 hover:cursor-pointer md:w-7"
-                onClick={handleSearchIconClick}
-              />
+              {/* 채팅하기 페이지에서는 검색 아이콘 숨김 */}
+              {!currentPath.includes('/chat/') && (
+                <img
+                  src={searchIcon}
+                  alt="검색"
+                  className="mr-4 hover:cursor-pointer md:w-7"
+                  onClick={handleSearchIconClick}
+                />
+              )}
               {menuOpen ? (
                 <img
                   src={cancelIcon}
@@ -272,7 +285,7 @@ function NavBar() {
                 />
                 <span className="text-nowrap text-sm">판매하기</span>
               </div>
-              {userStateValue.isLoggedIn && (
+              {userStateValue.isLoggedIn && !currentPath.includes('/room/') && (
                 <div 
                   className="flex cursor-pointer items-center space-x-1"
                   onClick={moveToChatPage}
@@ -348,7 +361,7 @@ function NavBar() {
               )}
               {userStateValue.isLoggedIn && (
                 <button
-                  className={`${currentPath === `/chat/${userStateValue.user.id}` ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
+                  className={`${currentPath.includes('/chat/') ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
@@ -360,7 +373,7 @@ function NavBar() {
               )}
               {userStateValue.isLoggedIn && (
                 <button
-                  className={`${currentPath === `/mypage/` ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
+                  className={`${currentPath.includes('/mypage/') ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
