@@ -171,7 +171,7 @@ function PasswordResetPage() {
         <h1 className="text-3xl font-semibold">비밀번호 재설정</h1>
         <div className="relative mx-auto w-full overflow-hidden rounded-lg bg-white px-5 py-5 sm:w-[450px] sm:border sm:border-gray-300 sm:px-8">
           <div>
-            <div className="flex h-fit flex-col space-y-4 sm:min-h-[378px]">
+            <div className="flex h-fit flex-col space-y-4 sm:min-h-fit">
               {/* 현재 비밀번호 입력 */}
               <div className="flex shrink-0 grow basis-auto flex-col">
                 <div className="mb-[12px]">
@@ -196,7 +196,7 @@ function PasswordResetPage() {
               {!isCorrectVerificationCode && (
                 <button
                   type="button"
-                  className="mt-3 h-9 w-full rounded-md bg-gray-300 text-sm font-semibold"
+                  className="mt-3 h-9 w-full rounded-md bg-gray-300 text-sm font-semibold transition hover:bg-gray-400"
                   onClick={emailAuthentication}
                 >
                   {emailVerificationClicked && isVerificationSuccessful
@@ -228,7 +228,7 @@ function PasswordResetPage() {
                   )}
                   <button
                     type="button"
-                    className="mt-3 h-9 w-full rounded-md bg-gray-300 text-sm font-semibold"
+                    className="mt-3 h-9 w-full rounded-md bg-gray-300 text-sm font-semibold transition hover:bg-gray-400"
                     onClick={emailVerification}
                   >
                     다음
