@@ -203,7 +203,7 @@ function NavBar() {
               <img
                 src={prevIcon}
                 alt="prev"
-                className="w-4 mr-3 hover:cursor-pointer md:mr-40"
+                className="w-4 mr-3 hover:cursor-pointer lg:mr-56"
                 onClick={moveToChatPage}
               />
             )}
