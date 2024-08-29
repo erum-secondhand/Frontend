@@ -9,6 +9,8 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import PasswordResetPage from './pages/PasswordResetPage';
+import ChatPage from './pages/ChatPage';
+import ChatRoomPage from './pages/ChatRoomPage';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/sell" element={<SellPage />} />
+        <Route path="/chat/:id" element={<ChatPage />} />
+        <Route path="/chat/:userId/room/:roomId" element={<ChatRoomPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/mypage/:id" element={<MyPage />} />
