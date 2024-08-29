@@ -1,3 +1,25 @@
+export type ChatMessage = {
+  id: number;
+  senderId: number;
+  content: string;
+  timestamp: Date;
+};
+
+export type ChatRoom = {
+  id: number;
+  book: number;
+  seller: number;
+  buyer: number;
+  updatedAt: Date;
+};
+
+export type FetchChatCards = {
+  id: number;
+  otherPerson: string;
+  updateAt: string;
+  recentMessage: string;
+};
+
 export type PostBookSell = {
   id: number;
   images: string[];

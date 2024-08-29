@@ -1,13 +1,4 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-alert */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-console */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable react/no-array-index-key */
-import React, { useRef } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useRecoilValue } from 'recoil';
@@ -21,6 +12,10 @@ import { userState } from '../userState';
 import cancelIcon from '../assets/cancelIcon.svg';
 import expandLeftIcon from '../assets/expandLeft.svg';
 import expandRightIcon from '../assets/expandRight.svg';
+import io from 'socket.io-client';
+
+// WebSocket 클라이언트 설정
+const socket = io('http://localhost:8080');
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -135,8 +130,39 @@ function DetailPage() {
   };
 
   // 카카오톡 오픈채팅 링크 이동
-  const moveToOpenChatLink = () => {
-    window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
+  // const moveToOpenChatLink = () => {
+  //   window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
+  // };
+
+  const createChatRoom = async (
+    detailPostcardData: FetchDetailPostCard | undefined,
+  ) => {
+    try {
+      if (detailPostcardData && userStateValue) {
+        const response = await api.get('/chat/room', {
+          params: {
+            sellerId: detailPostcardData.userId,
+            buyerId: userStateValue.user.id,
+            bookId: detailPostcardData.bookDto.id,
+          },
+          withCredentials: true,
+        });
+        
+        const chatRoomId = response.data.id;
+  
+        // WebSocket으로 채팅방 조인
+        socket.emit('roomJoined', chatRoomId);
+        
+        // 채팅방 조인 성공 시 처리
+        socket.on('roomJoined', () => {
+          navigate(`/chat/${userStateValue.user.id}/room/${chatRoomId}`);
+        });
+      } else {
+        throw new Error('필요한 데이터가 누락되었습니다.');
+      }
+    } catch (e) {
+      alert('채팅방 생성 실패: ' + (e as Error).message);
+    }
   };
 
   // 수정 페이지로 이동 ('/update/:id')
@@ -416,7 +442,7 @@ function DetailPage() {
               <button
                 className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
-                onClick={moveToOpenChatLink}
+                onClick={() => createChatRoom(detailPostcardData)}
               >
                 판매자와 채팅하기
               </button>
