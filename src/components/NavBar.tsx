@@ -79,7 +79,7 @@ function NavBar() {
 
   // 채팅 목록 페이지로 이동 ('/chat/:id')
   const moveToChatPage = () => {
-    navigate(`/chat/${userStateValue.user.id}`);
+    navigate(`/chat`);
   }
 
   // 로그인 페이지로 이동 ('/login')
