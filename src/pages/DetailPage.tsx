@@ -137,14 +137,13 @@ function DetailPage() {
     });
   };
 
-  // 채팅 페이지로 바로 이동
+  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/room/:bookId')
   const moveToChatPage = () => {
     if (detailPostcardData) {
       const { userId, bookDto } = detailPostcardData;
       const { id: sellerId } = userStateValue.user;
       const { id: bookId } = bookDto;
 
-      // 채팅 페이지로 네비게이션
       navigate(`/chat/${userId}/${sellerId}/room/${bookId}`);
     }
   };
