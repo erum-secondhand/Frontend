@@ -19,7 +19,7 @@ export type FetchChatCards = {
   buyerName: string;
   sellerId: number;
   sellerName: string;
-  updateAt: string;
+  updatedAt: string;
   recentMessage: string;
 };
 
