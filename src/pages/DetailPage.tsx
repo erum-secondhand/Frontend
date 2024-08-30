@@ -12,10 +12,6 @@ import { userState } from '../userState';
 import cancelIcon from '../assets/cancelIcon.svg';
 import expandLeftIcon from '../assets/expandLeft.svg';
 import expandRightIcon from '../assets/expandRight.svg';
-import io from 'socket.io-client';
-
-// WebSocket 클라이언트 설정
-const socket = io('http://localhost:8080');
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -134,42 +130,23 @@ function DetailPage() {
   //   window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
   // };
 
-  const createChatRoom = async (
-    detailPostcardData: FetchDetailPostCard | undefined,
-  ) => {
-    try {
-      if (detailPostcardData && userStateValue) {
-        const response = await api.get('/chat/room', {
-          params: {
-            sellerId: detailPostcardData.userId,
-            buyerId: userStateValue.user.id,
-            bookId: detailPostcardData.bookDto.id,
-          },
-          withCredentials: true,
-        });
-        
-        const chatRoomId = response.data.id;
-  
-        // WebSocket으로 채팅방 조인
-        socket.emit('roomJoined', chatRoomId);
-        
-        // 채팅방 조인 성공 시 처리
-        socket.on('roomJoined', () => {
-          navigate(`/chat/${userStateValue.user.id}/room/${chatRoomId}`);
-        });
-      } else {
-        throw new Error('필요한 데이터가 누락되었습니다.');
-      }
-    } catch (e) {
-      alert('채팅방 생성 실패: ' + (e as Error).message);
-    }
-  };
-
   // 수정 페이지로 이동 ('/update/:id')
   const moveToUpdatePage = () => {
     navigate(`/update/${id}`, {
       state: { detailPostcardData },
     });
+  };
+
+  // 채팅 페이지로 바로 이동
+  const moveToChatPage = () => {
+    if (detailPostcardData) {
+      const { userId, bookDto } = detailPostcardData;
+      const { id: sellerId } = userStateValue.user;
+      const { id: bookId } = bookDto;
+
+      // 채팅 페이지로 네비게이션
+      navigate(`/chat/${userId}/${sellerId}/room/${bookId}`);
+    }
   };
 
   // 드롭다운 바깥 클릭 감지
@@ -423,7 +400,7 @@ function DetailPage() {
         userStateValue.user &&
         detailPostcardData &&
         userStateValue.user.id === detailPostcardData?.userId ? (
-          <div>
+          <div className="w-full">
             {/* 게시글 수정 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
@@ -436,13 +413,13 @@ function DetailPage() {
             </div>
           </div>
         ) : (
-          <div>
+          <div className="w-full">
             {/* 채팅 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
                 className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
-                onClick={() => createChatRoom(detailPostcardData)}
+                onClick={moveToChatPage}
               >
                 판매자와 채팅하기
               </button>
