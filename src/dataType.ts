@@ -15,7 +15,10 @@ export type ChatRoom = {
 
 export type FetchChatCards = {
   id: number;
-  otherPerson: string;
+  buyerId: number;
+  buyerName: string;
+  sellerId: number;
+  sellerName: string;
   updateAt: string;
   recentMessage: string;
 };
