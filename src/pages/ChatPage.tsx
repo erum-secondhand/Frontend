@@ -4,25 +4,39 @@ import { FetchChatCards } from "../dataType";
 import { useNavigate } from "react-router-dom";
 import api from "../baseURL/baseURL";
 import useCheckLoginStatus from "../services/authService";
+import { useRecoilValue } from "recoil";
+import { userState } from "../userState";
 
 function ChatPage() {
   const navigate = useNavigate();
   const [chatCardData, setChatCardData] = useState<FetchChatCards[] | null>(null);
-  const isLoggedIn = useCheckLoginStatus();
 
+  const isLoggedIn = useCheckLoginStatus();
+  const userStateValue = useRecoilValue(userState);
+
+  // 서버에서 채팅 목록을 가져오는 함수
   const fetchUserChatCards = async () => {
     try {
       const response = await api.get<FetchChatCards[]>(
         `chat/list`,
         { withCredentials: true }
       );
-      setChatCardData(response.data);
+
+      // user가 참가한 채팅방만 받아오기
+      const filteredChatCards = response.data.filter(
+        (chatCard) =>
+          chatCard.sellerId === userStateValue.user.id ||
+          chatCard.buyerId === userStateValue.user.id
+      );
+
+      setChatCardData(filteredChatCards);
     } catch (e) {
       alert('Error fetching chat cards');
       console.error(e);
     }
   };
 
+  // 로그인 상태를 체크하고, 로그인되어 있으면 채팅 목록을 가져오는 함수
   useEffect(() => {
     const checkLoginAndFetchData = async () => {
       if (isLoggedIn !== null) {
@@ -48,8 +62,11 @@ function ChatPage() {
             <ChatCard
               key={index}
               id={chatCard.id}
-              otherPerson={chatCard.otherPerson}
-              updateAt={chatCard.updateAt}
+              buyerId={chatCard.buyerId}
+              buyerName={chatCard.buyerName}
+              sellerId={chatCard.sellerId}
+              sellerName={chatCard.sellerName}
+              updatedAt={chatCard.updatedAt} 
               recentMessage={chatCard.recentMessage}
             />
           ))
