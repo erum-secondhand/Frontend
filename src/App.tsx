@@ -21,7 +21,7 @@ function App() {
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/sell" element={<SellPage />} />
         <Route path="/chat" element={<ChatPage />} />
-        <Route path="/chat/:buyerId/:sellerId/room/:bookId" element={<ChatRoomPage />} />
+        <Route path="/chat/:buyerId/:sellerId/:bookId/room/:chatRoomId" element={<ChatRoomPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/mypage/:id" element={<MyPage />} />
