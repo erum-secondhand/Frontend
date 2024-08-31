@@ -1,16 +1,34 @@
 export type ChatMessage = {
   id: number;
-  senderId: number;
+  personId: number;
   content: string;
   timestamp: Date;
 };
 
 export type ChatRoom = {
   id: number;
-  book: number;
-  seller: number;
-  buyer: number;
-  updatedAt: Date;
+  createAt: string;
+  updateAt: string;
+  deleteAt: string | null;
+  book: {
+    id: number;
+    createAt: string;
+    updateAt: string;
+    deleteAt: string | null;
+    imageUrls: string;
+    title: string;
+    publisher: string;
+    grade: string;
+    price: string;
+    description: string;
+    type: string;
+    condition: string;
+    kakaoLink: string;
+    salesStatus: string;
+    userId: number;
+  }
+  seller: SignUp;
+  buyer: SignUp;
 };
 
 export type FetchChatCards = {
