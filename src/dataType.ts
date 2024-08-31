@@ -37,6 +37,7 @@ export type FetchChatCards = {
   buyerName: string;
   sellerId: number;
   sellerName: string;
+  bookId: number;
   updatedAt: string;
   recentMessage: string;
 };
