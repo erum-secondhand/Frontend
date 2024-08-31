@@ -399,11 +399,10 @@ function DetailPage() {
         userStateValue.user &&
         detailPostcardData &&
         userStateValue.user.id === detailPostcardData?.userId ? (
-          <div className="w-full">
-            {/* 게시글 수정 버튼 */}
+          <div>
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 px-3 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
                 onClick={moveToUpdatePage}
               >
@@ -412,11 +411,11 @@ function DetailPage() {
             </div>
           </div>
         ) : (
-          <div className="w-full">
+          <div>
             {/* 채팅 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 px-3 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
                 onClick={moveToChatPage}
               >
