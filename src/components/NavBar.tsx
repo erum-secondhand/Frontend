@@ -77,7 +77,7 @@ function NavBar() {
     navigate('/sell');
   };
 
-  // 채팅 목록 페이지로 이동 ('/chat/:id')
+  // 채팅 목록 페이지로 이동 ('/chat')
   const moveToChatPage = () => {
     navigate(`/chat`);
   }
@@ -214,7 +214,7 @@ function NavBar() {
               onClick={moveToMainPageWithRefresh}
             />
             {/* 1024px 이상일 경우 검색바 나타남(채팅하기 페이지 제외) */}
-            <div className={`hidden ${!currentPath.includes('/chat/') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}>
+            <div className={`hidden ${!currentPath.includes('/chat') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}>
               <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
                 <div
                   className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
@@ -244,7 +244,7 @@ function NavBar() {
             {/* 검색 및 햄버거 아이콘 (1024px 미만) */}
             <div className="flex lg:hidden">
               {/* 채팅하기 페이지에서는 검색 아이콘 숨김 */}
-              {!currentPath.includes('/chat/') && (
+              {!currentPath.includes('/chat') && (
                 <img
                   src={searchIcon}
                   alt="검색"
@@ -361,7 +361,7 @@ function NavBar() {
               )}
               {userStateValue.isLoggedIn && (
                 <button
-                  className={`${currentPath.includes('/chat/') ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
+                  className={`${currentPath.includes('/chat') ? 'text-orange-500' : 'text-gray-950'} ${userStateValue.isLoggedIn ? 'h-1/4' : 'h-1/2'} w-full py-3 active:bg-gray-200 md:text-lg`}
                   type="button"
                   onClick={() => {
                     setMenuOpen(false);
