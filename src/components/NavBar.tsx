@@ -199,7 +199,7 @@ function NavBar() {
         <div className="sticky top-0 z-50 border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem] md:px-10">
             {/* 채팅방일 경우 뒤로가기 버튼 나타남 */}
-            {currentPath.includes('/room/') && (
+            {currentPath.includes('/room/') && !menuOpen && (
               <img
                 src={prevIcon}
                 alt="prev"
