@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { BookDto, FetchDetailPostCard } from '../dataType';
+import { BookDto, ChatRoom, FetchDetailPostCard } from '../dataType';
 import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
 import { userState } from '../userState';
@@ -137,14 +137,32 @@ function DetailPage() {
     });
   };
 
-  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/room/:bookId')
-  const moveToChatPage = () => {
+  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/room/:chatRoomId')
+  const moveToChatPage = async () => {
     if (detailPostcardData) {
       const { userId, bookDto } = detailPostcardData;
       const { id: sellerId } = userStateValue.user;
       const { id: bookId } = bookDto;
 
-      navigate(`/chat/${userId}/${sellerId}/room/${bookId}`);
+      try {
+        const response = await api.get<ChatRoom>(
+          'chat/room',
+          {
+            params: {
+              sellerId,
+              buyerId: userId,
+              bookId,
+            },
+            withCredentials: true
+          }
+        )
+
+        const chatRoomId = response.data.id;
+
+        navigate(`/chat/${userId}/${sellerId}/${bookId}/room/${chatRoomId}`);
+      } catch (e) {
+        console.error('채팅방 정보를 가져오는 데 실패했습니다:', e);
+      }
     }
   };
 

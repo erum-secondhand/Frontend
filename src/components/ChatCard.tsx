@@ -4,14 +4,20 @@ import { userState } from '../userState';
 import { FetchChatCards } from "../dataType";
 import chatUserIcon from '../assets/chatUserIcon.svg';
 
-
 function ChatCard(props: FetchChatCards) {
   const navigate = useNavigate();
   const userStateValue = useRecoilValue(userState);
   
-  // 채팅방 페이지로 이동 ('/chat/:buyerId/:sellerId/room/:bookId')
+  // 채팅방 페이지로 이동 ('/chat/:buyerId/:sellerId/:bookId/room/:bookId')
   const moveToChatRoomPage = () => {
-    navigate(`/chat/${props.buyerId}/${props.sellerId}/room/${props.id}`);
+    if (props) {
+      const sellerId = props.sellerId;
+      const buyerId = props.buyerId;
+      const bookId = props.bookId;
+      const chatRoomId = props.id;
+
+      navigate(`/chat/${buyerId}/${sellerId}/${bookId}/room/${chatRoomId}`);
+    }
   };
   
   // 마지막 업데이트 날짜와 시간 format
