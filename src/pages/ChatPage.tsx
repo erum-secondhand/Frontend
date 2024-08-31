@@ -21,7 +21,7 @@ function ChatPage() {
         `chat/list`,
         { withCredentials: true }
       );
-
+      
       // user가 참가한 채팅방만 받아오기
       const filteredChatCards = response.data.filter(
         (chatCard) =>
@@ -66,6 +66,7 @@ function ChatPage() {
               buyerName={chatCard.buyerName}
               sellerId={chatCard.sellerId}
               sellerName={chatCard.sellerName}
+              bookId={chatCard.bookId}
               updatedAt={chatCard.updatedAt} 
               recentMessage={chatCard.recentMessage}
             />
