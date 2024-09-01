@@ -1,89 +1,96 @@
-import React, { useEffect, useRef, useState, KeyboardEvent } from 'react';
-import io, { Socket } from 'socket.io-client';
-import sendIcon from '../assets/sendIcon.svg';
+import React, { useEffect, useRef, useState } from 'react';
+import io from 'socket.io-client';
 import api from '../baseURL/baseURL';
-import { ChatMessage, ChatRoom } from '../dataType';
-import { useParams } from 'react-router-dom';
+import { ChatMessage, ChatRoom, FetchChatMessage } from '../dataType';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { userState } from '../userState';
+import sendIcon from '../assets/sendIcon.svg';
 
 // WebSocket URL
-const SOCKET_URL = 'http://localhost:8080';
+const socket = io('http://localhost:8080');
 
 function ChatRoomPage() {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const navigate = useNavigate();
+  const { buyerId: buyerIdParam, sellerId: sellerIdParam, bookId: bookIdParam, chatRoomId: chatRoomIdParam } = useParams();
+  const userStateValue = useRecoilValue(userState);
+
+  const buyerId = buyerIdParam ? parseInt(buyerIdParam, 10) : NaN;
+  const sellerId = sellerIdParam ? parseInt(sellerIdParam, 10) : NaN;
+  const chatRoomId = chatRoomIdParam ? parseInt(chatRoomIdParam, 10) : NaN;
+  const bookId = bookIdParam ? parseInt(bookIdParam, 10) : NaN;
+
+  const [messages, setMessages] = useState<FetchChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [isComposing, setIsComposing] = useState(false);
   const [chatRoom, setChatRoom] = useState<ChatRoom | null>(null);
 
-  const { userId, roomId } = useParams<{ userId: string; roomId: string }>();
-
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const socketConnection = io(SOCKET_URL);
-    setSocket(socketConnection);
-  
-    socketConnection.on('connect', () => {
-      const socketId = socketConnection.id; // WebSocket ID
+    // 로그아웃 상태이거나 판매자 혹은 구매자 아닐 경우
+    if (!userStateValue.user.id || (userStateValue.user.id !== buyerId && userStateValue.user.id !== sellerId)) {
+      alert('올바른 접근이 아닙니다.');
+      navigate('/');
+      return;
+    }
+
+    socket.connect();
+    socket.emit('roomJoined', { chatRoomId });
+
+    socket.on('sendMessage', (message: FetchChatMessage) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    // 채팅방 정보 가져오기
       const fetchChatRoomDetails = async () => {
         try {
-          const response = await api.get<ChatRoom>(
-            'chat/room',
-            { 
-              params: { sellerId: 2, buyerId: 1, bookId: roomId, socketId },
-              withCredentials: true 
-            }
-          );
+        const response = await api.get(`chat/room`, {
+          params: {
+            sellerId,
+            buyerId,
+            bookId
+          },
+          withCredentials: true,
+        });
           setChatRoom(response.data);
         } catch (error) {
-          console.error('Failed to fetch chat room details:', error);
+        console.error('채팅방 정보를 가져오는 데 실패했습니다:', error);
         }
       };
   
       fetchChatRoomDetails();
-    });
   
     return () => {
-      socketConnection.disconnect();
+      socket.emit('leaveRoom', { chatRoomId });
+      socket.disconnect();
     };
-  }, []);  
+  }, [buyerId, sellerId, bookId, chatRoomId, userStateValue.user.id, navigate]);
 
   useEffect(() => {
-    if (socket && chatRoom?.id) {
-      socket.emit('roomJoined', chatRoom.id);
-    }
-    return () => {
-      if (socket && chatRoom?.id) {
-        socket.emit('leaveRoom', chatRoom.id);
-      }
-    };
-  }, [socket, chatRoom]);
+    window.scrollTo(0, document.body.scrollHeight);
+  }, [messages]);
 
-  const sendMessage = async () => {
-    if (inputMessage.trim() === '' || isSending || !userId || !socket) return;
-
-    const userIdNumber = parseInt(userId, 10);
-
-    const newMessage: ChatMessage = {
-      id: Date.now(),
-      senderId: userIdNumber,
-      content: inputMessage,
-      timestamp: new Date(),
-    };
+  // 메시지 전송
+  const sendMessage = () => {
+    if (inputMessage.trim() === '' || !socket) return;
 
     setIsSending(true);
-    try {
-      socket.emit('sendMessage', { chatRoomId: chatRoom?.id, ...newMessage });
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+
+    const messageData: ChatMessage = {
+      chatRoomId,
+      personId: userStateValue.user.id,
+      content: inputMessage.trim(),
+    };
+
+    socket.emit('sendMessage', messageData, () => {
       setInputMessage('');
-    } finally {
       setIsSending(false);
-    }
+    });
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isComposing) {
       e.preventDefault();
       sendMessage();
