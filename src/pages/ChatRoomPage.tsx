@@ -44,8 +44,8 @@ function ChatRoomPage() {
     });
 
     // 채팅방 정보 가져오기
-      const fetchChatRoomDetails = async () => {
-        try {
+    const fetchChatRoomDetails = async () => {
+      try {
         const response = await api.get(`chat/room`, {
           params: {
             sellerId,
@@ -54,14 +54,14 @@ function ChatRoomPage() {
           },
           withCredentials: true,
         });
-          setChatRoom(response.data);
-        } catch (error) {
+        setChatRoom(response.data);
+      } catch (error) {
         console.error('채팅방 정보를 가져오는 데 실패했습니다:', error);
-        }
-      };
-  
-      fetchChatRoomDetails();
-  
+      }
+    };
+
+    fetchChatRoomDetails();
+
     return () => {
       socket.emit('leaveRoom', { chatRoomId });
       socket.disconnect();
@@ -146,51 +146,63 @@ function ChatRoomPage() {
   };
 
   return (
-    <div className="flex-1 flex-col p-4 text-black overflow-y-auto">
-      <div
-        ref={chatContainerRef}
-        className="flex-1 pb-20"
-      >
+    <div className="flex flex-col">
+      {/* 채팅 메시지 영역 */}
+      <div className="flex-1 overflow-y-auto p-5 mb-16" ref={chatContainerRef}>
+        {/* 책 정보 */}
+        {chatRoom && (
+          <div className="flex flex-row justify-between items-center w-full text-sm py-3 px-5 rounded-xl bg-gray-100 shadow-md mb-5">
+            <h3 className="font-bold">
+              <div>
+                [{chatRoom.book.salesStatus}({chatRoom.book.type}/{chatRoom.book.condition})]
+              </div>
+              <div>
+                {chatRoom.book.title}
+              </div>
+            </h3>
+            <p className="text-sm text-gray-600">{chatRoom.book.price}원</p>
+          </div>
+        )}
         {messages.map((message, index) => (
           (message.chatRoom.id === chatRoomId && (
-          <React.Fragment key={message.id}>
-            {shouldShowDate(index) && (
-              <div className="text-center my-4 text-gray-400">
+            <React.Fragment key={message.id}>
+              {shouldShowDate(index) && (
+                <div className="text-center my-4 text-gray-400">
                   {formatDate(message.updateAt)}
-              </div>
-            )}
-            <article className="mb-2 last:mb-0">
+                </div>
+              )}
+              <article className="mb-2 last:mb-0">
                 <div key={index} className={`mb-2 flex items-end ${message.person.id === userStateValue.user.id ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
                   <div className={`max-w-[60%] p-2 rounded-lg ${message.person.id === userStateValue.user.id ? 'bg-blue-400 text-white' : 'bg-gray-300 text-black'}`}>
                     {message.content}
-                </div>
-                <div className={`flex flex-col text-xs text-gray-400 mt-1 ${
+                  </div>
+                  <div className={`flex flex-col text-xs text-gray-400 mt-1 ${
                     message.person.id === userStateValue.user.id ? 'mr-2' : 'ml-2'
-                }`}>
+                  }`}>
                     <span>{formatTime(message.updateAt)}</span>
+                  </div>
                 </div>
-              </div>
-            </article>
-          </React.Fragment>
+              </article>
+            </React.Fragment>
           ))
         ))}
       </div>
       {/* 메시지 입력 영역 */}
       <div className="fixed w-full bottom-0 p-4 border-t rounded-t-2xl bg-white">
         <div className="flex items-center">
-        <input
-          type="text"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          onKeyDown={handleKeyDown}
-          onCompositionStart={handleCompositionStart}
-          onCompositionEnd={handleCompositionEnd}
+          <input
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onCompositionStart={handleCompositionStart}
+            onCompositionEnd={handleCompositionEnd}
             placeholder="메시지를 입력하세요..."
             className="flex-1 py-2 px-4 border rounded-full focus:outline-none text-sm"
-        />
-        <button
-          onClick={sendMessage}
-          disabled={isSending}
+          />
+          <button 
+            onClick={sendMessage} 
+            disabled={isSending}
             className="text-white rounded-r-lg ml-2"
           >
             <img
@@ -198,7 +210,7 @@ function ChatRoomPage() {
               alt="send"
               className="w-8 h-8"
             />
-        </button>
+          </button>
         </div>
       </div>
     </div>
