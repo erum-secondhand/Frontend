@@ -157,7 +157,7 @@ function NavBar() {
     <>
       {/* 검색 바 */}
       {searchClicked ? (
-        <div className="sticky top-0 z-[60] mx-auto border-b-[1px] border-gray-200">
+        <div className="fixed z-[60] mx-auto border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
             <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-100 md:h-12">
               <div
