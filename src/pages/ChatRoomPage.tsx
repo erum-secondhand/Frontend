@@ -37,10 +37,11 @@ function ChatRoomPage() {
     }
 
     socket.connect();
-    socket.emit('roomJoined', { chatRoomId });
 
     socket.on('sendMessage', (message: FetchChatMessage) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+      if(message.chatRoom.id === chatRoomId) {
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
     });
 
     // 채팅방 정보 가져오기
@@ -54,7 +55,8 @@ function ChatRoomPage() {
           },
           withCredentials: true,
         });
-        setChatRoom(response.data);
+        setChatRoom(response.data.chatRoom);
+        setMessages(response.data.messages);
       } catch (error) {
         console.error('채팅방 정보를 가져오는 데 실패했습니다:', error);
       }
@@ -85,10 +87,9 @@ function ChatRoomPage() {
       content: inputMessage.trim(),
     };
 
-    socket.emit('sendMessage', messageData, () => {
-      setInputMessage('');
-      setIsSending(false);
-    });
+    socket.emit('sendMessage', messageData);
+    setInputMessage('');
+    setIsSending(false);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -164,7 +165,7 @@ function ChatRoomPage() {
           </div>
         )}
         {messages.map((message, index) => (
-          (message.chatRoom.id === chatRoomId && (
+          (message && (
             <React.Fragment key={message.id}>
               {shouldShowDate(index) && (
                 <div className="text-center my-4 text-gray-400">
