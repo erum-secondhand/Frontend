@@ -1,9 +1,23 @@
 export type ChatMessage = {
-  id: number;
+  chatRoomId: number;
   personId: number;
   content: string;
-  timestamp: Date;
 };
+
+export type FetchChatMessage = {
+  chatRoom: {
+    createAt: string;
+    deleteAt: string | null;
+    id: number;
+    updateAt: string;
+  };
+  content: string;
+  createAt: string;
+  deleteAt: string | null;
+  id: number;
+  person: SignUp;
+  updateAt: string;
+}
 
 export type ChatRoom = {
   id: number;
