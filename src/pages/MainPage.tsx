@@ -27,8 +27,6 @@ function MainPage() {
   // const [bookType, setBookType] = useState<string>('');
   // const [bookCondition, setBookCondition] = useState<string>('');
 
-  const [postCardData, setPostCardData] = useState<FetchPostCards[]>([]);
-
   const searchPostCards = useRecoilValue(searchPostCardsState);
 
   // 모든 상태를 초기화하는 함수
