@@ -38,6 +38,7 @@ function ChatRoomPage() {
 
     socket.connect();
 
+    // 수신된 메세지 받기
     socket.on('sendMessage', (message: FetchChatMessage) => {
       if(message.chatRoom.id === chatRoomId) {
         setMessages((prevMessages) => [...prevMessages, message]);
@@ -55,7 +56,10 @@ function ChatRoomPage() {
           },
           withCredentials: true,
         });
+        // 채팅방 정보 저장
         setChatRoom(response.data.chatRoom);
+
+        // 채팅 기록 저장
         setMessages(response.data.messages);
       } catch (error) {
         console.error('채팅방 정보를 가져오는 데 실패했습니다:', error);
@@ -92,6 +96,7 @@ function ChatRoomPage() {
     setIsSending(false);
   };
 
+  // 메세지 입력바 엔터키 이벤트 핸들러
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isComposing) {
       e.preventDefault();
@@ -107,6 +112,7 @@ function ChatRoomPage() {
     setIsComposing(false);
   };
 
+  // '2024. 01. 01' 형식으로 날짜 출력
   function formatDate(isoString: string): string {
     const date = new Date(isoString);
     const options: Intl.DateTimeFormatOptions = { 
@@ -116,7 +122,7 @@ function ChatRoomPage() {
     };
     return new Intl.DateTimeFormat('ko-KR', options).format(date);
   }
-  
+  // '오후 9:00' 형식으로 시간 출력
   function formatTime(isoString: string): string {
     const date = new Date(isoString);
     const options: Intl.DateTimeFormatOptions = {
@@ -128,6 +134,7 @@ function ChatRoomPage() {
     return new Intl.DateTimeFormat('ko-KR', options).format(date);
   }  
 
+  // 메세지끼리 전송 날짜가 다를 때 상단에 날짜 표시할지 여부 반환
   const shouldShowDate = (currentIndex: number): boolean => {
     if (currentIndex === 0) return true;
     
