@@ -43,36 +43,32 @@ function MainPage() {
   // };
 
   // 포스트카드 GET API 요청 함수
-  const fetchPostCards = async ({ pageParam = 1 }) => {
+  const fetchPostCards = async (pageParam: number) => {
     try {
-      const response = await api.get('/books', {
-        params: {
-          pageNum: pageParam,
-        },
-      });
-      return response.data; // response.data가 postCard 배열을 포함하는 전체 데이터로 가정
+      const response = await api.get(`/books?pageNum=${pageParam}`);
+      return response.data;
     } catch (e) {
       alert(e);
-      throw e; // 오류를 throw해서 queryFn이 인식할 수 있게 함
+      throw e;
     }
   };
 
-  // 컴포넌트 마운트 시 실행
   // useInfiniteQuery 사용하여 데이터 가져오기
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['postCards'],
-    queryFn: async ({ pageParam = 0 }) => {
+    queryFn: async ({ pageParam = 1 }) => {
       return fetchPostCards(pageParam);
     },
+
     getNextPageParam: (lastPage, allPages) => {
-      if (lastPage === null) {
+      if (!lastPage || lastPage.data.length === 0) {
         return undefined;
       }
-      return allPages.length;
+      return allPages.length + 1;
     },
-    initialPageParam: 0,
+    initialPageParam: 1,
   });
 
   useEffect(() => {
@@ -84,9 +80,9 @@ function MainPage() {
         }
       },
       {
-        root: null, // 기본적으로 브라우저 뷰포트를 root로 사용
+        root: null,
         rootMargin: '0px',
-        threshold: 0.1, // 타겟 요소가 10% 보이면 콜백 실행
+        threshold: 0.1,
       },
     );
     if (loadMoreRef.current) observer.observe(loadMoreRef.current);
@@ -516,7 +512,7 @@ function MainPage() {
             }}
           />
         ) : null} */}
-        <div ref={loadMoreRef} className="h-1 w-full bg-[#FFF3B7]" />
+        <div ref={loadMoreRef} />
       </div>
     </>
   );
