@@ -137,7 +137,7 @@ function DetailPage() {
     });
   };
 
-  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/room/:chatRoomId')
+  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/:bookId/room/:chatRoomId')
   const moveToChatPage = async () => {
     if (detailPostcardData) {
       const { userId, bookDto } = detailPostcardData;
