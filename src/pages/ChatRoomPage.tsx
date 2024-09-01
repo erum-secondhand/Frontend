@@ -68,6 +68,7 @@ function ChatRoomPage() {
     };
   }, [buyerId, sellerId, bookId, chatRoomId, userStateValue.user.id, navigate]);
 
+  // 메시지 업데이트 후 스크롤을 맨 아래로 이동
   useEffect(() => {
     window.scrollTo(0, document.body.scrollHeight);
   }, [messages]);
@@ -105,22 +106,42 @@ function ChatRoomPage() {
     setIsComposing(false);
   };
 
-  const formatTime = (timestamp: Date) => {
-    const date = new Date(timestamp);
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours >= 12 ? '오후' : '오전'} ${hours % 12 || 12}:${minutes}`;
-  };
+  function formatDate(isoString: string): string {
+    const date = new Date(isoString);
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'numeric', 
+      day: 'numeric' 
+    };
+    return new Intl.DateTimeFormat('ko-KR', options).format(date);
+  }
+  
+  function formatTime(isoString: string): string {
+    const date = new Date(isoString);
+    const options: Intl.DateTimeFormatOptions = {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      timeZone: 'Asia/Seoul'
+    };
+    return new Intl.DateTimeFormat('ko-KR', options).format(date);
+  }  
 
-  const formatDate = (timestamp: Date) => {
-    const date = new Date(timestamp);
-    return `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`;
-  };
-
-  const shouldShowDate = (currentIndex: number) => {
+  const shouldShowDate = (currentIndex: number): boolean => {
     if (currentIndex === 0) return true;
-    const currentMessageDate = new Date(messages[currentIndex].timestamp).toDateString();
-    const previousMessageDate = new Date(messages[currentIndex - 1].timestamp).toDateString();
+    
+    const currentMessage = new Date(messages[currentIndex].updateAt);
+    const prevMessage = new Date(messages[currentIndex - 1].updateAt);
+
+    const options: Intl.DateTimeFormatOptions = { 
+      year: 'numeric', 
+      month: 'numeric', 
+      day: 'numeric' 
+    };
+
+    const currentMessageDate = new Intl.DateTimeFormat('ko-KR', options).format(currentMessage);
+    const previousMessageDate = new Intl.DateTimeFormat('ko-KR', options).format(prevMessage);
+  
     return currentMessageDate !== previousMessageDate;
   };
 
@@ -131,55 +152,54 @@ function ChatRoomPage() {
         className="flex-1 pb-20"
       >
         {messages.map((message, index) => (
+          (message.chatRoom.id === chatRoomId && (
           <React.Fragment key={message.id}>
             {shouldShowDate(index) && (
               <div className="text-center my-4 text-gray-400">
-                {formatDate(message.timestamp)}
+                  {formatDate(message.updateAt)}
               </div>
             )}
             <article className="mb-2 last:mb-0">
-              <div
-                className={`flex items-end ${
-                  parseInt(userId || '0', 10) === message.senderId ? 'flex-row-reverse justify-start' : 'flex-row justify-start'
-                }`}
-              >
-                <div
-                  className={`max-w-[60%] p-3 text-sm rounded-xl ${
-                    parseInt(userId || '0', 10) === message.senderId
-                      ? 'bg-blue-200 text-gray-800'
-                      : 'bg-gray-300 text-gray-800'
-                  }`}
-                >
-                  <p>{message.content}</p>
+                <div key={index} className={`mb-2 flex items-end ${message.person.id === userStateValue.user.id ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}>
+                  <div className={`max-w-[60%] p-2 rounded-lg ${message.person.id === userStateValue.user.id ? 'bg-blue-400 text-white' : 'bg-gray-300 text-black'}`}>
+                    {message.content}
                 </div>
                 <div className={`flex flex-col text-xs text-gray-400 mt-1 ${
-                  parseInt(userId || '0', 10) === message.senderId ? 'mr-2' : 'ml-2'
+                    message.person.id === userStateValue.user.id ? 'mr-2' : 'ml-2'
                 }`}>
-                  <span>{formatTime(message.timestamp)}</span>
+                    <span>{formatTime(message.updateAt)}</span>
                 </div>
               </div>
             </article>
           </React.Fragment>
+          ))
         ))}
       </div>
-      <div className="fixed bottom-0 left-0 w-full flex bg-white p-4 shadow-black shadow-2xl rounded-t-lg">
+      {/* 메시지 입력 영역 */}
+      <div className="fixed w-full bottom-0 p-4 border-t rounded-t-2xl bg-white">
+        <div className="flex items-center">
         <input
-          ref={inputRef}
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           onCompositionStart={handleCompositionStart}
           onCompositionEnd={handleCompositionEnd}
-          placeholder="메시지 보내기"
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-full mr-2"
+            placeholder="메시지를 입력하세요..."
+            className="flex-1 py-2 px-4 border rounded-full focus:outline-none text-sm"
         />
         <button
           onClick={sendMessage}
           disabled={isSending}
-        >
-          <img src={sendIcon} alt="send" className="h-10 w-10" />
+            className="text-white rounded-r-lg ml-2"
+          >
+            <img
+              src={sendIcon}
+              alt="send"
+              className="w-8 h-8"
+            />
         </button>
+        </div>
       </div>
     </div>
   );
