@@ -5,7 +5,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import { FetchPostCards } from '../dataType';
@@ -13,6 +13,7 @@ import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
 import banner from '../assets/banner.png';
 import useCheckLoginStatus from '../services/authService';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 function MainPage() {
   useCheckLoginStatus();
@@ -44,20 +45,58 @@ function MainPage() {
   // };
 
   // 포스트카드 GET API 요청 함수
-  const fetchPostCards = async () => {
+  const fetchPostCards = async ({ pageParam = 1 }) => {
     try {
-      const response = await api.get<FetchPostCards[]>('/books');
-      setPostCardData(response.data);
+      const response = await api.get('/books', {
+        params: {
+          pageNum: pageParam,
+        },
+      });
+      return response.data; // response.data가 postCard 배열을 포함하는 전체 데이터로 가정
     } catch (e) {
       alert(e);
+      throw e; // 오류를 throw해서 queryFn이 인식할 수 있게 함
     }
   };
 
   // 컴포넌트 마운트 시 실행
+  // useInfiniteQuery 사용하여 데이터 가져오기
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ['postCards'],
+    queryFn: async ({ pageParam = 0 }) => {
+      return fetchPostCards(pageParam);
+    },
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage === null) {
+        return undefined;
+      }
+      return allPages.length;
+    },
+    initialPageParam: 0,
+  });
+
   useEffect(() => {
-    // 포스트카드 fetch 함수
-    fetchPostCards();
-  }, []);
+    if (!hasNextPage) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      {
+        root: null, // 기본적으로 브라우저 뷰포트를 root로 사용
+        rootMargin: '0px',
+        threshold: 0.1, // 타겟 요소가 10% 보이면 콜백 실행
+      },
+    );
+    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+
+    return () => {
+      if (loadMoreRef.current) observer.disconnect();
+    };
+  }, [hasNextPage, fetchNextPage, loadMoreRef.current]);
 
   return (
     <>
@@ -93,17 +132,19 @@ function MainPage() {
           </div>
         ) : (
           <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[759px] md:justify-start 2xl:w-[1240px]">
-            {postCardData.map((post) => (
-              <PostCard
-                key={post.id}
-                id={post.id}
-                imageUrls={post.imageUrls}
-                title={post.title}
-                publisher={post.publisher}
-                price={post.price}
-                salesStatus={post.salesStatus}
-              />
-            ))}
+            {data?.pages.map((page) =>
+              page.data.map((post: FetchPostCards) => (
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  imageUrls={post.imageUrls}
+                  title={post.title}
+                  publisher={post.publisher}
+                  price={post.price}
+                  salesStatus={post.salesStatus}
+                />
+              )),
+            )}
           </div>
         )}
         {/* 필터 및 정렬  -> 필요하면 사용 */}
@@ -477,6 +518,7 @@ function MainPage() {
             }}
           />
         ) : null} */}
+        <div ref={loadMoreRef} className="h-1 w-full bg-[#FFF3B7]" />
       </div>
     </>
   );
