@@ -43,6 +43,7 @@ export type ChatRoom = {
   }
   seller: SignUp;
   buyer: SignUp;
+  messages: FetchChatMessage[];
 };
 
 export type FetchChatCards = {
