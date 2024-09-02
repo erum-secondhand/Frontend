@@ -5,17 +5,21 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import api from '../baseURL/baseURL';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
 import banner from '../assets/banner.png';
 import useCheckLoginStatus from '../services/authService';
+import { FetchPostCardsResponse } from '../api/user';
 
 function MainPage() {
   useCheckLoginStatus();
+  const searchPostCards = useRecoilValue(searchPostCardsState);
+
   // 필터 필요시 사용
   // const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   // 정렬 필요시 사용
@@ -25,10 +29,6 @@ function MainPage() {
   // const [grade, setGrade] = useState<string>('');
   // const [bookType, setBookType] = useState<string>('');
   // const [bookCondition, setBookCondition] = useState<string>('');
-
-  const [postCardData, setPostCardData] = useState<FetchPostCards[]>([]);
-
-  const searchPostCards = useRecoilValue(searchPostCardsState);
 
   // 모든 상태를 초기화하는 함수
   // const resetFilters = () => {
@@ -44,20 +44,56 @@ function MainPage() {
   // };
 
   // 포스트카드 GET API 요청 함수
-  const fetchPostCards = async () => {
+  const fetchPostCards = async (pageParam: number) => {
     try {
-      const response = await api.get<FetchPostCards[]>('/books');
-      setPostCardData(response.data);
+      const response = await api.get<FetchPostCardsResponse>(
+        `/books?pageNum=${pageParam}`,
+      );
+      return response.data;
     } catch (e) {
       alert(e);
+      throw e;
     }
   };
 
-  // 컴포넌트 마운트 시 실행
+  // useInfiniteQuery 사용하여 데이터 가져오기
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ['postCards'],
+    queryFn: async ({ pageParam = 1 }) => {
+      return fetchPostCards(pageParam);
+    },
+
+    getNextPageParam: (lastPage, allPages) => {
+      if (!lastPage || lastPage.data.length === 0) {
+        return undefined;
+      }
+      return allPages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+
   useEffect(() => {
-    // 포스트카드 fetch 함수
-    fetchPostCards();
-  }, []);
+    if (!hasNextPage) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1,
+      },
+    );
+    if (loadMoreRef.current) observer.observe(loadMoreRef.current);
+
+    // return () => {
+    //   if (loadMoreRef.current) observer.disconnect();
+    // };
+  }, [hasNextPage, fetchNextPage, loadMoreRef]);
 
   return (
     <>
@@ -93,17 +129,19 @@ function MainPage() {
           </div>
         ) : (
           <div className="mx-auto my-0 mt-2 flex w-full flex-wrap justify-between text-left md:w-[759px] md:justify-start 2xl:w-[1240px]">
-            {postCardData.map((post) => (
-              <PostCard
-                key={post.id}
-                id={post.id}
-                imageUrls={post.imageUrls}
-                title={post.title}
-                publisher={post.publisher}
-                price={post.price}
-                salesStatus={post.salesStatus}
-              />
-            ))}
+            {data?.pages.map((page) =>
+              page.data.map((post: FetchPostCards) => (
+                <PostCard
+                  key={post.id}
+                  id={post.id}
+                  imageUrls={post.imageUrls}
+                  title={post.title}
+                  publisher={post.publisher}
+                  price={post.price}
+                  salesStatus={post.salesStatus}
+                />
+              )),
+            )}
           </div>
         )}
         {/* 필터 및 정렬  -> 필요하면 사용 */}
@@ -478,6 +516,7 @@ function MainPage() {
           />
         ) : null} */}
       </div>
+      <div ref={loadMoreRef} style={{ height: '1px' }} />
     </>
   );
 }

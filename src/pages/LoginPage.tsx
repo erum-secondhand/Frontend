@@ -112,20 +112,29 @@ function LoginPage() {
                   )}
                 </div>
               </div>
-              <div className="mx-auto flex items-center space-x-3">
-                <span className="text-base">회원이 아니십니까?</span>
+              <div className="mx-auto flex items-center space-x-2 whitespace-nowrap sm:space-x-3">
+                <span className="text-sm sm:text-base">회원이 아니십니까?</span>
                 <span
-                  className="cursor-pointer text-base font-semibold text-green-600"
+                  className="cursor-pointer text-sm font-semibold text-green-600 hover:underline sm:text-base"
                   onClick={() => {
                     navigate('/register');
                   }}
                 >
                   회원가입
                 </span>
+                <div className="flex h-4 w-[1px] bg-gray-400" />
+                <span
+                  className="cursor-pointer text-sm font-semibold text-gray-800 hover:underline sm:text-base"
+                  onClick={() => {
+                    navigate('/password/reset');
+                  }}
+                >
+                  비밀번호 찾기
+                </span>
               </div>
               {/* 로그인 버튼 */}
               <div className="w-full">
-                <div className="my-8 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
+                <div className="my-6 flex w-full items-center justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px]">
                   <button
                     className="h-12 w-full rounded-3xl border border-transparent bg-white font-semibold md:h-14 md:text-lg"
                     type="button"
