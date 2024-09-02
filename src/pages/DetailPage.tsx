@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { BookDto, ChatRoom, FetchDetailPostCard } from '../dataType';
+import { BookDto, ChatRoomResponse, FetchDetailPostCard } from '../dataType';
 import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
 import { userState } from '../userState';
@@ -145,19 +145,16 @@ function DetailPage() {
       const { id: bookId } = bookDto;
 
       try {
-        const response = await api.get<ChatRoom>(
-          'chat/room',
-          {
-            params: {
-              sellerId,
-              buyerId: userId,
-              bookId,
-            },
-            withCredentials: true
-          }
-        )
+        const response = await api.get<ChatRoomResponse>('chat/room', {
+          params: {
+            sellerId,
+            buyerId: userId,
+            bookId,
+          },
+          withCredentials: true,
+        });
 
-        const chatRoomId = response.data.id;
+        const chatRoomId = response.data.chatRoom.id;
 
         navigate(`/chat/${userId}/${sellerId}/${bookId}/room/${chatRoomId}`);
       } catch (e) {
@@ -420,9 +417,9 @@ function DetailPage() {
           <div>
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 px-3 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
-                onClick={moveToUpdatePage}
+                // onClick={moveToUpdatePage}
               >
                 게시글 수정하기
               </button>
@@ -433,7 +430,7 @@ function DetailPage() {
             {/* 채팅 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 px-3 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
                 onClick={moveToChatPage}
               >

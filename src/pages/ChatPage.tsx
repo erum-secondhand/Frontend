@@ -1,15 +1,17 @@
-import { useEffect, useState } from "react";
-import ChatCard from "../components/ChatCard";
-import { FetchChatCards } from "../dataType";
-import { useNavigate } from "react-router-dom";
-import api from "../baseURL/baseURL";
-import useCheckLoginStatus from "../services/authService";
-import { useRecoilValue } from "recoil";
-import { userState } from "../userState";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import ChatCard from '../components/ChatCard';
+import { FetchChatCards } from '../dataType';
+import api from '../baseURL/baseURL';
+import useCheckLoginStatus from '../services/authService';
+import { userState } from '../userState';
 
 function ChatPage() {
   const navigate = useNavigate();
-  const [chatCardData, setChatCardData] = useState<FetchChatCards[] | null>(null);
+  const [chatCardData, setChatCardData] = useState<FetchChatCards[] | null>(
+    null,
+  );
 
   const isLoggedIn = useCheckLoginStatus();
   const userStateValue = useRecoilValue(userState);
@@ -17,16 +19,15 @@ function ChatPage() {
   // 서버에서 채팅 목록을 가져오는 함수
   const fetchUserChatCards = async () => {
     try {
-      const response = await api.get<FetchChatCards[]>(
-        `chat/list`,
-        { withCredentials: true }
-      );
-      
+      const response = await api.get<FetchChatCards[]>(`chat/list`, {
+        withCredentials: true,
+      });
+
       // user가 참가한 채팅방만 받아오기
       const filteredChatCards = response.data.filter(
         (chatCard) =>
           chatCard.sellerId === userStateValue.user.id ||
-          chatCard.buyerId === userStateValue.user.id
+          chatCard.buyerId === userStateValue.user.id,
       );
 
       setChatCardData(filteredChatCards);
@@ -53,9 +54,9 @@ function ChatPage() {
   }, [isLoggedIn, navigate]);
 
   return (
-    <section className="mx-auto my-0 flex w-full h-full flex-col items-start px-5 sm:w-[599px]">
-      <div className="font-bold text-lg mt-5 ml-2">채팅목록</div>
-      <section className="w-full mt-3 flex flex-col gap-4 pb-10">
+    <section className="mx-auto my-0 flex h-full w-full flex-col items-start px-5 sm:w-[599px]">
+      <div className="ml-2 mt-5 text-lg font-bold">채팅목록</div>
+      <section className="mt-3 flex w-full flex-col gap-4 pb-10">
         {/* 채팅 카드 */}
         {chatCardData && chatCardData.length > 0 ? (
           chatCardData.map((chatCard, index) => (
@@ -67,12 +68,12 @@ function ChatPage() {
               sellerId={chatCard.sellerId}
               sellerName={chatCard.sellerName}
               bookId={chatCard.bookId}
-              updatedAt={chatCard.updatedAt} 
+              updatedAt={chatCard.updatedAt}
               recentMessage={chatCard.recentMessage}
             />
           ))
         ) : (
-          <div className="text-sm text-gray-500 ml-2">
+          <div className="ml-2 text-sm text-gray-500">
             참여 중인 채팅방이 없습니다.
           </div>
         )}

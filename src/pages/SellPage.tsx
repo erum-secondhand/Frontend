@@ -75,7 +75,6 @@ function SellPage() {
   // 오픈채팅방 링크 유효 검사 및 입력 이벤트 핸들러
   const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    console.log('openChatLink:', value);
     setOpenChatLink(value);
     // 링크가 https://open.kakao.com/o/ 로 시작하는지 검사
     // setIsValidLink(value.startsWith('https://open.kakao.com/o/'));\

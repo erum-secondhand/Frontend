@@ -17,7 +17,12 @@ export type FetchChatMessage = {
   id: number;
   person: SignUp;
   updateAt: string;
-}
+};
+
+export type ChatRoomResponse = {
+  chatRoom: ChatRoom;
+  messages: FetchChatMessage[];
+};
 
 export type ChatRoom = {
   id: number;
@@ -40,10 +45,9 @@ export type ChatRoom = {
     kakaoLink: string;
     salesStatus: string;
     userId: number;
-  }
+  };
   seller: SignUp;
   buyer: SignUp;
-  messages: FetchChatMessage[];
 };
 
 export type FetchChatCards = {
