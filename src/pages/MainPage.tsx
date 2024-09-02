@@ -14,9 +14,12 @@ import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
 import banner from '../assets/banner.png';
 import useCheckLoginStatus from '../services/authService';
+import { FetchPostCardsResponse } from '../api/user';
 
 function MainPage() {
   useCheckLoginStatus();
+  const searchPostCards = useRecoilValue(searchPostCardsState);
+
   // 필터 필요시 사용
   // const [isFilterOpen, setIsFilterOpen] = useState<boolean>(false);
   // 정렬 필요시 사용
@@ -26,8 +29,6 @@ function MainPage() {
   // const [grade, setGrade] = useState<string>('');
   // const [bookType, setBookType] = useState<string>('');
   // const [bookCondition, setBookCondition] = useState<string>('');
-
-  const searchPostCards = useRecoilValue(searchPostCardsState);
 
   // 모든 상태를 초기화하는 함수
   // const resetFilters = () => {
@@ -45,7 +46,9 @@ function MainPage() {
   // 포스트카드 GET API 요청 함수
   const fetchPostCards = async (pageParam: number) => {
     try {
-      const response = await api.get(`/books?pageNum=${pageParam}`);
+      const response = await api.get<FetchPostCardsResponse>(
+        `/books?pageNum=${pageParam}`,
+      );
       return response.data;
     } catch (e) {
       alert(e);
