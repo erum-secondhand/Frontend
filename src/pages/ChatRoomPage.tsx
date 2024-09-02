@@ -41,9 +41,8 @@ function ChatRoomPage() {
   useEffect(() => {
     // 로그아웃 상태이거나 판매자 혹은 구매자 아닐 경우
     if (
-      !userStateValue.user.id ||
-      (userStateValue.user.id !== buyerId &&
-        userStateValue.user.id !== sellerId)
+      !userStateValue.id ||
+      (userStateValue.id !== buyerId && userStateValue.id !== sellerId)
     ) {
       alert('올바른 접근이 아닙니다.');
       navigate('/');
@@ -86,7 +85,7 @@ function ChatRoomPage() {
       socket.emit('leaveRoom', { chatRoomId });
       socket.disconnect();
     };
-  }, [buyerId, sellerId, bookId, chatRoomId, userStateValue.user.id, navigate]);
+  }, [buyerId, sellerId, bookId, chatRoomId, userStateValue.id, navigate]);
 
   // 메시지 업데이트 후 스크롤을 맨 아래로 이동
   useEffect(() => {
@@ -101,7 +100,7 @@ function ChatRoomPage() {
 
     const messageData: ChatMessage = {
       chatRoomId,
-      personId: userStateValue.user.id,
+      personId: userStateValue.id,
       content: inputMessage.trim(),
     };
 
@@ -201,16 +200,16 @@ function ChatRoomPage() {
                 <article className="mb-2 last:mb-0">
                   <div
                     key={index}
-                    className={`mb-2 flex items-end ${message.person.id === userStateValue.user.id ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
+                    className={`mb-2 flex items-end ${message.person.id === userStateValue.id ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   >
                     <div
-                      className={`max-w-[60%] rounded-lg p-2 ${message.person.id === userStateValue.user.id ? 'bg-blue-400 text-white' : 'bg-gray-300 text-black'}`}
+                      className={`max-w-[60%] rounded-lg p-2 ${message.person.id === userStateValue.id ? 'bg-blue-400 text-white' : 'bg-gray-300 text-black'}`}
                     >
                       {message.content}
                     </div>
                     <div
                       className={`mt-1 flex flex-col text-xs text-gray-400 ${
-                        message.person.id === userStateValue.user.id
+                        message.person.id === userStateValue.id
                           ? 'mr-2'
                           : 'ml-2'
                       }`}

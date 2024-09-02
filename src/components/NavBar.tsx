@@ -90,7 +90,7 @@ function NavBar() {
 
   // 마이 페이지로 이동 ('/mypage/:id')
   const moveToMyPage = () => {
-    navigate(`/mypage/${userStateValue.user.id}`);
+    navigate(`/mypage/${userStateValue.id}`);
   };
 
   // 검색 API 요청

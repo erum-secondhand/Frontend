@@ -47,7 +47,7 @@ function MyPage() {
   const fetchUserPostCards = async () => {
     try {
       const response = await api.get<FetchUserPostCards>(
-        `books/${userStateValue.user.id}`,
+        `books/${userStateValue.id}`,
         { withCredentials: true },
       );
       setUserPostCardData(response.data);
@@ -81,10 +81,10 @@ function MyPage() {
             <span className="text-nowrap">이메일</span>
           </div>
           <div className="flex flex-col items-start space-y-4 text-lg md:text-xl">
-            <span className="">{userStateValue.user.name}</span>
-            <span className="">{userStateValue.user.studentId}</span>
-            <span className="">{userStateValue.user.major}</span>
-            <span className="">{userStateValue.user.email}</span>
+            <span className="">{userStateValue.name}</span>
+            <span className="">{userStateValue.studentId}</span>
+            <span className="">{userStateValue.major}</span>
+            <span className="">{userStateValue.email}</span>
           </div>
         </div>
         <button
