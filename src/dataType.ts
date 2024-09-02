@@ -15,7 +15,7 @@ export type FetchChatMessage = {
   createAt: string;
   deleteAt: string | null;
   id: number;
-  person: SignUp;
+  person: SignUpResponse;
   updateAt: string;
 };
 
@@ -42,12 +42,11 @@ export type ChatRoom = {
     description: string;
     type: string;
     condition: string;
-    kakaoLink: string;
     salesStatus: string;
     userId: number;
   };
-  seller: SignUp;
-  buyer: SignUp;
+  seller: SignUpResponse;
+  buyer: SignUpResponse;
 };
 
 export type FetchChatCards = {
@@ -59,23 +58,6 @@ export type FetchChatCards = {
   bookId: number;
   updatedAt: string;
   recentMessage: string;
-};
-
-export type PostBookSell = {
-  id: number;
-  images: string[];
-  title: string;
-  publisher: string;
-  grade: string;
-  price: string;
-  description: string;
-  type: string;
-  condition: string;
-  kakaoLink: string;
-  salesStatus: string;
-  createAt: string;
-  deleteAt: string | null;
-  updateAt: string;
 };
 
 export type FetchPostCards = {
@@ -97,7 +79,6 @@ export type BookDto = {
   description: string;
   type: string;
   condition: string;
-  kakaoLink: string;
   salesStatus: string;
   createAt: string;
   deleteAt: string | null;
@@ -139,7 +120,6 @@ type UserPostCards = {
   description: string;
   type: string;
   condition: string;
-  kakaoLink: string;
   salesStatus: string;
   createAt: string;
   updateAt: string;
