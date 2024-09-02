@@ -1,24 +1,17 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-alert */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-console */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable react/no-array-index-key */
-import React, { useRef } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { BookDto, FetchDetailPostCard } from '../dataType';
+import { BookDto, ChatRoomResponse, FetchDetailPostCard } from '../dataType';
 import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
 import { userState } from '../userState';
 import cancelIcon from '../assets/cancelIcon.svg';
+import expandLeftIcon from '../assets/expandLeft.svg';
+import expandRightIcon from '../assets/expandRight.svg';
 
 function DetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -69,6 +62,26 @@ function DetailPage() {
   //   return `${Math.floor(differenceInSeconds / year)}년 전`;
   // };
 
+  const carouselLeftArrowClick = () => {
+    const carouselPrevButton = document.querySelector(
+      '.control-arrow.control-prev',
+    );
+
+    if (carouselPrevButton) {
+      (carouselPrevButton as HTMLElement).click();
+    }
+  };
+
+  const carouselRightArrowClick = () => {
+    const carouselNextButton = document.querySelector(
+      '.control-arrow.control-next',
+    );
+
+    if (carouselNextButton) {
+      (carouselNextButton as HTMLElement).click();
+    }
+  };
+
   // 특정 서적 내용 조회 API 요청 함수
   const fetchDetailPostCard = async () => {
     try {
@@ -113,15 +126,41 @@ function DetailPage() {
   };
 
   // 카카오톡 오픈채팅 링크 이동
-  const moveToOpenChatLink = () => {
-    window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
-  };
+  // const moveToOpenChatLink = () => {
+  //   window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
+  // };
 
   // 수정 페이지로 이동 ('/update/:id')
-  const moveToUpdatePage = () => {
-    navigate(`/update/${id}`, {
-      state: { detailPostcardData },
-    });
+  // const moveToUpdatePage = () => {
+  //   navigate(`/update/${id}`, {
+  //     state: { detailPostcardData },
+  //   });
+  // };
+
+  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/:bookId/room/:chatRoomId')
+  const moveToChatPage = async () => {
+    if (detailPostcardData) {
+      const { userId, bookDto } = detailPostcardData;
+      const { id: sellerId } = userStateValue.user;
+      const { id: bookId } = bookDto;
+
+      try {
+        const response = await api.get<ChatRoomResponse>('chat/room', {
+          params: {
+            sellerId,
+            buyerId: userId,
+            bookId,
+          },
+          withCredentials: true,
+        });
+
+        const chatRoomId = response.data.chatRoom.id;
+
+        navigate(`/chat/${userId}/${sellerId}/${bookId}/room/${chatRoomId}`);
+      } catch (e) {
+        console.error('채팅방 정보를 가져오는 데 실패했습니다:', e);
+      }
+    }
   };
 
   // 드롭다운 바깥 클릭 감지
@@ -161,7 +200,7 @@ function DetailPage() {
   return (
     <div className="box-content flex w-full flex-col items-center sm:mt-2 md:mt-4">
       {/* 책 이미지 */}
-      <div className="w-full overflow-hidden sm:w-[599px] sm:rounded-md lg:w-[677px] lg:rounded-lg">
+      <div className="relative w-full overflow-hidden sm:w-[599px] sm:rounded-md lg:w-[677px] lg:rounded-lg">
         {detailPostcardData?.bookDto.imageUrls ? (
           <Carousel
             axis="horizontal"
@@ -169,6 +208,7 @@ function DetailPage() {
             showArrows={false}
             showStatus={false}
             swipeable
+            infiniteLoop
             showThumbs={false}
             useKeyboardArrows
           >
@@ -193,6 +233,26 @@ function DetailPage() {
         ) : (
           <div>Loading...</div>
         )}
+        {/* 이미지 좌우 화살표 */}
+        {detailPostcardData?.bookDto.imageUrls &&
+          detailPostcardData?.bookDto.imageUrls.length > 1 && (
+            <>
+              <button
+                type="button"
+                className="absolute left-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black bg-opacity-50 transition hover:bg-opacity-70"
+                onClick={carouselLeftArrowClick}
+              >
+                <img src={expandLeftIcon} alt="이전" className="w-full" />
+              </button>
+              <button
+                type="button"
+                className="absolute right-2 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-black bg-opacity-50 transition hover:bg-opacity-70"
+                onClick={carouselRightArrowClick}
+              >
+                <img src={expandRightIcon} alt="다음" className="w-full" />
+              </button>
+            </>
+          )}
       </div>
       {/* 이미지 클릭 시 전체 확대 */}
       {isImageClicked && typeof bookImageIndex === 'number' && (
@@ -355,12 +415,11 @@ function DetailPage() {
         detailPostcardData &&
         userStateValue.user.id === detailPostcardData?.userId ? (
           <div>
-            {/* 게시글 수정 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
-                onClick={moveToUpdatePage}
+                // onClick={moveToUpdatePage}
               >
                 게시글 수정하기
               </button>
@@ -371,9 +430,9 @@ function DetailPage() {
             {/* 채팅 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
-                onClick={moveToOpenChatLink}
+                onClick={moveToChatPage}
               >
                 판매자와 채팅하기
               </button>

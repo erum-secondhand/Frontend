@@ -1,3 +1,66 @@
+export type ChatMessage = {
+  chatRoomId: number;
+  personId: number;
+  content: string;
+};
+
+export type FetchChatMessage = {
+  chatRoom: {
+    createAt: string;
+    deleteAt: string | null;
+    id: number;
+    updateAt: string;
+  };
+  content: string;
+  createAt: string;
+  deleteAt: string | null;
+  id: number;
+  person: SignUp;
+  updateAt: string;
+};
+
+export type ChatRoomResponse = {
+  chatRoom: ChatRoom;
+  messages: FetchChatMessage[];
+};
+
+export type ChatRoom = {
+  id: number;
+  createAt: string;
+  updateAt: string;
+  deleteAt: string | null;
+  book: {
+    id: number;
+    createAt: string;
+    updateAt: string;
+    deleteAt: string | null;
+    imageUrls: string;
+    title: string;
+    publisher: string;
+    grade: string;
+    price: string;
+    description: string;
+    type: string;
+    condition: string;
+    kakaoLink: string;
+    salesStatus: string;
+    userId: number;
+  };
+  seller: SignUp;
+  buyer: SignUp;
+};
+
+export type FetchChatCards = {
+  id: number;
+  buyerId: number;
+  buyerName: string;
+  sellerId: number;
+  sellerName: string;
+  bookId: number;
+  updatedAt: string;
+  recentMessage: string;
+};
+
 export type PostBookSell = {
   id: number;
   images: string[];
