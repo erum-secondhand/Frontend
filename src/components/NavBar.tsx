@@ -21,6 +21,7 @@ import '../theme.css';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import { userState } from '../userState';
+import { LogOutResponse } from '../api/user';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -123,21 +124,19 @@ function NavBar() {
   // 로그아웃 API 요청
   const logOutRequest = async () => {
     try {
-      const response = await api.post<string>(
+      const response = await api.post<LogOutResponse>(
         '/users/logout',
         {},
         { withCredentials: true },
       );
-      if (response.status === 200) {
+      if (response.data.status === 200) {
         setUserStateValue({
           isLoggedIn: false,
-          user: {
-            email: '',
-            id: 0,
-            major: '',
-            name: '',
-            studentId: '',
-          },
+          email: '',
+          id: 0,
+          major: '',
+          name: '',
+          studentId: '',
         });
       }
       moveToMainPageWithRefresh();
