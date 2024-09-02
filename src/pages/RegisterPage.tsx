@@ -98,7 +98,7 @@ function RegisterPage() {
         setTimerActive(true);
         setTimer(299);
         setEmailVerificationClicked(true);
-        const response = await api.post<string>('users/verify', {
+        const response = await api.post<string>('auth/send', {
           email,
         });
         if (response.status === 200) {
