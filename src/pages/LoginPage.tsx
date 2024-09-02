@@ -44,7 +44,6 @@ function LoginPage() {
           },
           { withCredentials: true },
         );
-        console.log(response.data);
         if (response.data.status === 200) {
           window.location.href = '/';
         }
