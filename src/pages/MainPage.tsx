@@ -5,15 +5,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import api from '../baseURL/baseURL';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import PostCard from '../components/PostCard';
 import banner from '../assets/banner.png';
 import useCheckLoginStatus from '../services/authService';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
 function MainPage() {
   useCheckLoginStatus();
@@ -87,10 +87,10 @@ function MainPage() {
     );
     if (loadMoreRef.current) observer.observe(loadMoreRef.current);
 
-    return () => {
-      if (loadMoreRef.current) observer.disconnect();
-    };
-  }, [hasNextPage, fetchNextPage, loadMoreRef.current]);
+    // return () => {
+    //   if (loadMoreRef.current) observer.disconnect();
+    // };
+  }, [hasNextPage, fetchNextPage, loadMoreRef]);
 
   return (
     <>
@@ -512,8 +512,8 @@ function MainPage() {
             }}
           />
         ) : null} */}
-        <div ref={loadMoreRef} />
       </div>
+      <div ref={loadMoreRef} style={{ height: '1px' }} />
     </>
   );
 }
