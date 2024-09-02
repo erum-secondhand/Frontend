@@ -121,9 +121,12 @@ export type SignUpResponse = {
   };
 };
 
-export type SignIn = {
-  id: number;
-  message: string;
+export type SignInResponse = {
+  status: number;
+  code: string;
+  data: {
+    id: number;
+  };
 };
 
 type UserPostCards = {
