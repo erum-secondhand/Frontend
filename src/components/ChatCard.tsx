@@ -64,7 +64,7 @@ function ChatCard(props: FetchChatCards) {
         <div className="flex w-2/3 flex-col">
           {/* 상대방 이름 */}
           <h2 className="mr-2 w-full font-semibold">
-            {userStateValue.user.id === props.sellerId
+            {userStateValue.id === props.sellerId
               ? props.buyerName
               : props.sellerName}
           </h2>

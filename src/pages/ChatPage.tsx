@@ -26,8 +26,8 @@ function ChatPage() {
       // user가 참가한 채팅방만 받아오기
       const filteredChatCards = response.data.filter(
         (chatCard) =>
-          chatCard.sellerId === userStateValue.user.id ||
-          chatCard.buyerId === userStateValue.user.id,
+          chatCard.sellerId === userStateValue.id ||
+          chatCard.buyerId === userStateValue.id,
       );
 
       setChatCardData(filteredChatCards);

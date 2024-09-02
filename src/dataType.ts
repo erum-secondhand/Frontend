@@ -15,7 +15,7 @@ export type FetchChatMessage = {
   createAt: string;
   deleteAt: string | null;
   id: number;
-  person: SignUp;
+  person: SignUpResponse;
   updateAt: string;
 };
 
@@ -42,12 +42,11 @@ export type ChatRoom = {
     description: string;
     type: string;
     condition: string;
-    kakaoLink: string;
     salesStatus: string;
     userId: number;
   };
-  seller: SignUp;
-  buyer: SignUp;
+  seller: SignUpResponse;
+  buyer: SignUpResponse;
 };
 
 export type FetchChatCards = {
@@ -59,23 +58,6 @@ export type FetchChatCards = {
   bookId: number;
   updatedAt: string;
   recentMessage: string;
-};
-
-export type PostBookSell = {
-  id: number;
-  images: string[];
-  title: string;
-  publisher: string;
-  grade: string;
-  price: string;
-  description: string;
-  type: string;
-  condition: string;
-  kakaoLink: string;
-  salesStatus: string;
-  createAt: string;
-  deleteAt: string | null;
-  updateAt: string;
 };
 
 export type FetchPostCards = {
@@ -97,7 +79,6 @@ export type BookDto = {
   description: string;
   type: string;
   condition: string;
-  kakaoLink: string;
   salesStatus: string;
   createAt: string;
   deleteAt: string | null;
@@ -109,20 +90,24 @@ export type FetchDetailPostCard = {
   userId: number;
 };
 
-export type SignUp = {
-  id: number;
-  email: string;
-  name: string;
-  studentId: string;
-  major: string;
-  createAt: string;
-  deleteAt: string | null;
-  updateAt: string;
+export type SignUpResponse = {
+  status: number;
+  code: string;
+  data: {
+    id: number;
+    email: string;
+    name: string;
+    studentId: string;
+    major: string;
+  };
 };
 
-export type SignIn = {
-  id: number;
-  message: string;
+export type SignInResponse = {
+  status: number;
+  code: string;
+  data: {
+    id: number;
+  };
 };
 
 type UserPostCards = {
@@ -135,7 +120,6 @@ type UserPostCards = {
   description: string;
   type: string;
   condition: string;
-  kakaoLink: string;
   salesStatus: string;
   createAt: string;
   updateAt: string;
