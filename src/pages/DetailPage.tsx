@@ -131,11 +131,11 @@ function DetailPage() {
   // };
 
   // 수정 페이지로 이동 ('/update/:id')
-  const moveToUpdatePage = () => {
-    navigate(`/update/${id}`, {
-      state: { detailPostcardData },
-    });
-  };
+  // const moveToUpdatePage = () => {
+  //   navigate(`/update/${id}`, {
+  //     state: { detailPostcardData },
+  //   });
+  // };
 
   // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/:bookId/room/:chatRoomId')
   const moveToChatPage = async () => {

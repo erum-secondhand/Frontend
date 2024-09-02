@@ -23,8 +23,8 @@ function SellPage() {
   const [selectedGrade, setSelectedGrade] = useState<string>('');
   const [selectedSort, setSelectedSort] = useState<string>('');
   const [selectedBookState, setSelectedBookState] = useState<string>('중고');
-  const [openChatLink, setOpenChatLink] = useState<string>('');
-  const [isValidLink, setIsValidLink] = useState<boolean>(true);
+  // const [openChatLink, setOpenChatLink] = useState<string>('');
+  // const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
@@ -73,12 +73,12 @@ function SellPage() {
   };
 
   // 오픈채팅방 링크 유효 검사 및 입력 이벤트 핸들러
-  const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setOpenChatLink(value);
-    // 링크가 https://open.kakao.com/o/ 로 시작하는지 검사
-    // setIsValidLink(value.startsWith('https://open.kakao.com/o/'));\
-  };
+  // const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = event.target;
+  //   setOpenChatLink(value);
+  //   // 링크가 https://open.kakao.com/o/ 로 시작하는지 검사
+  //   // setIsValidLink(value.startsWith('https://open.kakao.com/o/'));\
+  // };
 
   // 사진파일 변경 이벤트 핸들러
   const handleFileChange = async (
@@ -239,7 +239,7 @@ function SellPage() {
           formData.append('description', trimmedDescription);
           formData.append('type', selectedSort);
           formData.append('condition', selectedBookState);
-          formData.append('kakaoLink', openChatLink);
+          // formData.append('kakaoLink', openChatLink);
 
           await api.post('/books', formData, {
             headers: {
@@ -454,7 +454,7 @@ function SellPage() {
               </div>
             </div>
             {/* 오픈채팅방 링크 */}
-            <div className="block">
+            {/* <div className="block">
               <input
                 id="bookTitle"
                 name="bookTitle"
@@ -463,7 +463,6 @@ function SellPage() {
                 className="h-11 min-h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-black transition duration-200 ease-in-out focus:border-black focus:outline-none md:h-12 md:px-5 md:text-base"
                 autoComplete="off"
                 spellCheck="false"
-                aria-invalid={!isValidLink}
                 value={openChatLink.trim()}
                 onChange={handleLinkChange}
               />
@@ -473,7 +472,7 @@ function SellPage() {
                   합니다.
                 </p>
               )}
-            </div>
+            </div> */}
           </section>
         </div>
         {/* 책 등록 버튼 */}

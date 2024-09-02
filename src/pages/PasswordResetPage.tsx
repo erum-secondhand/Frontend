@@ -24,8 +24,8 @@ function PasswordResetPage() {
   const [isValideVericationCode, setIsValideVericationCode] =
     useState<boolean>(true);
 
-  const [isPasswordResetSuccessful, setIsPasswordResetSuccessful] =
-    useState<boolean>(false);
+  // const [isPasswordResetSuccessful, setIsPasswordResetSuccessful] =
+  //   useState<boolean>(false);
 
   const [verificationCode, setVerificationCode] = useState<string>('');
 
@@ -134,11 +134,11 @@ function PasswordResetPage() {
         );
         if (response.data.status === 200) {
           alert(response.data.data);
-          setIsPasswordResetSuccessful(true);
+          // setIsPasswordResetSuccessful(true);
           navigate('/login');
         } else if (response.data.status === 409) {
           alert(response.data.data);
-          setIsPasswordResetSuccessful(false);
+          // setIsPasswordResetSuccessful(false);
           setNewPassword('');
           setNewPasswordConfirm('');
         }
