@@ -75,9 +75,10 @@ function SellPage() {
   // 오픈채팅방 링크 유효 검사 및 입력 이벤트 핸들러
   const handleLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
+    console.log('openChatLink:', value);
     setOpenChatLink(value);
     // 링크가 https://open.kakao.com/o/ 로 시작하는지 검사
-    setIsValidLink(value.startsWith('https://open.kakao.com/o/'));
+    // setIsValidLink(value.startsWith('https://open.kakao.com/o/'));\
   };
 
   // 사진파일 변경 이벤트 핸들러
@@ -216,9 +217,9 @@ function SellPage() {
         selectedSort &&
         bookPrice &&
         bookDescription &&
-        selectedBookState &&
-        openChatLink &&
-        isValidLink
+        selectedBookState
+        // openChatLink &&
+        // isValidLink
       ) {
         try {
           // 마지막에 위치한 불필요한 개행 문자 제거

@@ -1,20 +1,11 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-alert */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-console */
-/* eslint-disable import/no-duplicates */
-/* eslint-disable react/no-array-index-key */
-import React, { useRef } from 'react';
-import { useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Carousel } from 'react-responsive-carousel';
 import { useRecoilValue } from 'recoil';
 import api from '../baseURL/baseURL';
 import checkIcon from '../assets/check.svg';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { BookDto, FetchDetailPostCard } from '../dataType';
+import { BookDto, ChatRoom, FetchDetailPostCard } from '../dataType';
 import upDownArrow from '../assets/upDownArrow.svg';
 import useCheckLoginStatus from '../services/authService';
 import { userState } from '../userState';
@@ -135,15 +126,44 @@ function DetailPage() {
   };
 
   // 카카오톡 오픈채팅 링크 이동
-  const moveToOpenChatLink = () => {
-    window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
-  };
+  // const moveToOpenChatLink = () => {
+  //   window.open(`${detailPostcardData?.bookDto.kakaoLink}`, '_blank');
+  // };
 
   // 수정 페이지로 이동 ('/update/:id')
   const moveToUpdatePage = () => {
     navigate(`/update/${id}`, {
       state: { detailPostcardData },
     });
+  };
+
+  // 채팅방으로 이동 ('/chat/:buyerId/:sellerId/:bookId/room/:chatRoomId')
+  const moveToChatPage = async () => {
+    if (detailPostcardData) {
+      const { userId, bookDto } = detailPostcardData;
+      const { id: sellerId } = userStateValue.user;
+      const { id: bookId } = bookDto;
+
+      try {
+        const response = await api.get<ChatRoom>(
+          'chat/room',
+          {
+            params: {
+              sellerId,
+              buyerId: userId,
+              bookId,
+            },
+            withCredentials: true
+          }
+        )
+
+        const chatRoomId = response.data.id;
+
+        navigate(`/chat/${userId}/${sellerId}/${bookId}/room/${chatRoomId}`);
+      } catch (e) {
+        console.error('채팅방 정보를 가져오는 데 실패했습니다:', e);
+      }
+    }
   };
 
   // 드롭다운 바깥 클릭 감지
@@ -398,10 +418,9 @@ function DetailPage() {
         detailPostcardData &&
         userStateValue.user.id === detailPostcardData?.userId ? (
           <div>
-            {/* 게시글 수정 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 px-3 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
                 onClick={moveToUpdatePage}
               >
@@ -414,9 +433,9 @@ function DetailPage() {
             {/* 채팅 버튼 */}
             <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
               <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
+                className="md:h-13 h-11 px-3 w-full rounded-3xl border border-transparent bg-white font-semibold sm:w-[599px] lg:w-[677px]"
                 type="button"
-                onClick={moveToOpenChatLink}
+                onClick={moveToChatPage}
               >
                 판매자와 채팅하기
               </button>
