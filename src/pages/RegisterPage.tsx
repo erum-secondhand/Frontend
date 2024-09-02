@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
-import { SignUp } from '../dataType';
+import { SignUpResponse } from '../dataType';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -150,7 +150,7 @@ function RegisterPage() {
       verificationCode
     ) {
       try {
-        const response = await api.post<SignUp>('/users/register', {
+        const response = await api.post<SignUpResponse>('/users/register', {
           email,
           password,
           name: userName,
@@ -158,7 +158,7 @@ function RegisterPage() {
           major: selectedMajor,
           verificationCode,
         });
-        if (response.status === 201) {
+        if (response.data.status === 201) {
           navigate('/login');
         }
       } catch (e: any) {

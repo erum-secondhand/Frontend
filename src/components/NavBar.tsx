@@ -80,7 +80,7 @@ function NavBar() {
   // 채팅 목록 페이지로 이동 ('/chat')
   const moveToChatPage = () => {
     navigate(`/chat`);
-  }
+  };
 
   // 로그인 페이지로 이동 ('/login')
   const moveToLoginPage = () => {
@@ -203,7 +203,7 @@ function NavBar() {
               <img
                 src={prevIcon}
                 alt="prev"
-                className="w-4 mr-3 hover:cursor-pointer lg:mr-56"
+                className="mr-3 w-4 hover:cursor-pointer lg:mr-56"
                 onClick={moveToChatPage}
               />
             )}
@@ -214,7 +214,9 @@ function NavBar() {
               onClick={moveToMainPageWithRefresh}
             />
             {/* 1024px 이상일 경우 검색바 나타남(채팅하기 페이지 제외) */}
-            <div className={`hidden ${!currentPath.includes('/chat') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}>
+            <div
+              className={`hidden ${!currentPath.includes('/chat') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}
+            >
               <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
                 <div
                   className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
@@ -286,14 +288,14 @@ function NavBar() {
                 <span className="text-nowrap text-sm">판매하기</span>
               </div>
               {userStateValue.isLoggedIn && !currentPath.includes('/room/') && (
-                <div 
+                <div
                   className="flex cursor-pointer items-center space-x-1"
                   onClick={moveToChatPage}
                 >
                   <img
                     src={chatIcon}
                     alt="채팅"
-                    className="w-5 mr-1 hover:cursor-pointer"
+                    className="mr-1 w-5 hover:cursor-pointer"
                   />
                   <span className="text-nowrap text-sm">채팅하기</span>
                 </div>

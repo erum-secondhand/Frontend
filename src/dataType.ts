@@ -109,15 +109,16 @@ export type FetchDetailPostCard = {
   userId: number;
 };
 
-export type SignUp = {
-  id: number;
-  email: string;
-  name: string;
-  studentId: string;
-  major: string;
-  createAt: string;
-  deleteAt: string | null;
-  updateAt: string;
+export type SignUpResponse = {
+  status: number;
+  code: string;
+  data: {
+    id: number;
+    email: string;
+    name: string;
+    studentId: string;
+    major: string;
+  };
 };
 
 export type SignIn = {
