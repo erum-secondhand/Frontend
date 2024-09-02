@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
 import { SignUpResponse } from '../dataType';
+import { EmailAuthenticationResponse } from '../api/user';
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -98,9 +99,12 @@ function RegisterPage() {
         setTimerActive(true);
         setTimer(299);
         setEmailVerificationClicked(true);
-        const response = await api.post<string>('auth/send', {
-          email,
-        });
+        const response = await api.post<EmailAuthenticationResponse>(
+          'auth/send',
+          {
+            email,
+          },
+        );
         if (response.status === 200) {
           setIsVerificationSuccessful(true);
         }
