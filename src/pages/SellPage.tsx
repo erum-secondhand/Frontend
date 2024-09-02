@@ -26,6 +26,7 @@ function SellPage() {
   const [openChatLink, setOpenChatLink] = useState<string>('');
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const isLoggedIn = useCheckLoginStatus();
 
@@ -126,6 +127,24 @@ function SellPage() {
       // 선택된 파일들의 총 개수가 10개 이하인지 확인
       if (totalFiles <= 10) {
         setSelectedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+
+        // 이미지 미리보기
+        const newImagePreviews = await Promise.all(
+          validFiles.map((file) => {
+            return new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                resolve(reader.result as string);
+              };
+              reader.readAsDataURL(file);
+            });
+          }),
+        );
+
+        setImagePreviews((prevPreviews) => [
+          ...prevPreviews,
+          ...newImagePreviews,
+        ]);
       } else {
         alert('최대 10개의 사진만 등록할 수 있습니다.');
       }
@@ -147,30 +166,6 @@ function SellPage() {
     setSelectedFiles((currentFiles) =>
       currentFiles.filter((_, index) => index !== indexToRemove),
     );
-  };
-
-  // 선택된 파일 미리보기
-  const renderFilePreviews = () => {
-    return selectedFiles.map((file, index) => (
-      <div
-        key={index}
-        className="relative m-1 h-20 w-20 shrink-0 md:h-24 md:w-24"
-      >
-        <img
-          src={URL.createObjectURL(file)}
-          alt="preview"
-          className="h-20 w-20 rounded object-cover md:h-24 md:w-24"
-          draggable={false}
-        />
-        <img
-          src={deleteIcon}
-          alt="delete"
-          onClick={() => handleRemoveFile(index)}
-          className="absolute right-0 top-0 text-white hover:cursor-pointer"
-          draggable={false}
-        />
-      </div>
-    ));
   };
 
   // 서적 학년(1, 2, 3, 4, 기타) 선택 이벤트 핸들러
@@ -304,9 +299,28 @@ function SellPage() {
           </button>
         </div>
         {/* 선택한 사진 보여주기 */}
-        {selectedFiles.length > 0 && (
+        {imagePreviews.length > 0 && (
           <div className="mr-2 flex overflow-x-auto whitespace-nowrap rounded">
-            {renderFilePreviews()}
+            {imagePreviews.map((preview, index) => (
+              <div
+                key={index}
+                className="relative m-1 h-20 w-20 shrink-0 md:h-24 md:w-24"
+              >
+                <img
+                  src={preview}
+                  alt="preview"
+                  className="h-20 w-20 rounded object-cover md:h-24 md:w-24"
+                  draggable={false}
+                />
+                <img
+                  src={deleteIcon}
+                  alt="delete"
+                  onClick={() => handleRemoveFile(index)}
+                  className="absolute right-0 top-0 text-white hover:cursor-pointer"
+                  draggable={false}
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>

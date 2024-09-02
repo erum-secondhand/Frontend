@@ -12,15 +12,21 @@ const useCheckLoginStatus = () => {
   // 로그인 상태 확인하는 함수
   const checkLoginStatus = async () => {
     try {
-      const response = await api.get<UserState>('/users/status', {
+      const response = await api.get('/users/status', {
         withCredentials: true,
       });
       // 로그인 상태일 때 사용자 정보를 Recoil 상태에 저장
       setUser({
-        isLoggedIn: response.data.isLoggedIn,
-        user: response.data.user,
+        isLoggedIn: response.data.data.isLoggedIn,
+        user: {
+          email: response.data.data.email,
+          id: response.data.data.id,
+          major: response.data.data.major,
+          name: response.data.data.name,
+          studentId: response.data.data.studentId,
+        },
       });
-      setIsLoggedIn(response.data.isLoggedIn);
+      setIsLoggedIn(response.data.data.isLoggedIn);
     } catch (error) {
       // 로그인 상태가 아닐 때 Recoil 상태를 기본값으로 초기화
       setUser({

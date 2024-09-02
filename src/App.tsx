@@ -9,12 +9,16 @@ import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import MyPage from './pages/MyPage';
 import PasswordResetPage from './pages/PasswordResetPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// QueryClient 생성
+const queryClient = new QueryClient();
 import ChatPage from './pages/ChatPage';
 import ChatRoomPage from './pages/ChatRoomPage';
 
 function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <NavBar />
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -27,7 +31,7 @@ function App() {
         <Route path="/mypage/:id" element={<MyPage />} />
         <Route path="/password/reset" element={<PasswordResetPage />} />
       </Routes>
-    </>
+    </QueryClientProvider>
   );
 }
 
