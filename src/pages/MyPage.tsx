@@ -39,9 +39,10 @@ function MyPage() {
     }
   };
 
-  const moveToPasswordResetPage = () => {
-    navigate('/password/reset');
-  };
+  // 비밀번호 재설정 페이지로 이동
+  // const moveToPasswordResetPage = () => {
+  //   navigate('/password/reset');
+  // };
 
   // 특정 유저별 서적 필터링 및 조회 API 요청
   const fetchUserPostCards = async () => {
@@ -87,13 +88,13 @@ function MyPage() {
             <span className="">{userStateValue.email}</span>
           </div>
         </div>
-        <button
+        {/* <button
           type="button"
           className="md: flex h-11 w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-gray-300 text-lg font-semibold text-black transition hover:bg-gray-400 md:h-12 md:text-xl"
           onClick={moveToPasswordResetPage}
         >
           비밀번호 재설정
-        </button>
+        </button> */}
       </div>
       {/* 판매 분류 바 */}
       <ul className="mb-4 flex w-full flex-nowrap justify-between border-b border-[#DADEE5] sm:mb-6 lg:mb-7">
