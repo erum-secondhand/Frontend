@@ -13,7 +13,8 @@ import { userState } from '../userState';
 import sendIcon from '../assets/sendIcon.svg';
 
 // WebSocket URL
-const socket = io('http://localhost:8080');
+const productionSocketDomain = import.meta.env.VITE_SOCKET_URL;
+const socket = io(productionSocketDomain || 'http://localhost:8080');
 
 function ChatRoomPage() {
   const navigate = useNavigate();

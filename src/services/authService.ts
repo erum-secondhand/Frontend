@@ -17,7 +17,7 @@ const defaultUserState: UserState = {
 
 const useCheckLoginStatus = () => {
   const setUser = useSetRecoilState<UserState>(userState);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
   // 로그인 상태 확인하는 함수
   const checkLoginStatus = async () => {
@@ -39,7 +39,7 @@ const useCheckLoginStatus = () => {
           studentId: response.data.data.studentId,
         });
         setIsLoggedIn(response.data.data.isLoggedIn);
-      } else if (response.data.status === 401) {
+      } else {
         // 로그인 상태가 아닐 때 Recoil 상태를 기본값으로 초기화
         setUser(defaultUserState);
         setIsLoggedIn(false);

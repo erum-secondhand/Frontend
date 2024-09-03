@@ -40,14 +40,15 @@ function ChatPage() {
   // 로그인 상태를 체크하고, 로그인되어 있으면 채팅 목록을 가져오는 함수
   useEffect(() => {
     const checkLoginAndFetchData = async () => {
-      if (isLoggedIn !== null) {
-        if (isLoggedIn) {
-          await fetchUserChatCards();
-          window.scrollTo(0, 0);
-        } else {
-          alert('로그인을 해주세요.');
-          navigate('/login');
-        }
+      if (isLoggedIn === null) {
+        return;
+      }
+      if (isLoggedIn) {
+        await fetchUserChatCards();
+        window.scrollTo(0, 0);
+      } else {
+        alert('로그인을 해주세요.');
+        navigate('/login');
       }
     };
     checkLoginAndFetchData();
