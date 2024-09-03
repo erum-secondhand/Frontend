@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import ChatCard from '../components/ChatCard';
 import { FetchChatCards } from '../dataType';
 import api from '../baseURL/baseURL';
 import useCheckLoginStatus from '../services/authService';
-import { userState } from '../userState';
 
 function ChatPage() {
   const navigate = useNavigate();
@@ -14,7 +12,7 @@ function ChatPage() {
   );
 
   const isLoggedIn = useCheckLoginStatus();
-  const userStateValue = useRecoilValue(userState);
+  // const userStateValue = useRecoilValue(userState);
 
   // 서버에서 채팅 목록을 가져오는 함수
   const fetchUserChatCards = async () => {
@@ -24,13 +22,13 @@ function ChatPage() {
       });
 
       // user가 참가한 채팅방만 받아오기
-      const filteredChatCards = response.data.filter(
-        (chatCard) =>
-          chatCard.sellerId === userStateValue.id ||
-          chatCard.buyerId === userStateValue.id,
-      );
+      // const filteredChatCards = response.data.filter(
+      //   (chatCard) =>
+      //     chatCard.sellerId === userStateValue.id ||
+      //     chatCard.buyerId === userStateValue.id,
+      // );
 
-      setChatCardData(filteredChatCards);
+      setChatCardData(response.data);
     } catch (e) {
       alert('Error fetching chat cards');
       console.error(e);
