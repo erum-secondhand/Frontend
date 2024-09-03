@@ -156,7 +156,7 @@ function NavBar() {
     <>
       {/* 검색 바 */}
       {searchClicked ? (
-        <div className="fixed z-[60] mx-auto border-b-[1px] border-gray-200">
+        <div className="fixed z-[60] mx-auto w-full border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
             <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-100 md:h-12">
               <div
@@ -165,7 +165,7 @@ function NavBar() {
                 <input
                   ref={searchInputRef}
                   id="search-box"
-                  className="mx-4 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
+                  className="mx-4 h-9 w-4/5 bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
                   placeholder="책 제목을 검색해주세요"
                   aria-label="search-box"
                   autoComplete="off"
