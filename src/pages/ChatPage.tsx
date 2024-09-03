@@ -6,12 +6,12 @@ import api from '../baseURL/baseURL';
 import useCheckLoginStatus from '../services/authService';
 
 function ChatPage() {
+  const isLoggedIn = useCheckLoginStatus();
   const navigate = useNavigate();
   const [chatCardData, setChatCardData] = useState<FetchChatCards[] | null>(
     null,
   );
 
-  const isLoggedIn = useCheckLoginStatus();
   // const userStateValue = useRecoilValue(userState);
 
   // 서버에서 채팅 목록을 가져오는 함수
@@ -28,7 +28,9 @@ function ChatPage() {
       //     chatCard.buyerId === userStateValue.id,
       // );
 
-      setChatCardData(response.data);
+      const filteredChatCards = response.data;
+
+      setChatCardData(filteredChatCards);
     } catch (e) {
       alert('Error fetching chat cards');
       console.error(e);
