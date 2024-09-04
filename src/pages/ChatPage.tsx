@@ -69,6 +69,7 @@ function ChatPage() {
               sellerId={chatCard.sellerId}
               sellerName={chatCard.sellerName}
               bookId={chatCard.bookId}
+              bookTitle={chatCard.bookTitle}
               updatedAt={chatCard.updatedAt}
               recentMessage={chatCard.recentMessage}
             />
