@@ -15,8 +15,19 @@ export type FetchChatMessage = {
   createAt: string;
   deleteAt: string | null;
   id: number;
-  person: SignUpResponse;
+  person: Person;
   updateAt: string;
+};
+
+export type Person = {
+  id: number;
+  email: string;
+  name: string;
+  studentId: string;
+  major: string;
+  createdAt: string;
+  updatedAt: string;
+  deleteAt: string | null;
 };
 
 export type ChatRoomResponse = {
@@ -56,6 +67,7 @@ export type FetchChatCards = {
   sellerId: number;
   sellerName: string;
   bookId: number;
+  bookTitle: string;
   updatedAt: string;
   recentMessage: string;
 };

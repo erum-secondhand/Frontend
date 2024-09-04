@@ -39,6 +39,10 @@ const useCheckLoginStatus = () => {
           studentId: response.data.data.studentId,
         });
         setIsLoggedIn(response.data.data.isLoggedIn);
+      } else {
+        // 로그인 상태가 아닐 때 Recoil 상태를 기본값으로 초기화
+        setUser(defaultUserState);
+        setIsLoggedIn(false);
       }
     } catch (error) {
       // 로그인 상태가 아닐 때 Recoil 상태를 기본값으로 초기화

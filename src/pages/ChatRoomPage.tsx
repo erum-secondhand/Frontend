@@ -13,7 +13,8 @@ import { userState } from '../userState';
 import sendIcon from '../assets/sendIcon.svg';
 
 // WebSocket URL
-const socket = io('http://localhost:8080');
+const productionSocketDomain = import.meta.env.VITE_SOCKET_URL;
+const socket = io(productionSocketDomain || 'http://localhost:8080');
 
 function ChatRoomPage() {
   const navigate = useNavigate();
@@ -185,7 +186,9 @@ function ChatRoomPage() {
               </div>
               <div>{chatRoom.book.title}</div>
             </h3>
-            <p className="text-sm text-gray-600">{chatRoom.book.price}원</p>
+            <p className="text-base font-semibold text-gray-800">
+              {parseInt(chatRoom.book.price, 10).toLocaleString()}원
+            </p>
           </div>
         )}
         {messages.map(
@@ -203,7 +206,7 @@ function ChatRoomPage() {
                     className={`mb-2 flex items-end ${message.person.id === userStateValue.id ? 'flex-row-reverse justify-start' : 'flex-row justify-start'}`}
                   >
                     <div
-                      className={`max-w-[60%] rounded-lg p-2 ${message.person.id === userStateValue.id ? 'bg-blue-400 text-white' : 'bg-gray-300 text-black'}`}
+                      className={`max-w-[60%] break-all rounded-lg p-2 ${message.person.id === userStateValue.id ? 'bg-blue-400 text-white' : 'bg-gray-300 text-black'}`}
                     >
                       {message.content}
                     </div>
@@ -240,7 +243,11 @@ function ChatRoomPage() {
             disabled={isSending}
             className="ml-2 rounded-r-lg text-white"
           >
-            <img src={sendIcon} alt="send" className="h-8 w-8" />
+            <img
+              src={sendIcon}
+              alt="send"
+              className="h-8 min-h-8 w-8 min-w-8"
+            />
           </button>
         </div>
       </div>

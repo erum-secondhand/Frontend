@@ -1,20 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
 import ChatCard from '../components/ChatCard';
 import { FetchChatCards } from '../dataType';
 import api from '../baseURL/baseURL';
 import useCheckLoginStatus from '../services/authService';
-import { userState } from '../userState';
 
 function ChatPage() {
+  const isLoggedIn = useCheckLoginStatus();
   const navigate = useNavigate();
   const [chatCardData, setChatCardData] = useState<FetchChatCards[] | null>(
     null,
   );
 
-  const isLoggedIn = useCheckLoginStatus();
-  const userStateValue = useRecoilValue(userState);
+  // const userStateValue = useRecoilValue(userState);
 
   // 서버에서 채팅 목록을 가져오는 함수
   const fetchUserChatCards = async () => {
@@ -24,11 +22,13 @@ function ChatPage() {
       });
 
       // user가 참가한 채팅방만 받아오기
-      const filteredChatCards = response.data.filter(
-        (chatCard) =>
-          chatCard.sellerId === userStateValue.id ||
-          chatCard.buyerId === userStateValue.id,
-      );
+      // const filteredChatCards = response.data.filter(
+      //   (chatCard) =>
+      //     chatCard.sellerId === userStateValue.id ||
+      //     chatCard.buyerId === userStateValue.id,
+      // );
+
+      const filteredChatCards = response.data;
 
       setChatCardData(filteredChatCards);
     } catch (e) {
@@ -40,14 +40,15 @@ function ChatPage() {
   // 로그인 상태를 체크하고, 로그인되어 있으면 채팅 목록을 가져오는 함수
   useEffect(() => {
     const checkLoginAndFetchData = async () => {
-      if (isLoggedIn !== null) {
-        if (isLoggedIn) {
-          await fetchUserChatCards();
-          window.scrollTo(0, 0);
-        } else {
-          alert('로그인을 해주세요.');
-          navigate('/login');
-        }
+      if (isLoggedIn === null) {
+        return;
+      }
+      if (isLoggedIn) {
+        await fetchUserChatCards();
+        window.scrollTo(0, 0);
+      } else {
+        alert('로그인을 해주세요.');
+        navigate('/login');
       }
     };
     checkLoginAndFetchData();
@@ -68,6 +69,7 @@ function ChatPage() {
               sellerId={chatCard.sellerId}
               sellerName={chatCard.sellerName}
               bookId={chatCard.bookId}
+              bookTitle={chatCard.bookTitle}
               updatedAt={chatCard.updatedAt}
               recentMessage={chatCard.recentMessage}
             />

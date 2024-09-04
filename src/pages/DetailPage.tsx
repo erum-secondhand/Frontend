@@ -414,29 +414,17 @@ function DetailPage() {
         userStateValue &&
         detailPostcardData &&
         userStateValue.id === detailPostcardData?.userId ? (
-          <div>
-            <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
-              <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
-                type="button"
-                // onClick={moveToUpdatePage}
-              >
-                게시글 수정하기
-              </button>
-            </div>
-          </div>
+          ''
         ) : (
-          <div>
+          <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
             {/* 채팅 버튼 */}
-            <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
-              <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
-                type="button"
-                onClick={moveToChatPage}
-              >
-                판매자와 채팅하기
-              </button>
-            </div>
+            <button
+              className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
+              type="button"
+              onClick={moveToChatPage}
+            >
+              판매자와 채팅하기
+            </button>
           </div>
         )}
       </section>
