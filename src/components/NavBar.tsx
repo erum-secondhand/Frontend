@@ -21,6 +21,7 @@ import '../theme.css';
 import { FetchPostCards } from '../dataType';
 import { searchPostCardsState } from '../recoilState';
 import { userState } from '../userState';
+import { LogOutResponse } from '../api/user';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ function NavBar() {
   // 채팅 목록 페이지로 이동 ('/chat')
   const moveToChatPage = () => {
     navigate(`/chat`);
-  }
+  };
 
   // 로그인 페이지로 이동 ('/login')
   const moveToLoginPage = () => {
@@ -89,7 +90,7 @@ function NavBar() {
 
   // 마이 페이지로 이동 ('/mypage/:id')
   const moveToMyPage = () => {
-    navigate(`/mypage/${userStateValue.user.id}`);
+    navigate(`/mypage/${userStateValue.id}`);
   };
 
   // 검색 API 요청
@@ -123,21 +124,19 @@ function NavBar() {
   // 로그아웃 API 요청
   const logOutRequest = async () => {
     try {
-      const response = await api.post<string>(
+      const response = await api.post<LogOutResponse>(
         '/users/logout',
         {},
         { withCredentials: true },
       );
-      if (response.status === 200) {
+      if (response.data.status === 200) {
         setUserStateValue({
           isLoggedIn: false,
-          user: {
-            email: '',
-            id: 0,
-            major: '',
-            name: '',
-            studentId: '',
-          },
+          email: '',
+          id: 0,
+          major: '',
+          name: '',
+          studentId: '',
         });
       }
       moveToMainPageWithRefresh();
@@ -157,7 +156,7 @@ function NavBar() {
     <>
       {/* 검색 바 */}
       {searchClicked ? (
-        <div className="fixed z-[60] mx-auto border-b-[1px] border-gray-200">
+        <div className="fixed z-[60] mx-auto w-full border-b-[1px] border-gray-200">
           <div className="flex h-14 w-full items-center justify-between bg-white px-5 md:h-16 md:max-w-[120rem]">
             <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-100 md:h-12">
               <div
@@ -166,7 +165,7 @@ function NavBar() {
                 <input
                   ref={searchInputRef}
                   id="search-box"
-                  className="mx-4 h-9 w-full bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
+                  className="mx-4 h-9 w-4/5 bg-gray-100 text-sm text-gray-950 placeholder-gray-500 outline-none max-[340px]:mx-0 lg:h-11 lg:text-base"
                   placeholder="책 제목을 검색해주세요"
                   aria-label="search-box"
                   autoComplete="off"
@@ -203,7 +202,7 @@ function NavBar() {
               <img
                 src={prevIcon}
                 alt="prev"
-                className="w-4 mr-3 hover:cursor-pointer lg:mr-56"
+                className="mr-3 w-4 hover:cursor-pointer lg:mr-56"
                 onClick={moveToChatPage}
               />
             )}
@@ -214,7 +213,9 @@ function NavBar() {
               onClick={moveToMainPageWithRefresh}
             />
             {/* 1024px 이상일 경우 검색바 나타남(채팅하기 페이지 제외) */}
-            <div className={`hidden ${!currentPath.includes('/chat') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}>
+            <div
+              className={`hidden ${!currentPath.includes('/chat') ? 'lg:ml-24 lg:flex lg:w-1/2' : ''}`}
+            >
               <div className="mr-4 flex h-10 w-full items-center rounded-md bg-gray-200 md:h-12">
                 <div
                   className={`relative flex w-full items-center overflow-hidden rounded-md bg-gray-100 py-0.5 ${isSearchBarFocused && 'border border-solid border-gray-400 transition'}`}
@@ -286,14 +287,14 @@ function NavBar() {
                 <span className="text-nowrap text-sm">판매하기</span>
               </div>
               {userStateValue.isLoggedIn && !currentPath.includes('/room/') && (
-                <div 
+                <div
                   className="flex cursor-pointer items-center space-x-1"
                   onClick={moveToChatPage}
                 >
                   <img
                     src={chatIcon}
                     alt="채팅"
-                    className="w-5 mr-1 hover:cursor-pointer"
+                    className="mr-1 w-5 hover:cursor-pointer"
                   />
                   <span className="text-nowrap text-sm">채팅하기</span>
                 </div>

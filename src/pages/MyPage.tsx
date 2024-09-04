@@ -39,15 +39,16 @@ function MyPage() {
     }
   };
 
-  const moveToPasswordResetPage = () => {
-    navigate('/password/reset');
-  };
+  // 비밀번호 재설정 페이지로 이동
+  // const moveToPasswordResetPage = () => {
+  //   navigate('/password/reset');
+  // };
 
   // 특정 유저별 서적 필터링 및 조회 API 요청
   const fetchUserPostCards = async () => {
     try {
       const response = await api.get<FetchUserPostCards>(
-        `books/${userStateValue.user.id}`,
+        `books/${userStateValue.id}`,
         { withCredentials: true },
       );
       setUserPostCardData(response.data);
@@ -81,19 +82,19 @@ function MyPage() {
             <span className="text-nowrap">이메일</span>
           </div>
           <div className="flex flex-col items-start space-y-4 text-lg md:text-xl">
-            <span className="">{userStateValue.user.name}</span>
-            <span className="">{userStateValue.user.studentId}</span>
-            <span className="">{userStateValue.user.major}</span>
-            <span className="">{userStateValue.user.email}</span>
+            <span className="">{userStateValue.name}</span>
+            <span className="">{userStateValue.studentId}</span>
+            <span className="">{userStateValue.major}</span>
+            <span className="">{userStateValue.email}</span>
           </div>
         </div>
-        <button
+        {/* <button
           type="button"
           className="md: flex h-11 w-full items-center justify-center rounded-md border border-solid border-gray-300 bg-gray-300 text-lg font-semibold text-black transition hover:bg-gray-400 md:h-12 md:text-xl"
           onClick={moveToPasswordResetPage}
         >
           비밀번호 재설정
-        </button>
+        </button> */}
       </div>
       {/* 판매 분류 바 */}
       <ul className="mb-4 flex w-full flex-nowrap justify-between border-b border-[#DADEE5] sm:mb-6 lg:mb-7">

@@ -5,7 +5,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../baseURL/baseURL';
-import { SignIn } from '../dataType';
+import { SignInResponse } from '../dataType';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -36,7 +36,7 @@ function LoginPage() {
   const signInRequest = async () => {
     if (email && password) {
       try {
-        await api.post<SignIn>(
+        const response = await api.post<SignInResponse>(
           '/users/login',
           {
             email,
@@ -44,7 +44,9 @@ function LoginPage() {
           },
           { withCredentials: true },
         );
-        window.location.href = '/';
+        if (response.data.status === 200) {
+          window.location.href = '/';
+        }
       } catch (e) {
         alert('이메일 또는 비밀번호를 잘못 입력했습니다.');
       }

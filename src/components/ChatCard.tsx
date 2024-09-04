@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { userState } from '../userState';
 import { FetchChatCards } from '../dataType';
 import chatUserIcon from '../assets/chatUserIcon.svg';
 
 function ChatCard(props: FetchChatCards) {
   const navigate = useNavigate();
-  const userStateValue = useRecoilValue(userState);
+  // const userStateValue = useRecoilValue(userState);
 
   // 채팅방 페이지로 이동 ('/chat/:buyerId/:sellerId/:bookId/room/:bookId')
   const moveToChatRoomPage = () => {
@@ -64,9 +62,10 @@ function ChatCard(props: FetchChatCards) {
         <div className="flex w-2/3 flex-col">
           {/* 상대방 이름 */}
           <h2 className="mr-2 w-full font-semibold">
-            {userStateValue.user.id === props.sellerId
+            {/* {userStateValue.id === props.sellerId
               ? props.buyerName
-              : props.sellerName}
+              : props.sellerName} */}
+            {props.bookTitle}
           </h2>
           {/* 최근 메시지 */}
           <h3 className="mt-1 text-ellipsis text-sm text-gray-400">

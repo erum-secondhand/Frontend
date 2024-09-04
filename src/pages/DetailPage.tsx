@@ -96,7 +96,7 @@ function DetailPage() {
 
   // 거래 상태 수정 API
   const updateSalesStatus = async (selectedSalesStatus: string) => {
-    // if (userStateValue.user.id === detailPostcardData.userId)  -> 추가해야함
+    // if (userStateValue.id === detailPostcardData.userId)  -> 추가해야함
     if (detailPostcardData) {
       try {
         await api.put<BookDto>(
@@ -141,7 +141,7 @@ function DetailPage() {
   const moveToChatPage = async () => {
     if (detailPostcardData) {
       const { userId, bookDto } = detailPostcardData;
-      const { id: sellerId } = userStateValue.user;
+      const { id: sellerId } = userStateValue;
       const { id: bookId } = bookDto;
 
       try {
@@ -311,9 +311,9 @@ function DetailPage() {
           </div>
           {/* 거래 상태 드롭다운 */}
           {userStateValue &&
-            userStateValue.user &&
+            userStateValue &&
             detailPostcardData &&
-            userStateValue.user.id === detailPostcardData?.userId && (
+            userStateValue.id === detailPostcardData?.userId && (
               <div className="relative mb-3" ref={dropDownRef}>
                 <button
                   className="flex w-32 items-center justify-between rounded-lg border-[1px] border-gray-300 px-3 py-2 text-[13px] font-semibold lg:w-36 lg:px-5 lg:py-3 lg:text-[15px]"
@@ -411,32 +411,20 @@ function DetailPage() {
         </div>
         {/* 채팅 및 게시글 수정 버튼 */}
         {userStateValue &&
-        userStateValue.user &&
+        userStateValue &&
         detailPostcardData &&
-        userStateValue.user.id === detailPostcardData?.userId ? (
-          <div>
-            <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
-              <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
-                type="button"
-                // onClick={moveToUpdatePage}
-              >
-                게시글 수정하기
-              </button>
-            </div>
-          </div>
+        userStateValue.id === detailPostcardData?.userId ? (
+          ''
         ) : (
-          <div>
+          <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
             {/* 채팅 버튼 */}
-            <div className="mb-5 flex w-full justify-center rounded-3xl bg-gradient-to-r from-[#3dabe7] to-[#ffde01] p-[1px] sm:w-[599px] lg:w-[677px]">
-              <button
-                className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
-                type="button"
-                onClick={moveToChatPage}
-              >
-                판매자와 채팅하기
-              </button>
-            </div>
+            <button
+              className="md:h-13 h-11 w-full rounded-3xl border border-transparent bg-white px-3 font-semibold sm:w-[599px] lg:w-[677px]"
+              type="button"
+              onClick={moveToChatPage}
+            >
+              판매자와 채팅하기
+            </button>
           </div>
         )}
       </section>

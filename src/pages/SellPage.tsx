@@ -11,6 +11,7 @@ import api from '../baseURL/baseURL';
 import cameraIcon from '../assets/camera.svg';
 import deleteIcon from '../assets/delete.svg';
 import useCheckLoginStatus from '../services/authService';
+import { BookDto } from '../dataType';
 
 function SellPage() {
   const navigate = useNavigate();
@@ -241,7 +242,7 @@ function SellPage() {
           formData.append('condition', selectedBookState);
           // formData.append('kakaoLink', openChatLink);
 
-          await api.post('/books', formData, {
+          await api.post<BookDto>('/books', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
