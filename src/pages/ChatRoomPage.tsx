@@ -70,6 +70,7 @@ function ChatRoomPage() {
           },
           withCredentials: true,
         });
+
         // 채팅방 정보 저장
         setChatRoom(response.data.chatRoom);
 
@@ -175,17 +176,20 @@ function ChatRoomPage() {
   return (
     <div className="flex flex-col">
       {/* 채팅 메시지 영역 */}
-      <div className="mb-16 flex-1 overflow-y-auto p-5" ref={chatContainerRef}>
+      <div
+        className="mb-16 w-full flex-1 overflow-y-auto p-5"
+        ref={chatContainerRef}
+      >
         {/* 책 정보 */}
         {chatRoom && (
-          <div className="mb-5 flex w-full flex-row items-center justify-between rounded-xl bg-gray-100 px-5 py-3 text-sm shadow-md">
-            <h3 className="font-bold">
-              <div>
+          <div className="fixed left-1/2 top-28 flex w-11/12 -translate-x-1/2 -translate-y-1/2 transform flex-row items-center justify-between rounded-xl border border-solid border-gray-200 bg-gray-100 px-5 py-3 text-sm shadow-md">
+            <div className="flex flex-col gap-1 font-bold ">
+              <span className="text-sm">
                 [{chatRoom.book.salesStatus}({chatRoom.book.type}/
                 {chatRoom.book.condition})]
-              </div>
-              <div>{chatRoom.book.title}</div>
-            </h3>
+              </span>
+              <span className="text-base">{chatRoom.book.title}</span>
+            </div>
             <p className="text-base font-semibold text-gray-800">
               {parseInt(chatRoom.book.price, 10).toLocaleString()}원
             </p>
@@ -196,7 +200,7 @@ function ChatRoomPage() {
             message && (
               <React.Fragment key={message.id}>
                 {shouldShowDate(index) && (
-                  <div className="my-4 text-center text-gray-400">
+                  <div className="my-4 mt-20 text-center text-gray-400">
                     {formatDate(message.updateAt)}
                   </div>
                 )}
