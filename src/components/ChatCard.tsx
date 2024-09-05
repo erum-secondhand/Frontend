@@ -15,12 +15,13 @@ function ChatCard(props: FetchChatCards) {
     }
   };
 
-  // 마지막 업데이트 날짜와 시간 format
+  // 날짜와 시간을 서울 시간으로 변환 (UTC+9 적용)
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) {
       return ['Invalid Date', ''];
     }
 
+    // 문자열을 Date 객체로 변환
     const date = new Date(dateString);
 
     if (isNaN(date.getTime())) {
@@ -28,13 +29,19 @@ function ChatCard(props: FetchChatCards) {
       return ['Invalid Date', ''];
     }
 
+    // UTC 시간에 9시간을 더해 서울 시간으로 변환
+    date.setHours(date.getHours() + 9);
+
+    // 날짜와 시간을 'YYYY.MM.DD.' 형식으로 포맷팅
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
     const day = date.getDate().toString().padStart(2, '0');
+    
+    // 시간을 '오전/오후' 형식으로 변환
     const time = date
       .toLocaleTimeString('ko-KR', {
-        hour: '2-digit',
-        minute: '2-digit',
+        hour: 'numeric',
+        minute: 'numeric',
         hour12: true,
       })
       .replace('AM', '오전')
