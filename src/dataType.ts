@@ -56,8 +56,8 @@ export type ChatRoom = {
     salesStatus: string;
     userId: number;
   };
-  seller: SignUpResponse;
-  buyer: SignUpResponse;
+  seller: Person;
+  buyer: Person;
 };
 
 export type FetchChatCards = {

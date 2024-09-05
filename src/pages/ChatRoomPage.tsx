@@ -40,6 +40,12 @@ function ChatRoomPage() {
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const moveToDetailPage = () => {
+    if (chatRoom) {
+      navigate(`/detail/${chatRoom.book.id}`);
+    }
+  };
+
   useEffect(() => {
     // 로그아웃 상태이거나 판매자 혹은 구매자 아닐 경우
     if (
@@ -71,6 +77,8 @@ function ChatRoomPage() {
           },
           withCredentials: true,
         });
+
+        console.log('response', response.data);
 
         // 채팅방 정보 저장
         setChatRoom(response.data.chatRoom);
@@ -187,17 +195,27 @@ function ChatRoomPage() {
       >
         {/* 책 정보 */}
         {chatRoom && (
-          <div className="fixed left-1/2 top-28 flex w-11/12 -translate-x-1/2 -translate-y-1/2 transform flex-row items-center justify-between rounded-xl border border-solid border-gray-200 bg-gray-100 px-5 py-3 text-sm shadow-md">
+          <div
+            className="fixed left-1/2 top-28 flex w-11/12 min-w-[300px] -translate-x-1/2 -translate-y-1/2 transform cursor-pointer flex-row items-center justify-between rounded-xl border border-solid border-gray-200 bg-gray-100 px-5 py-3 text-sm shadow-md"
+            onClick={moveToDetailPage}
+          >
             <div className="flex flex-col gap-1 font-bold ">
-              <span className="text-sm">
-                [{chatRoom.book.salesStatus}({chatRoom.book.type}/
-                {chatRoom.book.condition})]
-              </span>
-              <span className="text-base">{chatRoom.book.title}</span>
+              <div className="flex items-center gap-2">
+                <div className="flex h-6 w-16 items-center justify-center rounded-full bg-gray-700 text-sm text-white">
+                  {chatRoom.book.salesStatus}
+                </div>
+                <span className="text-base">{chatRoom.buyer.name}</span>
+              </div>
+              <span className="text-lg">{chatRoom.book.title}</span>
             </div>
-            <p className="text-base font-semibold text-gray-800">
-              {parseInt(chatRoom.book.price, 10).toLocaleString()}원
-            </p>
+            <div className="flex flex-col items-start gap-1">
+              <p className="text-base font-semibold text-gray-800">
+                [{chatRoom.book.type}/{chatRoom.book.condition}]
+              </p>
+              <p className="text-lg font-semibold text-gray-800">
+                {parseInt(chatRoom.book.price, 10).toLocaleString()}원
+              </p>
+            </div>
           </div>
         )}
         {messages.map(
