@@ -38,6 +38,7 @@ function ChatRoomPage() {
   const [chatRoom, setChatRoom] = useState<ChatRoom | null>(null);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     // 로그아웃 상태이거나 판매자 혹은 구매자 아닐 경우
@@ -109,6 +110,10 @@ function ChatRoomPage() {
     socket.emit('sendMessage', messageData);
     setInputMessage('');
     setIsSending(false);
+
+    if (inputRef.current) {
+      inputRef.current.focus(); // 메시지 전송 후 input에 다시 focus
+    }
   };
 
   // 메세지 입력바 엔터키 이벤트 핸들러
@@ -234,6 +239,7 @@ function ChatRoomPage() {
         <div className="flex items-center">
           <input
             type="text"
+            ref={inputRef}
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
             onKeyDown={handleKeyDown}
