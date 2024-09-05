@@ -78,8 +78,6 @@ function ChatRoomPage() {
           withCredentials: true,
         });
 
-        console.log('response', response.data);
-
         // 채팅방 정보 저장
         setChatRoom(response.data.chatRoom);
 
@@ -196,23 +194,25 @@ function ChatRoomPage() {
         {/* 책 정보 */}
         {chatRoom && (
           <div
-            className="fixed left-1/2 top-28 flex w-11/12 min-w-[300px] -translate-x-1/2 -translate-y-1/2 transform cursor-pointer flex-row items-center justify-between rounded-xl border border-solid border-gray-200 bg-gray-100 px-5 py-3 text-sm shadow-md"
+            className="fixed left-1/2 top-28 flex w-11/12 -translate-x-1/2 -translate-y-1/2 transform cursor-pointer flex-row items-center justify-between rounded-xl border border-solid border-gray-200 bg-gray-100 px-5 py-3 text-sm shadow-md"
             onClick={moveToDetailPage}
           >
-            <div className="flex flex-col gap-1 font-bold ">
+            <div className="mr-5 flex flex-col gap-1 font-bold">
               <div className="flex items-center gap-2">
                 <div className="flex h-6 w-16 items-center justify-center rounded-full bg-gray-700 text-sm text-white">
                   {chatRoom.book.salesStatus}
                 </div>
-                <span className="text-base">{chatRoom.buyer.name}</span>
+                <span className="whitespace-nowrap text-base">
+                  {chatRoom.buyer.name}
+                </span>
               </div>
-              <span className="text-lg">{chatRoom.book.title}</span>
+              <span className="text-base">{chatRoom.book.title}</span>
             </div>
             <div className="flex flex-col items-start gap-1">
-              <p className="text-base font-semibold text-gray-800">
+              <p className="text-sm font-semibold text-gray-600">
                 [{chatRoom.book.type}/{chatRoom.book.condition}]
               </p>
-              <p className="text-lg font-semibold text-gray-800">
+              <p className="whitespace-nowrap text-base font-semibold text-gray-800">
                 {parseInt(chatRoom.book.price, 10).toLocaleString()}원
               </p>
             </div>
